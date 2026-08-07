@@ -244,11 +244,11 @@ export function Topbar({
               </p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>
+            <DropdownMenuItem onClick={() => navigate({ to: "/settings", search: { tab: "security" } })}>
               <User className="size-4" aria-hidden />
               {t("topbar.profile")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>
+            <DropdownMenuItem onClick={() => navigate({ to: "/settings", search: { tab: "store" } })}>
               <Settings className="size-4" aria-hidden />
               {t("nav.settings")}
             </DropdownMenuItem>

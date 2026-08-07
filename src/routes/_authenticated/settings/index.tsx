@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -28,7 +28,12 @@ import { services } from "@/services";
 import type { ShopSettings } from "@/services";
 import { supabase } from "@/services/supabase/supabase-provider";
 
+const settingsSearchSchema = z.object({
+  tab: z.enum(["store", "receipt", "pricing", "security"]).optional().catch("store"),
+});
+
 export const Route = createFileRoute("/_authenticated/settings/")({
+  validateSearch: (search) => settingsSearchSchema.parse(search),
   beforeLoad: () => {
     const role = getCurrentRole();
     if (!canAccessRoute(role, "/settings")) {
@@ -49,11 +54,9 @@ const storeSchema = z.object({
   shopName: requiredString(),
   ownerName: requiredString(),
   email: z.string().email("البريد الإلكتروني غير صحيح"),
-  phone: z
-    .string()
-    .regex(/^01[0125][0-9]{8}$/, "يجب أن يكون رقم هاتف مصري صحيح"),
-  commercialRegister: z.string().regex(/^\d+$/, "يجب أن يحتوي على أرقام فقط"),
-  taxId: z.string().regex(/^\d+$/, "يجب أن يحتوي على أرقام فقط"), // TODO: official ETA validation later
+  phone: requiredString(),
+  commercialRegister: requiredString(),
+  taxId: requiredString(),
   governorate: requiredString(),
   city: requiredString(),
   address: requiredString(),
@@ -63,7 +66,7 @@ const storeSchema = z.object({
 const receiptSchema = z.object({
   receiptHeader: requiredString(),
   receiptFooter: requiredString(),
-  returnPolicy: requiredString(),
+  returnPolicy: z.string().optional(),
 });
 
 const pricingSchema = z.object({
@@ -87,6 +90,8 @@ const securitySchema = z
 function SettingsPage() {
   const { t } = useI18n();
   const queryClient = useQueryClient();
+  const navigate = useNavigate({ from: Route.fullPath });
+  const { tab = "store" } = Route.useSearch();
 
   const { data: settings, isLoading } = useQuery({
     queryKey: ["settings"],
@@ -184,7 +189,11 @@ function SettingsPage() {
         description={t("settings.subtitle")}
       />
 
-      <Tabs defaultValue="store" className="gap-4">
+      <Tabs
+        value={tab}
+        onValueChange={(val) => navigate({ search: { tab: val as any } })}
+        className="gap-4"
+      >
         <TabsList className="rounded-xl">
           <TabsTrigger value="store" className="rounded-lg">
             معلومات المحل
