@@ -184,6 +184,7 @@ function CashierPage() {
     onSuccess: (data) => {
       void queryClient.invalidateQueries({ queryKey: ["sales"] });
       void queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      void queryClient.invalidateQueries({ queryKey: ["inventory"] });
       setLastInvoice(data);
       toast.success(
         locale === "ar"

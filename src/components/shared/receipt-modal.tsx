@@ -29,6 +29,7 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
   
   const deductVal = invoice.deductionPct !== undefined ? invoice.deductionPct : (invoice.deduction_pct || 0);
   const idImg = invoice.idImageUrl || invoice.id_image_url || "";
+  const itemSku = invoice.itemSku || invoice.item_sku || "";
 
   const triggerPrint = () => {
     window.print();
@@ -95,10 +96,17 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
             <tbody>
               <tr>
                 <td className="py-2.5">
-                  {type === "sale" ? (
-                    locale === "ar" ? `ذهب عيار ${karat}` : `Gold ${karat}K`
-                  ) : (
-                    locale === "ar" ? `شراء ذهب كسر عيار ${karat}` : `Buy scrap ${karat}K`
+                  <div className="font-semibold text-foreground">
+                    {type === "sale" ? (
+                      locale === "ar" ? `ذهب عيار ${karat}` : `Gold ${karat}K`
+                    ) : (
+                      locale === "ar" ? `شراء ذهب كسر عيار ${karat}` : `Buy scrap ${karat}K`
+                    )}
+                  </div>
+                  {itemSku && (
+                    <div className="text-[10px] text-muted-foreground font-mono mt-0.5">
+                      {locale === "ar" ? `كود القطعة: ${itemSku}` : `SKU: ${itemSku}`}
+                    </div>
                   )}
                 </td>
                 <td className="py-2.5 text-end font-mono">{weight} جم</td>

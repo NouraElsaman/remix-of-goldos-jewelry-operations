@@ -745,7 +745,7 @@ export const supabaseServices: ServiceRegistry = {
 
       let query = supabase
         .from("invoices")
-        .select("*", { count: "exact" })
+        .select("*, inventory(sku)", { count: "exact" })
         .order("created_at", { ascending: false });
 
       if (params?.search) {
@@ -756,7 +756,7 @@ export const supabaseServices: ServiceRegistry = {
 
       if (error) throw error;
 
-      const items: Invoice[] = (data || []).map((row) => ({
+      const items: Invoice[] = (data || []).map((row: any) => ({
         id: row.id,
         number: row.invoice_number,
         cashierId: "current_user",
@@ -775,6 +775,7 @@ export const supabaseServices: ServiceRegistry = {
         weight: row.total_weight || undefined,
         itemType: row.item_type || undefined,
         itemId: row.item_id || undefined,
+        itemSku: row.inventory?.sku || undefined,
       }));
 
       return {
@@ -811,7 +812,7 @@ export const supabaseServices: ServiceRegistry = {
       const { data, error } = await supabase
         .from("invoices")
         .insert(dbRow)
-        .select()
+        .select("*, inventory(sku)")
         .single();
 
       if (error) throw error;
@@ -845,6 +846,7 @@ export const supabaseServices: ServiceRegistry = {
         weight: data.total_weight || undefined,
         itemType: data.item_type || undefined,
         itemId: data.item_id || undefined,
+        itemSku: (data as any).inventory?.sku || undefined,
       };
     },
   },

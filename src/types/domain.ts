@@ -85,6 +85,7 @@ export type Invoice = {
   handwork_value?: number | undefined;
   itemType?: string | undefined;
   itemId?: string | undefined;
+  itemSku?: string | undefined;
 };
 
 export type ReconciliationStatus = "open" | "closed";
