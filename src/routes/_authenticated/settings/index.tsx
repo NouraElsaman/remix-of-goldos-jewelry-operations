@@ -26,6 +26,7 @@ import { canAccessRoute } from "@/lib/rbac";
 import { services } from "@/services";
 
 import type { ShopSettings } from "@/services";
+import { supabase } from "@/services/supabase/supabase-provider";
 
 export const Route = createFileRoute("/_authenticated/settings/")({
   beforeLoad: () => {
@@ -102,14 +103,32 @@ function SettingsPage() {
   });
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setLogoFile(file);
       const url = URL.createObjectURL(file);
       setLogoPreview(url);
     }
+  };
+
+  const uploadStoreLogo = async (file: File): Promise<string> => {
+    const fileExt = file.name.split(".").pop() || "jpg";
+    const fileName = `logo-${Date.now()}.${fileExt}`;
+    const filePath = `logos/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("store-logos")
+      .upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage.from("store-logos").getPublicUrl(filePath);
+    return data.publicUrl;
   };
 
   const storeForm = useForm<z.infer<typeof storeSchema>>({
@@ -140,6 +159,7 @@ function SettingsPage() {
 
   const isAnyDirty =
     storeForm.formState.isDirty ||
+    Boolean(logoFile) ||
     receiptForm.formState.isDirty ||
     pricingForm.formState.isDirty ||
     securityForm.formState.isDirty;
@@ -186,9 +206,23 @@ function SettingsPage() {
             description="البيانات الأساسية للمحل والتي تظهر في التقارير والفواتير."
           >
             <form
-              onSubmit={storeForm.handleSubmit((data) =>
-                updateMutation.mutate(data),
-              )}
+              onSubmit={storeForm.handleSubmit(async (data) => {
+                let logoUrl = settings?.logoUrl;
+                if (logoFile) {
+                  try {
+                    setIsUploading(true);
+                    logoUrl = await uploadStoreLogo(logoFile);
+                    setLogoFile(null);
+                  } catch (err) {
+                    console.error("Logo upload failed:", err);
+                    toast.error("فشل رفع الشعار");
+                    return;
+                  } finally {
+                    setIsUploading(false);
+                  }
+                }
+                updateMutation.mutate({ ...data, logoUrl });
+              })}
               className="grid gap-6 md:grid-cols-2 max-w-4xl"
             >
               <div className="md:col-span-2 flex items-center gap-6">
@@ -288,13 +322,14 @@ function SettingsPage() {
                 <Button
                   type="submit"
                   disabled={
-                    !storeForm.formState.isDirty ||
+                    (!storeForm.formState.isDirty && !logoFile) ||
                     !storeForm.formState.isValid ||
-                    updateMutation.isPending
+                    updateMutation.isPending ||
+                    isUploading
                   }
                   className="h-11 w-32 rounded-xl"
                 >
-                  {updateMutation.isPending
+                  {updateMutation.isPending || isUploading
                     ? "جاري الحفظ..."
                     : t("common.save")}
                 </Button>

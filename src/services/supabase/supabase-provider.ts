@@ -501,7 +501,94 @@ export const supabaseServices: ServiceRegistry = {
     },
   },
   users: mockServices.users,
-  settings: mockServices.settings,
+  settings: {
+    get: async () => {
+      const { data, error } = await supabase
+        .from("settings")
+        .select("*")
+        .eq("id", "default")
+        .single();
+
+      if (error) throw error;
+
+      return {
+        shopName: data.shop_name,
+        shopNameAr: data.shop_name_ar,
+        ownerName: data.owner_name,
+        email: data.email,
+        phone: data.phone,
+        commercialRegister: data.commercial_register,
+        taxId: data.tax_id,
+        governorate: data.governorate,
+        city: data.city,
+        address: data.address,
+        logoUrl: data.logo_url,
+        currency: data.currency,
+        receiptHeader: data.receipt_header,
+        receiptFooter: data.receipt_footer,
+        returnPolicy: "",
+        vatRate: Number(data.vat_rate),
+        vatOnManufacturingOnly: Boolean(data.vat_on_manufacturing_only),
+        defaultManufacturingCost: Number(data.default_manufacturing_cost),
+        roundingMode: data.rounding_mode as any,
+        defaultKarat: 21,
+      };
+    },
+
+    update: async (input: Partial<ShopSettings>) => {
+      const dbFields: any = {};
+      if (input.shopName !== undefined) dbFields.shop_name = input.shopName;
+      if (input.shopNameAr !== undefined) dbFields.shop_name_ar = input.shopNameAr;
+      if (input.ownerName !== undefined) dbFields.owner_name = input.ownerName;
+      if (input.email !== undefined) dbFields.email = input.email;
+      if (input.phone !== undefined) dbFields.phone = input.phone;
+      if (input.commercialRegister !== undefined) dbFields.commercial_register = input.commercialRegister;
+      if (input.taxId !== undefined) dbFields.tax_id = input.taxId;
+      if (input.governorate !== undefined) dbFields.governorate = input.governorate;
+      if (input.city !== undefined) dbFields.city = input.city;
+      if (input.address !== undefined) dbFields.address = input.address;
+      if (input.logoUrl !== undefined) dbFields.logo_url = input.logoUrl;
+      if (input.currency !== undefined) dbFields.currency = input.currency;
+      if (input.receiptHeader !== undefined) dbFields.receipt_header = input.receiptHeader;
+      if (input.receiptFooter !== undefined) dbFields.receipt_footer = input.receiptFooter;
+      if (input.vatRate !== undefined) dbFields.vat_rate = input.vatRate;
+      if (input.vatOnManufacturingOnly !== undefined) dbFields.vat_on_manufacturing_only = input.vatOnManufacturingOnly;
+      if (input.defaultManufacturingCost !== undefined) dbFields.default_manufacturing_cost = input.defaultManufacturingCost;
+      if (input.roundingMode !== undefined) dbFields.rounding_mode = input.roundingMode;
+
+      const { data, error } = await supabase
+        .from("settings")
+        .update(dbFields)
+        .eq("id", "default")
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return {
+        shopName: data.shop_name,
+        shopNameAr: data.shop_name_ar,
+        ownerName: data.owner_name,
+        email: data.email,
+        phone: data.phone,
+        commercialRegister: data.commercial_register,
+        taxId: data.tax_id,
+        governorate: data.governorate,
+        city: data.city,
+        address: data.address,
+        logoUrl: data.logo_url,
+        currency: data.currency,
+        receiptHeader: data.receipt_header,
+        receiptFooter: data.receipt_footer,
+        returnPolicy: "",
+        vatRate: Number(data.vat_rate),
+        vatOnManufacturingOnly: Boolean(data.vat_on_manufacturing_only),
+        defaultManufacturingCost: Number(data.default_manufacturing_cost),
+        roundingMode: data.rounding_mode as any,
+        defaultKarat: 21,
+      };
+    },
+  },
 
   dashboard: {
     summary: async () => {

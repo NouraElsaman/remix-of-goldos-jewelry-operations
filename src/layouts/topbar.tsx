@@ -27,6 +27,7 @@ import { LOCALES, localeMeta } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { queryKeys, services } from "@/services";
 import { getCurrentRole } from "@/lib/rbac";
+import { useNavigate } from "@tanstack/react-router";
 import type { UserRole } from "@/types/domain";
 
 function RoleBadge({ role }: { role: UserRole | null }) {
@@ -69,6 +70,13 @@ export function Topbar({
   onOpenCommandPalette: () => void;
 }) {
   const { t, locale, setLocale } = useI18n();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("goldos_auth_token");
+    localStorage.removeItem("goldos_user_role");
+    navigate({ to: "/login" });
+  };
 
   const { data: prices } = useQuery({
     queryKey: queryKeys.goldPrices.today(),
@@ -236,16 +244,16 @@ export function Topbar({
               </p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>
               <User className="size-4" aria-hidden />
               {t("topbar.profile")}
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>
               <Settings className="size-4" aria-hidden />
               {t("nav.settings")}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="size-4" aria-hidden />
               {t("topbar.signOut")}
             </DropdownMenuItem>
