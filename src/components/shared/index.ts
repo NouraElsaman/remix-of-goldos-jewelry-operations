@@ -35,3 +35,4 @@ export * from "./loading-skeletons";
 export * from "./empty-state";
 export * from "./error-state";
 export * from "./placeholder-block";
+export * from "./receipt-modal";

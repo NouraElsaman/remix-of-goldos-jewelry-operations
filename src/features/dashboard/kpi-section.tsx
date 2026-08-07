@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Users,
   AlertTriangle,
+  ShieldCheck,
 } from "lucide-react";
 
 import { KpiCard } from "@/components/shared";
@@ -104,9 +105,13 @@ export function KpiSection({
       {
         id: "reconciliation",
         labelKey: "dashboard.reconciliationStatus",
-        value: t("dashboard.openReconciliation"),
-        icon: AlertTriangle,
-        trend: { value: "معلق", direction: "flat" },
+        value: data?.isReconciliationClosed
+          ? (locale === "ar" ? "مطابقة مكتملة" : "Matching Closed")
+          : (locale === "ar" ? "مطابقة مفتوحة" : "Matching Open"),
+        icon: data?.isReconciliationClosed ? ShieldCheck : AlertTriangle,
+        trend: data?.isReconciliationClosed
+          ? { value: locale === "ar" ? "مغلق" : "Closed", direction: "up" as const }
+          : { value: locale === "ar" ? "معلق" : "Pending", direction: "flat" as const },
       },
       {
         id: "users",

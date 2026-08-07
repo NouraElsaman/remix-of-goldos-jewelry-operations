@@ -1,9 +1,9 @@
 import { getCurrentRole } from "@/lib/auth";
 import { canAccessRoute } from "@/lib/rbac";
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { UserPlus } from "lucide-react";
-import { useMemo } from "react";
+import { UserPlus, ShieldCheck, Lock, Trash2, CheckCircle2, XCircle } from "lucide-react";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import {
   DataTable,
@@ -13,10 +13,13 @@ import {
   type DataTableColumn,
 } from "@/components/shared";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useI18n } from "@/lib/i18n";
 import { PageTransition } from "@/lib/motion";
-import { queryKeys, services } from "@/services";
 import type { AppUser } from "@/types/domain";
+import { PermissionMatrix } from "@/lib/rbac";
+import { Card } from "@/components/ui/card";
 
 export const Route = createFileRoute("/_authenticated/users/")({
   beforeLoad: () => {
@@ -44,12 +47,176 @@ export const Route = createFileRoute("/_authenticated/users/")({
   component: UsersPage,
 });
 
-import { ShieldCheck, Lock } from "lucide-react";
-import { PermissionMatrix } from "@/lib/rbac";
-import { Card } from "@/components/ui/card";
-
 function UsersPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+
+  // Load from localStorage or seed initial default users
+  const [users, setUsers] = useState<AppUser[]>(() => {
+    const saved = localStorage.getItem("goldos_users_list");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        // ignore
+      }
+    }
+    return [
+      {
+        id: "usr_1",
+        name: "فيصل الأصالة (Faisal)",
+        email: "owner@alasala.sa",
+        role: "owner",
+        active: true,
+      },
+      {
+        id: "usr_2",
+        name: "نورة حمدان (Noura)",
+        email: "cashier@alasala.sa",
+        role: "cashier",
+        active: true,
+      },
+      {
+        id: "usr_3",
+        name: "طارق صالح (Tariq)",
+        email: "stock@alasala.sa",
+        role: "inventory_manager",
+        active: true,
+      },
+    ];
+  });
+
+  const saveUsers = (nextUsers: AppUser[]) => {
+    setUsers(nextUsers);
+    localStorage.setItem("goldos_users_list", JSON.stringify(nextUsers));
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newUserName, setNewUserName] = useState("");
+  const [newUserEmail, setNewUserEmail] = useState("");
+  const [newUserRole, setNewUserRole] = useState<"owner" | "cashier" | "inventory_manager">("cashier");
+
+  const handleAddUser = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newUserName || !newUserEmail) {
+      toast.error(locale === "ar" ? "يرجى تعبئة جميع الحقول" : "Please fill in all fields");
+      return;
+    }
+
+    const newUser: AppUser = {
+      id: `usr_${Date.now()}`,
+      name: newUserName,
+      email: newUserEmail,
+      role: newUserRole,
+      active: true,
+    };
+
+    saveUsers([...users, newUser]);
+    toast.success(locale === "ar" ? "تم إضافة المستخدم بنجاح!" : "User added successfully!");
+    setIsModalOpen(false);
+    setNewUserName("");
+    setNewUserEmail("");
+    setNewUserRole("cashier");
+  };
+
+  const toggleUserStatus = (userId: string) => {
+    const next = users.map((u) => {
+      if (u.id === userId) {
+        return { ...u, active: !u.active };
+      }
+      return u;
+    });
+    saveUsers(next);
+    toast.success(locale === "ar" ? "تم تحديث حالة المستخدم" : "User status updated");
+  };
+
+  const changeUserRole = (userId: string, role: "owner" | "cashier" | "inventory_manager") => {
+    const next = users.map((u) => {
+      if (u.id === userId) {
+        return { ...u, role };
+      }
+      return u;
+    });
+    saveUsers(next);
+    toast.success(locale === "ar" ? "تم تعديل صلاحية المستخدم" : "User role updated");
+  };
+
+  const deleteUser = (userId: string) => {
+    if (userId === "usr_1") {
+      toast.error(locale === "ar" ? "لا يمكن حذف حساب المالك الرئيسي" : "Cannot delete the main owner account");
+      return;
+    }
+    const next = users.filter((u) => u.id !== userId);
+    saveUsers(next);
+    toast.success(locale === "ar" ? "تم حذف الموظف بنجاح" : "Staff deleted successfully");
+  };
+
+  const roleTranslations: Record<string, string> = {
+    owner: locale === "ar" ? "المالك" : "Owner",
+    cashier: locale === "ar" ? "كاشير" : "Cashier",
+    inventory_manager: locale === "ar" ? "مسؤول المخزون" : "Stock Manager",
+  };
+
+  const columns = useMemo<DataTableColumn<AppUser>[]>(
+    () => [
+      {
+        id: "name",
+        header: locale === "ar" ? "الاسم" : "Name",
+        cell: (row) => <span className="font-semibold text-foreground">{row.name}</span>,
+      },
+      {
+        id: "email",
+        header: locale === "ar" ? "اسم المستخدم / البريد" : "Username / Email",
+        cell: (row) => <span className="text-muted-foreground text-xs">{row.email}</span>,
+      },
+      {
+        id: "role",
+        header: locale === "ar" ? "الدور والصلاحية" : "Role / Access",
+        cell: (row) => (
+          <select
+            value={row.role}
+            disabled={row.id === "usr_1"}
+            onChange={(e) => changeUserRole(row.id, e.target.value as any)}
+            className="rounded-lg border border-input bg-background px-2 py-1 text-xs shadow-sm focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+          >
+            <option value="owner">{locale === "ar" ? "المالك (Owner)" : "Owner"}</option>
+            <option value="cashier">{locale === "ar" ? "الكاشير (Cashier)" : "Cashier"}</option>
+            <option value="inventory_manager">{locale === "ar" ? "مسؤول المخزون" : "Stock Manager"}</option>
+          </select>
+        ),
+      },
+      {
+        id: "status",
+        header: locale === "ar" ? "الحالة" : "Status",
+        cell: (row) => (
+          <button
+            onClick={() => toggleUserStatus(row.id)}
+            disabled={row.id === "usr_1"}
+            className="flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
+          >
+            <StatusBadge tone={row.active ? "success" : "neutral"}>
+              {row.active ? (locale === "ar" ? "نشط" : "Active") : (locale === "ar" ? "معطل" : "Disabled")}
+            </StatusBadge>
+          </button>
+        ),
+      },
+      {
+        id: "actions",
+        header: locale === "ar" ? "الإجراءات" : "Actions",
+        cell: (row) => (
+          <Button
+            variant="ghost"
+            disabled={row.id === "usr_1"}
+            onClick={() => deleteUser(row.id)}
+            className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 rounded-lg"
+          >
+            <Trash2 className="size-4" />
+          </Button>
+        ),
+        width: "4rem",
+      },
+    ],
+    [locale, users],
+  );
 
   const features = [
     { key: "/dashboard", label: t("nav.dashboard") },
@@ -65,39 +232,37 @@ function UsersPage() {
 
   return (
     <PageTransition>
-      <PageHeader title={t("users.title")} description={t("users.subtitle")} />
+      <PageHeader
+        title={t("users.title")}
+        description={t("users.subtitle")}
+        actions={
+          <Button onClick={() => setIsModalOpen(true)} className="h-10 gap-2 rounded-xl">
+            <UserPlus className="size-4" />
+            {locale === "ar" ? "إضافة موظف" : "Add Staff"}
+          </Button>
+        }
+      />
 
-      <div className="flex flex-col gap-8 max-w-5xl mx-auto py-8">
-        {/* Luxury Empty State */}
-        <div className="flex flex-col items-center justify-center text-center space-y-4 py-12 px-4 rounded-3xl border border-gold/20 bg-gradient-to-b from-surface to-background shadow-sm">
-          <div className="flex items-center justify-center size-20 rounded-full bg-gold-soft border border-gold/30">
-            <ShieldCheck className="size-10 text-gold-deep" strokeWidth={1.5} />
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
-              إدارة المستخدمين والأدوار
-            </h2>
-            <p className="text-muted-foreground max-w-md mx-auto leading-relaxed">
-              هذه الواجهة قيد التطوير. قمنا بتجهيز مصفوفة الصلاحيات الأساسية
-              لتكون الأساس في إدارة فريق العمل.
-            </p>
-          </div>
-          <div className="pt-4">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-1.5 text-sm font-medium text-foreground shadow-sm">
-              <Lock className="size-4 text-muted-foreground" />
-              <span>Coming in Sprint 8</span>
-            </div>
-          </div>
-        </div>
+      <div className="flex flex-col gap-8 max-w-5xl mx-auto py-6">
+        <TableContainer>
+          <DataTable
+            columns={columns}
+            rows={users}
+            getRowId={(row) => row.id}
+            isLoading={false}
+            emptyTitle={t("common.empty")}
+            emptyDescription={t("common.placeholderNote")}
+          />
+        </TableContainer>
 
         {/* Permission Matrix Preview */}
         <Card className="overflow-hidden border-border bg-surface shadow-sm rounded-2xl">
           <div className="border-b border-border bg-muted/30 px-6 py-4">
             <h3 className="font-semibold text-foreground">
-              مصفوفة الصلاحيات (معاينة)
+              مصفوفة الصلاحيات والأدوار الفعالة
             </h3>
             <p className="text-sm text-muted-foreground mt-1">
-              توضيح الصلاحيات المبدئية لكل دور في النظام.
+              توضيح حقوق القراءة والكتابة المطبقة لكل دور في النظام.
             </p>
           </div>
           <div className="overflow-x-auto">
@@ -105,16 +270,16 @@ function UsersPage() {
               <thead>
                 <tr className="border-b border-border bg-background/50">
                   <th className="px-6 py-4 font-medium text-muted-foreground">
-                    القسم
+                    القسم / الواجهة
                   </th>
                   <th className="px-6 py-4 font-medium text-center text-amber-700">
-                    المالك
+                    المالك (Owner)
                   </th>
                   <th className="px-6 py-4 font-medium text-center text-emerald-700">
-                    الكاشير
+                    الكاشير (Cashier)
                   </th>
                   <th className="px-6 py-4 font-medium text-center text-blue-700">
-                    مسؤول المخزون
+                    مسؤول المخزون (Stock)
                   </th>
                 </tr>
               </thead>
@@ -130,18 +295,18 @@ function UsersPage() {
                   }) => {
                     if (!perms.canView)
                       return (
-                        <span className="text-muted-foreground/30 font-medium">
+                        <span className="text-destructive/50 font-medium">
                           ❌
                         </span>
                       );
                     if (!perms.canEdit)
                       return (
-                        <span className="text-sky-600 font-medium text-xs bg-sky-50 px-2 py-1 rounded-md border border-sky-100">
+                        <span className="text-sky-600 font-medium text-xs bg-sky-50 px-2.5 py-1 rounded-md border border-sky-100 dark:bg-sky-950/20 dark:border-sky-900/30">
                           🔍 قراءة فقط
                         </span>
                       );
                     return (
-                      <span className="text-emerald-600 font-medium">✅</span>
+                      <span className="text-emerald-600 font-medium">✅ كامل</span>
                     );
                   };
 
@@ -170,6 +335,79 @@ function UsersPage() {
           </div>
         </Card>
       </div>
+
+      {/* ────────────────── ADD USER MODAL ────────────────── */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-surface border border-border shadow-raised rounded-3xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-lg font-bold text-foreground">
+                {locale === "ar" ? "إضافة موظف جديد" : "Add New Staff Member"}
+              </h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-xs text-muted-foreground hover:text-foreground font-semibold"
+              >
+                {locale === "ar" ? "إلغاء" : "Cancel"}
+              </button>
+            </div>
+
+            <form onSubmit={handleAddUser} className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="u-name">{locale === "ar" ? "اسم الموظف كامل" : "Full Name"}</Label>
+                <Input
+                  id="u-name"
+                  type="text"
+                  required
+                  value={newUserName}
+                  onChange={(e) => setNewUserName(e.target.value)}
+                  placeholder={locale === "ar" ? "مثال: طارق علي" : "e.g. Tariq Ali"}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="u-email">{locale === "ar" ? "اسم المستخدم أو البريد" : "Username or Email"}</Label>
+                <Input
+                  id="u-email"
+                  type="text"
+                  required
+                  value={newUserEmail}
+                  onChange={(e) => setNewUserEmail(e.target.value)}
+                  placeholder={locale === "ar" ? "tariq@alasala.sa" : "tariq@alasala.sa"}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="u-role">{locale === "ar" ? "الدور والصلاحية" : "Role / Permission Group"}</Label>
+                <select
+                  id="u-role"
+                  value={newUserRole}
+                  onChange={(e) => setNewUserRole(e.target.value as any)}
+                  className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                >
+                  <option value="cashier">{locale === "ar" ? "كاشير (Cashier)" : "Cashier"}</option>
+                  <option value="inventory_manager">{locale === "ar" ? "مسؤول المخزون (Stock Manager)" : "Stock Manager"}</option>
+                  <option value="owner">{locale === "ar" ? "المالك (Owner)" : "Owner"}</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsModalOpen(false)}
+                  className="rounded-xl h-11"
+                >
+                  {locale === "ar" ? "إلغاء" : "Cancel"}
+                </Button>
+                <Button type="submit" variant="gold" className="rounded-xl h-11">
+                  {locale === "ar" ? "حفظ الموظف" : "Save Staff"}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </PageTransition>
   );
 }

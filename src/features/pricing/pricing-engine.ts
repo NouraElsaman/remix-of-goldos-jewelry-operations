@@ -176,5 +176,18 @@ export function extractKaratTrend(
   return prices
     .filter((p) => p.karat === karat)
     .sort((a, b) => a.date.localeCompare(b.date))
-    .map((p) => ({ label: p.date.slice(5), value: p.rate })); // "MM-DD"
+    .map((p) => {
+      let label = p.date.slice(5, 10);
+      try {
+        const d = new Date(p.date);
+        if (!isNaN(d.getTime()) && p.date.includes("T")) {
+          const month = String(d.getMonth() + 1).padStart(2, "0");
+          const day = String(d.getDate()).padStart(2, "0");
+          const hours = String(d.getHours()).padStart(2, "0");
+          const minutes = String(d.getMinutes()).padStart(2, "0");
+          label = `${month}-${day} ${hours}:${minutes}`;
+        }
+      } catch {}
+      return { label, value: p.rate };
+    });
 }

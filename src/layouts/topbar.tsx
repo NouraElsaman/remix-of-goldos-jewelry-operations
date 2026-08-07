@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { supabase } from "@/services/supabase/supabase-provider";
 import { Bell, Coins, LogOut, Search, Settings, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -80,6 +82,31 @@ export function Topbar({
   const headline = prices?.find((price) => price.karat === 22) ?? prices?.[0];
   const role = getCurrentRole();
 
+  const { data: invoicesPage } = useQuery({
+    queryKey: queryKeys.sales.invoices({ pageSize: 5 }),
+    queryFn: () => services.sales.listInvoices({ pageSize: 5 }),
+  });
+  const recentInvoices = invoicesPage?.items ?? [];
+
+  const [hasUnread, setHasUnread] = useState(true);
+
+  useEffect(() => {
+    const subscription = supabase
+      .channel("invoices-topbar-channel")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "invoices" },
+        () => {
+          setHasUnread(true);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(subscription);
+    };
+  }, []);
+
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-3 backdrop-blur sm:px-6">
       <SidebarTrigger className="size-9 rounded-xl" />
@@ -111,20 +138,63 @@ export function Topbar({
           <span className="hidden text-xs md:inline">{t("topbar.search")}</span>
         </Button>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
+        <DropdownMenu onOpenChange={(open) => { if (open) setHasUnread(false); }}>
+          <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
               aria-label={t("topbar.notifications")}
-              className="relative size-9 rounded-xl"
+              className="relative size-9 rounded-xl focus-visible:ring-0"
             >
               <Bell className="size-4" aria-hidden />
-              <span className="absolute end-2 top-2 size-1.5 rounded-full bg-gold" />
+              {hasUnread && (
+                <span className="absolute end-2 top-2 size-1.5 rounded-full bg-gold" />
+              )}
             </Button>
-          </TooltipTrigger>
-          <TooltipContent>{t("topbar.notifications")}</TooltipContent>
-        </Tooltip>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-80 rounded-xl p-2 shadow-lg border-border bg-popover">
+            <div className="flex items-center justify-between px-3 py-2 border-b border-border/50">
+              <span className="text-xs font-bold text-foreground">
+                {locale === "ar" ? "الإشعارات" : "Notifications"}
+              </span>
+              {hasUnread && (
+                <span className="text-[9px] bg-gold-soft text-gold-deep px-1.5 py-0.5 rounded-full font-bold">
+                  {locale === "ar" ? "جديد" : "New"}
+                </span>
+              )}
+            </div>
+            <div className="py-1 max-h-[300px] overflow-y-auto">
+              {recentInvoices.length === 0 ? (
+                <div className="py-6 text-center text-xs text-muted-foreground">
+                  {locale === "ar" ? "لا توجد إشعارات حالية" : "No new notifications"}
+                </div>
+              ) : (
+                recentInvoices.map((inv) => (
+                  <DropdownMenuItem
+                    key={inv.id}
+                    className="flex flex-col items-start gap-1 p-2.5 rounded-lg focus:bg-accent/50 cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-xs font-bold text-foreground">
+                        {inv.transactionType === "sale" 
+                          ? (locale === "ar" ? "عملية بيع جديدة" : "New Sale")
+                          : (locale === "ar" ? "شراء ذهب كسر" : "Old Gold Purchase")}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground font-mono">
+                        #{inv.number.slice(-6)}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground leading-snug">
+                      {locale === "ar" 
+                        ? `تم تسجيل عملية بمبلغ ${Number(inv.total).toLocaleString()} ج.م`
+                        : `Registered transaction of ${Number(inv.total).toLocaleString()} EGP`}
+                    </p>
+                  </DropdownMenuItem>
+                ))
+              )}
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <Button
           variant="ghost"

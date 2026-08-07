@@ -22,6 +22,7 @@ export type GoldPrice = {
   date: string;
   karat: Karat;
   rate: number;
+  rateBuy?: number | undefined;
   changePct?: number | undefined;
   source?: PriceSource | undefined;
   updatedBy?: string | undefined;
@@ -62,7 +63,7 @@ export type StockMovement = {
   by: string;
 };
 
-export type PaymentMethod = "cash" | "card" | "transfer";
+export type PaymentMethod = "cash" | "card" | "transfer" | "split";
 
 export type Invoice = {
   id: string;
@@ -74,6 +75,16 @@ export type Invoice = {
   total: number;
   paymentMethod: PaymentMethod;
   createdAt: string;
+  transactionType?: "sale" | "purchase" | undefined;
+  customerName?: string | undefined;
+  customerPhone?: string | undefined;
+  deductionPct?: number | undefined;
+  idImageUrl?: string | undefined;
+  karat?: number | undefined;
+  weight?: number | undefined;
+  handwork_value?: number | undefined;
+  itemType?: string | undefined;
+  itemId?: string | undefined;
 };
 
 export type ReconciliationStatus = "open" | "closed";

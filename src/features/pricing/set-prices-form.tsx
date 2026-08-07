@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { fetchLiveEgyptianGoldRates } from "@/services/supabase/live-rates";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,6 +56,7 @@ export function SetPricesForm({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<SetPricesFormValues>({
     resolver: zodResolver(setPricesSchema),
@@ -60,6 +64,37 @@ export function SetPricesForm({
       rates: { 24: 0, 22: 0, 21: 0, 18: 0, 14: 0 },
     },
   });
+
+  const [isFetchingLive, setIsFetchingLive] = useState(false);
+
+  const handleFetchLiveRates = async () => {
+    setIsFetchingLive(true);
+    try {
+      const liveRates = await fetchLiveEgyptianGoldRates();
+      
+      // Update form values dynamically
+      if (liveRates[24]) setValue("rates.24", liveRates[24].sell, { shouldDirty: true, shouldValidate: true });
+      if (liveRates[22]) setValue("rates.22", liveRates[22].sell, { shouldDirty: true, shouldValidate: true });
+      if (liveRates[21]) setValue("rates.21", liveRates[21].sell, { shouldDirty: true, shouldValidate: true });
+      if (liveRates[18]) setValue("rates.18", liveRates[18].sell, { shouldDirty: true, shouldValidate: true });
+      if (liveRates[14]) setValue("rates.14", liveRates[14].sell, { shouldDirty: true, shouldValidate: true });
+
+      toast.success(
+        t("common.save") === "حفظ" 
+          ? "تم جلب أسعار السوق الحالية بنجاح!" 
+          : "Live market rates fetched successfully!"
+      );
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        t("common.save") === "حفظ" 
+          ? "تعذّر جلب الأسعار تلقائياً" 
+          : "Failed to fetch live prices"
+      );
+    } finally {
+      setIsFetchingLive(false);
+    }
+  };
 
   return (
     <SectionCard title={t("goldPrices.setToday")}>
@@ -118,17 +153,33 @@ export function SetPricesForm({
           <p className="text-xs text-muted-foreground/80">
             {t("goldPrices.formNote")}
           </p>
-          <Button
-            type="submit"
-            variant="gold"
-            disabled={isSubmitting}
-            className="h-10 min-w-36 gap-2 rounded-xl text-sm font-semibold"
-          >
-            {isSubmitting ? (
-              <Loader2 className="size-4 animate-spin" aria-hidden />
-            ) : null}
-            {t("common.save")}
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isFetchingLive}
+              onClick={handleFetchLiveRates}
+              className="h-10 rounded-xl text-sm font-semibold border-gold/30 hover:bg-gold-soft/10 text-gold-deep flex items-center gap-2"
+            >
+              {isFetchingLive ? (
+                <Loader2 className="size-4 animate-spin" aria-hidden />
+              ) : (
+                <Sparkles className="size-4 text-gold-deep" />
+              )}
+              {t("common.save") === "حفظ" ? "جلب الأسعار الحالية تلقائياً" : "Fetch Live Market Rates"}
+            </Button>
+            <Button
+              type="submit"
+              variant="gold"
+              disabled={isSubmitting}
+              className="h-10 min-w-36 gap-2 rounded-xl text-sm font-semibold"
+            >
+              {isSubmitting ? (
+                <Loader2 className="size-4 animate-spin" aria-hidden />
+              ) : null}
+              {t("common.save")}
+            </Button>
+          </div>
         </div>
       </form>
     </SectionCard>

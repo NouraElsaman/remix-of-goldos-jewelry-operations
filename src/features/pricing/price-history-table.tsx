@@ -12,7 +12,7 @@ import {
 import type { PriceHistoryRow } from "@/features/pricing/pricing-engine";
 import type { GoldPrice } from "@/types/domain";
 import type { Locale, TranslationKey } from "@/lib/i18n";
-import { formatMoney, formatDate } from "@/lib/format";
+import { formatMoney, formatDate, formatTime } from "@/lib/format";
 
 /**
  * Historical price table.
@@ -42,8 +42,13 @@ export function PriceHistoryTable({
           .replace("Status", "Date"),
         width: "9rem",
         cell: (row) => (
-          <time className="font-medium text-foreground">
-            {formatDate(row.date, locale)}
+          <time className="font-medium text-foreground flex flex-col gap-0.5 text-xs">
+            <span>{formatDate(row.date, locale)}</span>
+            {row.date.includes("T") && (
+              <span className="text-[10px] text-muted-foreground font-mono">
+                {formatTime(row.date, locale)}
+              </span>
+            )}
           </time>
         ),
       },

@@ -42,4 +42,4 @@ export class ServiceError extends Error {
   }
 }
 
-export type ServiceProviderKind = "mock" | "http";
+export type ServiceProviderKind = "mock" | "http" | "supabase";

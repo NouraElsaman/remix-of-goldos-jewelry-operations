@@ -75,12 +75,44 @@ export const mockServices: ServiceRegistry = {
     list: async (params) => delay(paginate(mockInventory, params)),
     byId: async (id) =>
       delay(mockInventory.find((item) => item.id === id) ?? null),
+    createItem: async (input) => {
+      const newItem = {
+        ...input,
+        id: `itm_${Math.random()}`,
+        barcode: `628100000${Math.floor(1000 + Math.random() * 9000)}`,
+        status: "in_stock" as const,
+      };
+      mockInventory.push(newItem);
+      return delay(newItem);
+    },
   },
   sales: {
     listInvoices: async (params) => delay(paginate(mockInvoices, params)),
+    createInvoice: async (input) =>
+      delay({
+        id: Math.random().toString(36).substring(7),
+        number: `INV-${Date.now()}`,
+        createdAt: new Date().toISOString(),
+        ...input,
+      }),
   },
   reconciliation: {
     currentDay: async () => delay(mockReconciliation),
+    submitCounted: async (karat, counted) => {
+      const row = mockReconciliation.find((r) => r.karat === karat);
+      if (row) {
+        row.counted = counted;
+        row.variance = counted - row.expected;
+        row.status = "closed";
+      }
+    },
+    reopenToday: async () => {
+      mockReconciliation.forEach((r) => {
+        r.status = "open";
+        r.counted = null;
+        r.variance = null;
+      });
+    },
   },
   reports: {
     available: async () =>

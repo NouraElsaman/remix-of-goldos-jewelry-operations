@@ -168,6 +168,7 @@ export function AreaChartWidget({
             tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
             axisLine={false}
             tickLine={false}
+            domain={["dataMin - 100", "dataMax + 100"]}
             {...(valueFormatter ? { tickFormatter: valueFormatter } : {})}
           />
           <Tooltip
