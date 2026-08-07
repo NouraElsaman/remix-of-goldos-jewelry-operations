@@ -398,6 +398,34 @@ export const supabaseServices: ServiceRegistry = {
         .eq("date", todayDateStr);
 
       if (error) throw error;
+    },
+
+    updateOpeningWeights: async (inputs: { karat: number; weight: number }[]) => {
+      const todayDateStr = new Date().toISOString().slice(0, 10);
+      for (const input of inputs) {
+        const { data: rows } = await supabase
+          .from("reconciliation")
+          .select("*")
+          .eq("date", todayDateStr)
+          .eq("karat", input.karat);
+
+        if (rows && rows[0]) {
+          const row = rows[0];
+          const received = Number(row.received_weight || 0);
+          const sold = Number(row.sold_weight || 0);
+          const expected = input.weight + received - sold;
+
+          const { error: updateError } = await supabase
+            .from("reconciliation")
+            .update({
+              opening_weight: input.weight,
+              expected_weight: expected
+            })
+            .eq("id", row.id);
+
+          if (updateError) throw updateError;
+        }
+      }
     }
   },
   reports: mockServices.reports,

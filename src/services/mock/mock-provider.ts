@@ -113,6 +113,15 @@ export const mockServices: ServiceRegistry = {
         r.variance = null;
       });
     },
+    updateOpeningWeights: async (inputs) => {
+      inputs.forEach((input) => {
+        const row = mockReconciliation.find((r) => r.karat === input.karat);
+        if (row) {
+          row.opening = input.weight;
+          row.expected = input.weight + row.received - row.sold;
+        }
+      });
+    },
   },
   reports: {
     available: async () =>

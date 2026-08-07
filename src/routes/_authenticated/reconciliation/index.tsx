@@ -2,7 +2,7 @@ import { getCurrentRole } from "@/lib/auth";
 import { canAccessRoute } from "@/lib/rbac";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Lock, Loader2 } from "lucide-react";
+import { Lock, Loader2, Scale } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -88,6 +88,53 @@ function ReconciliationPage() {
       );
     },
   });
+
+  const [isOpeningModalOpen, setIsOpeningModalOpen] = useState(false);
+  const [opening18, setOpening18] = useState("");
+  const [opening21, setOpening21] = useState("");
+  const [opening22, setOpening22] = useState("");
+  const [opening24, setOpening24] = useState("");
+
+  const updateOpeningMutation = useMutation({
+    mutationFn: async (inputs: { karat: number; weight: number }[]) => {
+      await services.reconciliation.updateOpeningWeights(inputs);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.reconciliation.currentDay() });
+      toast.success(
+        locale === "ar" ? "تم تعديل الأوزان الافتتاحية بنجاح!" : "Opening weights updated successfully!"
+      );
+      setIsOpeningModalOpen(false);
+    },
+    onError: (err) => {
+      console.error(err);
+      toast.error(
+        locale === "ar" ? "فشل تعديل الأوزان الافتتاحية" : "Failed to update opening weights"
+      );
+    }
+  });
+
+  const handleUpdateOpeningSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const o18 = parseFloat(opening18);
+    const o21 = parseFloat(opening21);
+    const o22 = parseFloat(opening22);
+    const o24 = parseFloat(opening24);
+
+    if (isNaN(o18) || isNaN(o21) || isNaN(o22) || isNaN(o24)) {
+      toast.error(
+        locale === "ar" ? "يرجى إدخال الأوزان لجميع الأعيرة" : "Please enter weights for all karats"
+      );
+      return;
+    }
+
+    updateOpeningMutation.mutate([
+      { karat: 18, weight: o18 },
+      { karat: 21, weight: o21 },
+      { karat: 22, weight: o22 },
+      { karat: 24, weight: o24 },
+    ]);
+  };
 
   const reopenMutation = useMutation({
     mutationFn: () => services.reconciliation.reopenToday(),
@@ -215,6 +262,22 @@ function ReconciliationPage() {
                   <Lock className="size-4" />
                 )}
                 {locale === "ar" ? "إعادة فتح اليوم" : "Re-open Day"}
+              </Button>
+            )}
+            {!isAlreadyClosed && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setOpening18(String(data.find((r) => r.karat === 18)?.opening ?? 0));
+                  setOpening21(String(data.find((r) => r.karat === 21)?.opening ?? 0));
+                  setOpening22(String(data.find((r) => r.karat === 22)?.opening ?? 0));
+                  setOpening24(String(data.find((r) => r.karat === 24)?.opening ?? 0));
+                  setIsOpeningModalOpen(true);
+                }}
+                className="h-10 gap-2 rounded-xl font-semibold border-border hover:bg-muted"
+              >
+                <Scale className="size-4" />
+                {locale === "ar" ? "تعديل الأوزان الافتتاحية" : "Edit Opening Weights"}
               </Button>
             )}
             <Button
@@ -366,6 +429,115 @@ function ReconciliationPage() {
                     <Lock className="size-4" />
                   )}
                   {locale === "ar" ? "تأكيد الإغلاق" : "Confirm Close"}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ────────────────── EDIT OPENING MODAL ────────────────── */}
+      {isOpeningModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-surface border border-border shadow-raised rounded-3xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-lg font-bold text-foreground">
+                {locale === "ar" ? "تعديل الأوزان الافتتاحية" : "Edit Opening Weights"}
+              </h2>
+              <button
+                onClick={() => setIsOpeningModalOpen(false)}
+                className="text-xs text-muted-foreground hover:text-foreground font-semibold"
+              >
+                {locale === "ar" ? "إلغاء" : "Cancel"}
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateOpeningSubmit} className="space-y-5">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {locale === "ar"
+                  ? "تعديل رصيد الذهب الافتتاحي (الافتتاحية بالخزنة والمحل) لبداية هذا اليوم."
+                  : "Edit the starting opening gold balance (in safe and display) for the beginning of today."}
+              </p>
+
+              <div className="space-y-4">
+                {/* 24K */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="o-24">عيار 24 (24K Gold)</Label>
+                  <Input
+                    id="o-24"
+                    type="number"
+                    step="0.001"
+                    required
+                    value={opening24}
+                    onChange={(e) => setOpening24(e.target.value)}
+                    placeholder="0.000 جم"
+                  />
+                </div>
+
+                {/* 22K */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="o-22">عيار 22 (22K Gold)</Label>
+                  <Input
+                    id="o-22"
+                    type="number"
+                    step="0.001"
+                    required
+                    value={opening22}
+                    onChange={(e) => setOpening22(e.target.value)}
+                    placeholder="0.000 جم"
+                  />
+                </div>
+
+                {/* 21K */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="o-21">عيار 21 (21K Gold)</Label>
+                  <Input
+                    id="o-21"
+                    type="number"
+                    step="0.001"
+                    required
+                    value={opening21}
+                    onChange={(e) => setOpening21(e.target.value)}
+                    placeholder="0.000 جم"
+                  />
+                </div>
+
+                {/* 18K */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="o-18">عيار 18 (18K Gold)</Label>
+                  <Input
+                    id="o-18"
+                    type="number"
+                    step="0.001"
+                    required
+                    value={opening18}
+                    onChange={(e) => setOpening18(e.target.value)}
+                    placeholder="0.000 جم"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsOpeningModalOpen(false)}
+                  className="rounded-xl h-11"
+                >
+                  {locale === "ar" ? "إلغاء" : "Cancel"}
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={updateOpeningMutation.isPending}
+                  variant="gold"
+                  className="rounded-xl h-11 gap-2"
+                >
+                  {updateOpeningMutation.isPending ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Scale className="size-4" />
+                  )}
+                  {locale === "ar" ? "حفظ التعديلات" : "Save Changes"}
                 </Button>
               </div>
             </form>

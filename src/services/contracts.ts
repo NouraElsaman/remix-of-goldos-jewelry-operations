@@ -179,6 +179,7 @@ export interface ReconciliationService {
   currentDay(): Promise<ReconciliationRow[]>;
   submitCounted(karat: number, counted: number): Promise<void>;
   reopenToday(): Promise<void>;
+  updateOpeningWeights(inputs: { karat: number; weight: number }[]): Promise<void>;
 }
 
 export interface ReportsService {
