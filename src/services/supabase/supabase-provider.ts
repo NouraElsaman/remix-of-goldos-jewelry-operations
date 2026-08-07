@@ -138,7 +138,7 @@ export const supabaseServices: ServiceRegistry = {
 
       if (fetchError) throw fetchError;
 
-      const karats = [18, 21, 22, 24];
+      const karats = [14, 18, 21, 22, 24];
 
       // Define date range for today's transactions
       const todayStart = new Date();
@@ -485,7 +485,7 @@ export const supabaseServices: ServiceRegistry = {
       }
 
       // 5. Aggregate weight by karat
-      const karatWeightMap: Record<number, number> = { 24: 0, 22: 0, 21: 0, 18: 0 };
+      const karatWeightMap: Record<number, number> = { 24: 0, 22: 0, 21: 0, 18: 0, 14: 0 };
       
       (purchasesData || []).forEach((row) => {
         const karat = Math.round(Number(row.karat));
@@ -506,7 +506,8 @@ export const supabaseServices: ServiceRegistry = {
         { label: "22K", value: Number(karatWeightMap[22].toFixed(3)) },
         { label: "21K", value: Number(karatWeightMap[21].toFixed(3)) },
         { label: "18K", value: Number(karatWeightMap[18].toFixed(3)) },
-      ];
+        { label: "14K", value: Number(karatWeightMap[14].toFixed(3)) },
+      ].filter(item => item.value > 0);
 
       return {
         revenueTrend,
