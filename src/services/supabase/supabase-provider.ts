@@ -445,21 +445,13 @@ export const supabaseServices: ServiceRegistry = {
 
       if (salesError) throw salesError;
 
-      // 3. Fetch purchases for karat distribution (scrap gold)
-      const { data: purchasesData, error: purchasesError } = await supabase
+      // 3. Fetch sales for karat weight distribution
+      const { data: allSalesInvoices, error: allSalesError } = await supabase
         .from("invoices")
-        .select("net_weight, karat")
-        .eq("transaction_type", "purchase");
+        .select("total_weight, karat")
+        .eq("transaction_type", "sale");
 
-      if (purchasesError) throw purchasesError;
-
-      // Fetch finished items currently in stock
-      const { data: retailData, error: retailError } = await supabase
-        .from("inventory")
-        .select("net_weight, karat")
-        .eq("status", "in_stock");
-
-      if (retailError) throw retailError;
+      if (allSalesError) throw allSalesError;
 
       // 4. Build daily labels and aggregate revenue
       const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -484,20 +476,13 @@ export const supabaseServices: ServiceRegistry = {
         });
       }
 
-      // 5. Aggregate weight by karat
+      // 5. Aggregate sold weight by karat
       const karatWeightMap: Record<number, number> = { 24: 0, 22: 0, 21: 0, 18: 0, 14: 0 };
       
-      (purchasesData || []).forEach((row) => {
+      (allSalesInvoices || []).forEach((row) => {
         const karat = Math.round(Number(row.karat));
         if (karat in karatWeightMap) {
-          karatWeightMap[karat] += Number(row.net_weight || 0);
-        }
-      });
-
-      (retailData || []).forEach((row) => {
-        const karat = Math.round(Number(row.karat));
-        if (karat in karatWeightMap) {
-          karatWeightMap[karat] += Number(row.net_weight || 0);
+          karatWeightMap[karat] += Number(row.total_weight || 0);
         }
       });
 
