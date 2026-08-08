@@ -98,11 +98,10 @@ function InventoryPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [skuInput, setSkuInput] = useState("");
+  const [companyInput, setCompanyInput] = useState("");
   const [karatInput, setKaratInput] = useState<number>(21);
   const [grossWeightInput, setGrossWeightInput] = useState("");
-  const [stoneWeightInput, setStoneWeightInput] = useState("");
   const [mfgCostInput, setMfgCostInput] = useState("");
-  const [trayInput, setTrayInput] = useState("tray_a");
 
   // Mutation to add item directly to database
   const createItemMutation = useMutation({
@@ -116,10 +115,9 @@ function InventoryPage() {
       // reset
       setNameInput("");
       setSkuInput("");
+      setCompanyInput("");
       setGrossWeightInput("");
-      setStoneWeightInput("");
       setMfgCostInput("");
-      setTrayInput("tray_a");
     },
     onError: (err) => {
       console.error(err);
@@ -130,7 +128,6 @@ function InventoryPage() {
   const handleAddItemSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const gross = parseFloat(grossWeightInput);
-    const stone = parseFloat(stoneWeightInput) || 0;
     const mfg = parseFloat(mfgCostInput) || 0;
 
     if (!nameInput || !skuInput || isNaN(gross)) {
@@ -143,13 +140,14 @@ function InventoryPage() {
     createItemMutation.mutate({
       sku: skuInput,
       name: nameInput,
+      company: companyInput || null,
       category: karatInput === 24 ? "Bars" : "Jewelry",
       karat: karatInput as any,
       grossWeight: gross,
-      stoneWeight: stone,
-      netWeight: net,
+      stoneWeight: 0,
+      netWeight: gross,
       manufacturingCost: mfg,
-      trayId: trayInput || null,
+      trayId: null,
     });
   };
 
@@ -164,7 +162,7 @@ function InventoryPage() {
 
       if (error) throw error;
 
-      const karats = [18, 21, 22, 24];
+      const karats = [18, 21, 24];
       return karats.map((k) => {
         const items = (dbData || []).filter((item) => Math.round(Number(item.karat)) === k);
         const grossWeight = items.reduce((sum, item) => sum + Number(item.total_weight || 0), 0);
@@ -196,6 +194,11 @@ function InventoryPage() {
       },
       { id: "name", header: t("table.item"), cell: (row) => row.name },
       {
+        id: "company",
+        header: locale === "ar" ? "الشركة" : "Company",
+        cell: (row) => row.company || "-",
+      },
+      {
         id: "karat",
         header: t("table.karat"),
         cell: (row) => `${row.karat}K`,
@@ -214,7 +217,7 @@ function InventoryPage() {
           <StatusBadge tone={row.status === "in_stock" ? "success" : "gold"}>
             {row.status === "in_stock"
               ? t("status.inStock")
-              : t("status.reserved")}
+              : (locale === "ar" ? "مباع" : "Sold")}
           </StatusBadge>
         ),
       },
@@ -383,7 +386,18 @@ function InventoryPage() {
                   required
                   value={nameInput}
                   onChange={(e) => setNameInput(e.target.value)}
-                  placeholder={locale === "ar" ? "خاتم لازوردي عيار 21" : "e.g. L'azurde Ring 21K"}
+                  placeholder={locale === "ar" ? "خاتم ذهب عيار 21" : "e.g. Gold Ring 21K"}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="i-company">{locale === "ar" ? "اسم الشركة المصنعة" : "Company Name"}</Label>
+                <Input
+                  id="i-company"
+                  type="text"
+                  value={companyInput}
+                  onChange={(e) => setCompanyInput(e.target.value)}
+                  placeholder={locale === "ar" ? "مثال: لازوردي" : "e.g. L'azurde"}
                 />
               </div>
 
@@ -409,17 +423,15 @@ function InventoryPage() {
                     className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring h-10"
                   >
                     <option value="24">24K</option>
-                    <option value="22">22K</option>
                     <option value="21">21K</option>
                     <option value="18">18K</option>
-                    <option value="14">14K</option>
                   </select>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="i-gross">{locale === "ar" ? "الوزن الإجمالي (جرام)" : "Gross Weight (g)"}</Label>
+                  <Label htmlFor="i-gross">{locale === "ar" ? "الوزن (جرام)" : "Weight (g)"}</Label>
                   <Input
                     id="i-gross"
                     type="number"
@@ -432,20 +444,6 @@ function InventoryPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="i-stone">{locale === "ar" ? "وزن الفصوص (جرام)" : "Stone Weight (g)"}</Label>
-                  <Input
-                    id="i-stone"
-                    type="number"
-                    step="0.001"
-                    value={stoneWeightInput}
-                    onChange={(e) => setStoneWeightInput(e.target.value)}
-                    placeholder="0.000"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
                   <Label htmlFor="i-mfg">{locale === "ar" ? "المصنعية للجرام (ج.م)" : "Mfg Cost/g (EGP)"}</Label>
                   <Input
                     id="i-mfg"
@@ -454,20 +452,6 @@ function InventoryPage() {
                     onChange={(e) => setMfgCostInput(e.target.value)}
                     placeholder="120"
                   />
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label htmlFor="i-tray">{locale === "ar" ? "الدرج" : "Tray Location"}</Label>
-                  <select
-                    id="i-tray"
-                    value={trayInput}
-                    onChange={(e) => setTrayInput(e.target.value)}
-                    className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring h-10"
-                  >
-                    <option value="tray_a">{locale === "ar" ? "الدرج أ (Tray A)" : "Tray A"}</option>
-                    <option value="tray_b">{locale === "ar" ? "الدرج ب (Tray B)" : "Tray B"}</option>
-                    <option value="tray_c">{locale === "ar" ? "الدرج ج (Tray C)" : "Tray C"}</option>
-                  </select>
                 </div>
               </div>
 
