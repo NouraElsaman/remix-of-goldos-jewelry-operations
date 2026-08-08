@@ -448,7 +448,15 @@ export const supabaseServices: ServiceRegistry = {
 
       if (salesError) throw salesError;
 
-      // 3. Fetch in-stock items for karat weight distribution
+      // 3. Fetch sales for sold karat weight distribution
+      const { data: allSalesInvoices, error: allSalesError } = await supabase
+        .from("invoices")
+        .select("total_weight, karat")
+        .eq("transaction_type", "sale");
+
+      if (allSalesError) throw allSalesError;
+
+      // Fetch in-stock items for inventory karat weight distribution
       const { data: inStockItems, error: itemsError } = await supabase
         .from("inventory")
         .select("net_weight, karat")
@@ -480,25 +488,42 @@ export const supabaseServices: ServiceRegistry = {
         });
       }
 
-      // 5. Aggregate inventory weight by karat
-      const karatWeightMap: Record<number, number> = { 24: 0, 21: 0, 18: 0 };
+      // 5. Aggregate sold weight by karat
+      const soldKaratWeightMap: Record<number, number> = { 24: 0, 21: 0, 18: 0 };
       
-      (inStockItems || []).forEach((row) => {
+      (allSalesInvoices || []).forEach((row) => {
         const karat = Math.round(Number(row.karat));
-        if (karat in karatWeightMap) {
-          karatWeightMap[karat] += Number(row.net_weight || 0);
+        if (karat in soldKaratWeightMap) {
+          soldKaratWeightMap[karat] += Number(row.total_weight || 0);
         }
       });
 
       const weightByKarat = [
-        { label: "24K", value: Number(karatWeightMap[24].toFixed(3)) },
-        { label: "21K", value: Number(karatWeightMap[21].toFixed(3)) },
-        { label: "18K", value: Number(karatWeightMap[18].toFixed(3)) },
+        { label: "24K", value: Number(soldKaratWeightMap[24].toFixed(3)) },
+        { label: "21K", value: Number(soldKaratWeightMap[21].toFixed(3)) },
+        { label: "18K", value: Number(soldKaratWeightMap[18].toFixed(3)) },
+      ].filter(item => item.value > 0);
+
+      // 6. Aggregate inventory weight by karat
+      const invKaratWeightMap: Record<number, number> = { 24: 0, 21: 0, 18: 0 };
+      
+      (inStockItems || []).forEach((row) => {
+        const karat = Math.round(Number(row.karat));
+        if (karat in invKaratWeightMap) {
+          invKaratWeightMap[karat] += Number(row.net_weight || 0);
+        }
+      });
+
+      const inventoryWeightByKarat = [
+        { label: "24K", value: Number(invKaratWeightMap[24].toFixed(3)) },
+        { label: "21K", value: Number(invKaratWeightMap[21].toFixed(3)) },
+        { label: "18K", value: Number(invKaratWeightMap[18].toFixed(3)) },
       ].filter(item => item.value > 0);
 
       return {
         revenueTrend,
         weightByKarat,
+        inventoryWeightByKarat,
       };
     },
   },

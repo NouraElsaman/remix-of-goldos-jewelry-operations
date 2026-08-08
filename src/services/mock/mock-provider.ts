@@ -160,9 +160,13 @@ export const mockServices: ServiceRegistry = {
         ],
         weightByKarat: [
           { label: "24K", value: 180.4 },
-          { label: "22K", value: 1442.26 },
           { label: "21K", value: 964.21 },
           { label: "18K", value: 320.6 },
+        ],
+        inventoryWeightByKarat: [
+          { label: "24K", value: 500.0 },
+          { label: "21K", value: 1200.0 },
+          { label: "18K", value: 850.0 },
         ],
       }),
   },

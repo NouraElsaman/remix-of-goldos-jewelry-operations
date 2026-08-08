@@ -30,7 +30,7 @@ export function ChartSection({
   revenueChangePct?: number | null;
 }) {
   const revenueData = analytics?.revenueTrend ?? [];
-  const karatData = (analytics?.weightByKarat ?? []).map((d, i) => ({
+  const karatData = (analytics?.inventoryWeightByKarat ?? []).map((d, i) => ({
     label: d.label,
     value: d.value,
     color: [
@@ -75,7 +75,7 @@ export function ChartSection({
 
       {/* Karat distribution donut */}
       <ChartContainer
-        title={t("analytics.weightByKarat")}
+        title={locale === "ar" ? "وزن المخزون حسب العيار" : "Inventory Weight by Karat"}
         description={t("common.grams")}
       >
         {isLoading ? (

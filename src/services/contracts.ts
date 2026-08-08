@@ -66,6 +66,7 @@ export type AnalyticsSeriesPoint = { label: string; value: number };
 export type AnalyticsSummary = {
   revenueTrend: AnalyticsSeriesPoint[];
   weightByKarat: AnalyticsSeriesPoint[];
+  inventoryWeightByKarat: AnalyticsSeriesPoint[];
 };
 
 /**
