@@ -139,6 +139,7 @@ function DashboardPage() {
         isLoading={analyticsLoading}
         t={t}
         locale={locale}
+        revenueChangePct={dashboard?.revenueChangePct}
       />
 
       {/* ── Section 4: Activity + Alerts (side-by-side on large screens) ──── */}

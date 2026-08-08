@@ -49,6 +49,9 @@ export const mockServices: ServiceRegistry = {
         prices: mockGoldPrices,
         recentActivity: mockActivity,
         alerts: mockAlerts,
+        revenueChangePct: 4.2,
+        purchasesChangePct: 1.8,
+        transactionsChangeCount: 2,
       }),
   },
   goldPrices: {

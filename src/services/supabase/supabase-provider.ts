@@ -448,13 +448,14 @@ export const supabaseServices: ServiceRegistry = {
 
       if (salesError) throw salesError;
 
-      // 3. Fetch sales for karat weight distribution
-      const { data: allSalesInvoices, error: allSalesError } = await supabase
-        .from("invoices")
-        .select("total_weight, karat")
-        .eq("transaction_type", "sale");
+      // 3. Fetch in-stock items for karat weight distribution
+      const { data: inStockItems, error: itemsError } = await supabase
+        .from("inventory")
+        .select("net_weight, karat")
+        .eq("status", "in_stock")
+        .in("karat", [18, 21, 24]);
 
-      if (allSalesError) throw allSalesError;
+      if (itemsError) throw itemsError;
 
       // 4. Build daily labels and aggregate revenue
       const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -479,13 +480,13 @@ export const supabaseServices: ServiceRegistry = {
         });
       }
 
-      // 5. Aggregate sold weight by karat
+      // 5. Aggregate inventory weight by karat
       const karatWeightMap: Record<number, number> = { 24: 0, 21: 0, 18: 0 };
       
-      (allSalesInvoices || []).forEach((row) => {
+      (inStockItems || []).forEach((row) => {
         const karat = Math.round(Number(row.karat));
         if (karat in karatWeightMap) {
-          karatWeightMap[karat] += Number(row.total_weight || 0);
+          karatWeightMap[karat] += Number(row.net_weight || 0);
         }
       });
 
@@ -593,19 +594,29 @@ export const supabaseServices: ServiceRegistry = {
 
   dashboard: {
     summary: async () => {
-      // 1. Get today's range
+      // 1. Get today's and yesterday's ranges
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
       const todayEnd = new Date();
       todayEnd.setHours(23, 59, 59, 999);
 
-      // 2. Query today's invoices for live metrics
+      const yesterdayStart = new Date(todayStart.getTime() - 24 * 60 * 60 * 1000);
+      const yesterdayEnd = new Date(todayEnd.getTime() - 24 * 60 * 60 * 1000);
+
+      // 2. Query today's invoices
       const { data: todayInvoices } = await supabase
         .from("invoices")
         .select("*")
         .gte("created_at", todayStart.toISOString())
         .lte("created_at", todayEnd.toISOString())
         .order("created_at", { ascending: false });
+
+      // Query yesterday's invoices
+      const { data: yesterdayInvoices } = await supabase
+        .from("invoices")
+        .select("*")
+        .gte("created_at", yesterdayStart.toISOString())
+        .lte("created_at", yesterdayEnd.toISOString());
 
       // 3. Query all invoices for total scrap stash weight
       const { data: allPurchases } = await supabase
@@ -629,7 +640,7 @@ export const supabaseServices: ServiceRegistry = {
       let inventoryValue = 0;
       let inventoryWeight = 0;
       (inStockItems || []).forEach((item) => {
-        const rate = todayPrices.find((p) => p.karat === item.karat)?.rate || 4500; // fallback rate
+        const rate = todayPrices.find((p) => p.karat === item.karat)?.rate || 4500;
         const itemVal = Number(item.net_weight) * (rate + Number(item.manufacturing_cost || 0));
         inventoryValue += itemVal;
         inventoryWeight += Number(item.net_weight || 0);
@@ -644,7 +655,32 @@ export const supabaseServices: ServiceRegistry = {
       const purchasesToday = purchases.reduce((sum, i) => sum + Number(i.final_total), 0);
       const transactionsToday = invoices.length;
 
-      // 7. Get last 10 invoices for recent activity feed (no mock concatenation!)
+      // 7. Calculate yesterday's metrics for growth comparison
+      const yInvoices = yesterdayInvoices || [];
+      const ySales = yInvoices.filter((i) => i.transaction_type === "sale");
+      const yPurchases = yInvoices.filter((i) => i.transaction_type === "purchase");
+
+      const revenueYesterday = ySales.reduce((sum, i) => sum + Number(i.final_total), 0);
+      const purchasesYesterday = yPurchases.reduce((sum, i) => sum + Number(i.final_total), 0);
+      const transactionsYesterday = yInvoices.length;
+
+      let revenueChangePct = 0;
+      if (revenueYesterday > 0) {
+        revenueChangePct = ((revenueToday - revenueYesterday) / revenueYesterday) * 100;
+      } else if (revenueToday > 0) {
+        revenueChangePct = 100;
+      }
+
+      let purchasesChangePct = 0;
+      if (purchasesYesterday > 0) {
+        purchasesChangePct = ((purchasesToday - purchasesYesterday) / purchasesYesterday) * 100;
+      } else if (purchasesToday > 0) {
+        purchasesChangePct = 100;
+      }
+
+      const transactionsChangeCount = transactionsToday - transactionsYesterday;
+
+      // 8. Get last 10 invoices for recent activity feed
       const { data: recentInvoices } = await supabase
         .from("invoices")
         .select("*")
@@ -660,7 +696,7 @@ export const supabaseServices: ServiceRegistry = {
         meta: inv.payment_method === "cash" ? "نقدي" : inv.payment_method === "card" ? "بطاقة" : "تحويل",
       }));
 
-      // 8. Query today's reconciliation status
+      // 9. Query today's reconciliation status
       const todayDateStr = new Date().toISOString().slice(0, 10);
       const { data: todayReconciliation } = await supabase
         .from("reconciliation")
@@ -684,6 +720,9 @@ export const supabaseServices: ServiceRegistry = {
         recentActivity,
         alerts,
         isReconciliationClosed,
+        revenueChangePct: Number(revenueChangePct.toFixed(1)),
+        purchasesChangePct: Number(purchasesChangePct.toFixed(1)),
+        transactionsChangeCount,
       };
     },
   },

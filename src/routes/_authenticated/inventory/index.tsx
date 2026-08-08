@@ -296,54 +296,35 @@ function InventoryPage() {
 
         {/* ── Tab 1: Finished Jewelry ── */}
         <TabsContent value="finished" className="space-y-4">
-          <Tabs defaultValue="table" className="gap-4">
-            <div className="flex justify-between items-center">
-              <TabsList className="rounded-xl">
-                <TabsTrigger value="table" className="rounded-lg">
-                  {t("inventory.tableView")}
-                </TabsTrigger>
-                <TabsTrigger value="trays" className="rounded-lg">
-                  {t("inventory.trayView")}
-                </TabsTrigger>
-              </TabsList>
-            </div>
-
-            <TabsContent value="table">
-              <TableContainer
-                toolbar={
-                  <SearchInput
-                    value={search}
-                    onValueChange={setSearch}
-                    placeholder={t("common.search")}
-                    className="max-w-xs"
-                  />
-                }
-                footer={
-                  <PaginationBar
-                    page={page}
-                    pageCount={Math.max(
-                      1,
-                      Math.ceil(totalItems / 10),
-                    )}
-                    onPageChange={setPage}
-                  />
-                }
-              >
-                <DataTable
-                  columns={columns}
-                  rows={paginatedItems}
-                  isLoading={isLoading}
-                  getRowId={(row) => row.id}
-                  emptyTitle={t("common.empty")}
-                  emptyDescription={t("common.placeholderNote")}
-                />
-              </TableContainer>
-            </TabsContent>
-
-            <TabsContent value="trays">
-              <PlaceholderBlock height={320} />
-            </TabsContent>
-          </Tabs>
+          <TableContainer
+            toolbar={
+              <SearchInput
+                value={search}
+                onValueChange={setSearch}
+                placeholder={t("common.search")}
+                className="max-w-xs"
+              />
+            }
+            footer={
+              <PaginationBar
+                page={page}
+                pageCount={Math.max(
+                  1,
+                  Math.ceil(totalItems / 10),
+                )}
+                onPageChange={setPage}
+              />
+            }
+          >
+            <DataTable
+              columns={columns}
+              rows={paginatedItems}
+              isLoading={isLoading}
+              getRowId={(row) => row.id}
+              emptyTitle={t("common.empty")}
+              emptyDescription={t("common.placeholderNote")}
+            />
+          </TableContainer>
         </TabsContent>
 
         {/* ── Tab 2: Scrap Gold Stash ── */}

@@ -56,6 +56,9 @@ export type DashboardSummary = {
   recentActivity: ActivityEvent[];
   alerts: DashboardAlert[];
   isReconciliationClosed?: boolean;
+  revenueChangePct?: number | null;
+  purchasesChangePct?: number | null;
+  transactionsChangeCount?: number | null;
 };
 
 export type AnalyticsSeriesPoint = { label: string; value: number };
