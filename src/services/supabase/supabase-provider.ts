@@ -740,15 +740,27 @@ export const supabaseServices: ServiceRegistry = {
           .select("*")
           .eq("karat", karat)
           .order("updated_at", { ascending: false })
-          .limit(1);
+          .limit(2);
+
+        if (error) throw error;
 
         if (data && data.length > 0) {
           const row = data[0];
+          const currentRate = Number(row.rate_sell);
+          let changePct = 0;
+          if (data.length > 1) {
+            const prevRate = Number(data[1].rate_sell);
+            if (prevRate > 0) {
+              changePct = ((currentRate - prevRate) / prevRate) * 100;
+            }
+          }
+
           todayPrices.push({
             date: row.updated_at,
             karat: row.karat as Karat,
-            rate: Number(row.rate_sell),
+            rate: currentRate,
             rateBuy: Number(row.rate_buy),
+            changePct: Number(changePct.toFixed(2)),
             source: "manual",
           });
         }
@@ -780,13 +792,36 @@ export const supabaseServices: ServiceRegistry = {
 
       if (error) throw error;
 
-      const items: GoldPrice[] = (data || []).map((row) => ({
-        date: row.updated_at,
-        karat: row.karat as Karat,
-        rate: Number(row.rate_sell),
-        rateBuy: Number(row.rate_buy),
-        source: "manual",
-      }));
+      const items: GoldPrice[] = [];
+
+      for (const row of (data || [])) {
+        // Query the next older record for this karat to compute changePct
+        const { data: olderData } = await supabase
+          .from("gold_prices")
+          .select("rate_sell")
+          .eq("karat", row.karat)
+          .lt("updated_at", row.updated_at)
+          .order("updated_at", { ascending: false })
+          .limit(1);
+
+        const currentRate = Number(row.rate_sell);
+        let changePct = 0;
+        if (olderData && olderData.length > 0) {
+          const prevRate = Number(olderData[0].rate_sell);
+          if (prevRate > 0) {
+            changePct = ((currentRate - prevRate) / prevRate) * 100;
+          }
+        }
+
+        items.push({
+          date: row.updated_at,
+          karat: row.karat as Karat,
+          rate: currentRate,
+          rateBuy: Number(row.rate_buy),
+          changePct: Number(changePct.toFixed(2)),
+          source: "manual",
+        });
+      }
 
       return {
         items,
