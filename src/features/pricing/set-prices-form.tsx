@@ -26,10 +26,8 @@ const rateSchema = z
 export const setPricesSchema = z.object({
   rates: z.object({
     24: rateSchema,
-    22: rateSchema,
     21: rateSchema,
     18: rateSchema,
-    14: rateSchema,
   }),
 });
 
@@ -38,7 +36,7 @@ export type SetPricesFormValues = z.infer<typeof setPricesSchema>;
 // ── Form component ───────────────────────────────────────────────────────────
 
 /**
- * Set Today's Prices form — all 5 karats in one submit.
+ * Set Today's Prices form — all 3 karats in one submit.
  * Validates with Zod; loading/success/error states included.
  * No service calls: `onSubmit` callback owned by the route/feature.
  */
@@ -61,7 +59,7 @@ export function SetPricesForm({
   } = useForm<SetPricesFormValues>({
     resolver: zodResolver(setPricesSchema),
     defaultValues: defaultValues ?? {
-      rates: { 24: 0, 22: 0, 21: 0, 18: 0, 14: 0 },
+      rates: { 24: 0, 21: 0, 18: 0 },
     },
   });
 
@@ -74,10 +72,8 @@ export function SetPricesForm({
       
       // Update form values dynamically
       if (liveRates[24]) setValue("rates.24", liveRates[24].sell, { shouldDirty: true, shouldValidate: true });
-      if (liveRates[22]) setValue("rates.22", liveRates[22].sell, { shouldDirty: true, shouldValidate: true });
       if (liveRates[21]) setValue("rates.21", liveRates[21].sell, { shouldDirty: true, shouldValidate: true });
       if (liveRates[18]) setValue("rates.18", liveRates[18].sell, { shouldDirty: true, shouldValidate: true });
-      if (liveRates[14]) setValue("rates.14", liveRates[14].sell, { shouldDirty: true, shouldValidate: true });
 
       toast.success(
         t("common.save") === "حفظ" 
@@ -99,7 +95,7 @@ export function SetPricesForm({
   return (
     <SectionCard title={t("goldPrices.setToday")}>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="grid gap-4.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="grid gap-4.5 sm:grid-cols-2 lg:grid-cols-3">
           {SUPPORTED_KARATS.map((karat) => {
             const key = karat as Karat;
             const error = errors.rates?.[key];

@@ -12,10 +12,8 @@ import { cn } from "@/lib/utils";
 
 const KARAT_COLORS: Record<Karat, string> = {
   24: "var(--color-gold)",
-  22: "var(--color-chart-2)",
   21: "var(--color-chart-3)",
   18: "var(--color-chart-4)",
-  14: "var(--color-chart-5)",
 };
 
 /**

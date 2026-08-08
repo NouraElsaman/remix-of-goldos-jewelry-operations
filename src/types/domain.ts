@@ -3,7 +3,7 @@
  * These describe the shape of the data; no business logic lives here.
  */
 
-export type Karat = 24 | 22 | 21 | 18 | 14;
+export type Karat = 24 | 21 | 18;
 
 /** Where the daily rate originates. */
 export type PriceSource = "manual" | "admin_override" | "mock" | "external_api";

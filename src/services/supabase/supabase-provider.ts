@@ -30,6 +30,7 @@ export const supabaseServices: ServiceRegistry = {
       let query = supabase
         .from("inventory")
         .select("*", { count: "exact" })
+        .in("karat", [18, 21, 24])
         .order("created_at", { ascending: false });
 
       if (params?.search) {
@@ -608,7 +609,8 @@ export const supabaseServices: ServiceRegistry = {
       const { data: allPurchases } = await supabase
         .from("invoices")
         .select("net_weight")
-        .eq("transaction_type", "purchase");
+        .eq("transaction_type", "purchase")
+        .in("karat", [18, 21, 24]);
 
       const stashWeight = (allPurchases || []).reduce((sum, row) => sum + Number(row.net_weight || 0), 0);
 
@@ -616,7 +618,8 @@ export const supabaseServices: ServiceRegistry = {
       const { data: inStockItems } = await supabase
         .from("inventory")
         .select("*")
-        .eq("status", "in_stock");
+        .eq("status", "in_stock")
+        .in("karat", [18, 21, 24]);
 
       // 5. Query latest gold prices
       const todayPrices = await supabaseServices.goldPrices.today();
