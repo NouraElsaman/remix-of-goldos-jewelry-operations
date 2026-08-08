@@ -59,10 +59,8 @@ function ReconciliationPage() {
   const [isClosingModalOpen, setIsClosingModalOpen] = useState(false);
   
   // Counted weight input states
-  const [counted14, setCounted14] = useState("");
   const [counted18, setCounted18] = useState("");
   const [counted21, setCounted21] = useState("");
-  const [counted22, setCounted22] = useState("");
   const [counted24, setCounted24] = useState("");
 
   const submitMutation = useMutation({
@@ -77,10 +75,8 @@ function ReconciliationPage() {
         locale === "ar" ? "تم إغلاق اليوم ومطابقة الأوزان بنجاح!" : "Day closed and weights reconciled successfully!"
       );
       setIsClosingModalOpen(false);
-      setCounted14("");
       setCounted18("");
       setCounted21("");
-      setCounted22("");
       setCounted24("");
     },
     onError: (err) => {
@@ -92,10 +88,8 @@ function ReconciliationPage() {
   });
 
   const [isOpeningModalOpen, setIsOpeningModalOpen] = useState(false);
-  const [opening14, setOpening14] = useState("");
   const [opening18, setOpening18] = useState("");
   const [opening21, setOpening21] = useState("");
-  const [opening22, setOpening22] = useState("");
   const [opening24, setOpening24] = useState("");
 
   const updateOpeningMutation = useMutation({
@@ -119,13 +113,11 @@ function ReconciliationPage() {
 
   const handleUpdateOpeningSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const o14 = parseFloat(opening14);
     const o18 = parseFloat(opening18);
     const o21 = parseFloat(opening21);
-    const o22 = parseFloat(opening22);
     const o24 = parseFloat(opening24);
 
-    if (isNaN(o14) || isNaN(o18) || isNaN(o21) || isNaN(o22) || isNaN(o24)) {
+    if (isNaN(o18) || isNaN(o21) || isNaN(o24)) {
       toast.error(
         locale === "ar" ? "يرجى إدخال الأوزان لجميع الأعيرة" : "Please enter weights for all karats"
       );
@@ -133,10 +125,8 @@ function ReconciliationPage() {
     }
 
     updateOpeningMutation.mutate([
-      { karat: 14, weight: o14 },
       { karat: 18, weight: o18 },
       { karat: 21, weight: o21 },
-      { karat: 22, weight: o22 },
       { karat: 24, weight: o24 },
     ]);
   };
@@ -159,13 +149,11 @@ function ReconciliationPage() {
 
   const handleCloseDaySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const c14 = parseFloat(counted14);
     const c18 = parseFloat(counted18);
     const c21 = parseFloat(counted21);
-    const c22 = parseFloat(counted22);
     const c24 = parseFloat(counted24);
 
-    if (isNaN(c14) || isNaN(c18) || isNaN(c21) || isNaN(c22) || isNaN(c24)) {
+    if (isNaN(c18) || isNaN(c21) || isNaN(c24)) {
       toast.error(
         locale === "ar" ? "يرجى إدخال الأوزان الفعلية لجميع الأعيرة" : "Please enter counted weights for all karats"
       );
@@ -173,10 +161,8 @@ function ReconciliationPage() {
     }
 
     submitMutation.mutate([
-      { karat: 14, counted: c14 },
       { karat: 18, counted: c18 },
       { karat: 21, counted: c21 },
-      { karat: 22, counted: c22 },
       { karat: 24, counted: c24 },
     ]);
   };
@@ -355,26 +341,6 @@ function ReconciliationPage() {
                   />
                 </div>
 
-                {/* 22K */}
-                <div className="space-y-1.5">
-                  <div className="flex justify-between text-xs text-muted-foreground">
-                    <Label htmlFor="c-22">عيار 22 (22K Gold)</Label>
-                    <span>
-                      {locale === "ar" ? "المتوقع:" : "Expected:"}{" "}
-                      {formatWeight(data.find((r) => r.karat === 22)?.expected || 0, locale)}
-                    </span>
-                  </div>
-                  <Input
-                    id="c-22"
-                    type="number"
-                    step="0.001"
-                    required
-                    value={counted22}
-                    onChange={(e) => setCounted22(e.target.value)}
-                    placeholder="0.000 جم"
-                  />
-                </div>
-
                 {/* 21K */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-xs text-muted-foreground">
@@ -411,26 +377,6 @@ function ReconciliationPage() {
                     required
                     value={counted18}
                     onChange={(e) => setCounted18(e.target.value)}
-                    placeholder="0.000 جم"
-                  />
-                </div>
-
-                {/* 14K */}
-                <div className="space-y-1.5">
-                  <div className="flex justify-between text-xs text-muted-foreground">
-                    <Label htmlFor="c-14">عيار 14 (14K Gold)</Label>
-                    <span>
-                      {locale === "ar" ? "المتوقع:" : "Expected:"}{" "}
-                      {formatWeight(data.find((r) => r.karat === 14)?.expected || 0, locale)}
-                    </span>
-                  </div>
-                  <Input
-                    id="c-14"
-                    type="number"
-                    step="0.001"
-                    required
-                    value={counted14}
-                    onChange={(e) => setCounted14(e.target.value)}
                     placeholder="0.000 جم"
                   />
                 </div>
@@ -502,20 +448,6 @@ function ReconciliationPage() {
                   />
                 </div>
 
-                {/* 22K */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="o-22">عيار 22 (22K Gold)</Label>
-                  <Input
-                    id="o-22"
-                    type="number"
-                    step="0.001"
-                    required
-                    value={opening22}
-                    onChange={(e) => setOpening22(e.target.value)}
-                    placeholder="0.000 جم"
-                  />
-                </div>
-
                 {/* 21K */}
                 <div className="space-y-1.5">
                   <Label htmlFor="o-21">عيار 21 (21K Gold)</Label>
@@ -540,20 +472,6 @@ function ReconciliationPage() {
                     required
                     value={opening18}
                     onChange={(e) => setOpening18(e.target.value)}
-                    placeholder="0.000 جم"
-                  />
-                </div>
-
-                {/* 14K */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="o-14">عيار 14 (14K Gold)</Label>
-                  <Input
-                    id="o-14"
-                    type="number"
-                    step="0.001"
-                    required
-                    value={opening14}
-                    onChange={(e) => setOpening14(e.target.value)}
                     placeholder="0.000 جم"
                   />
                 </div>

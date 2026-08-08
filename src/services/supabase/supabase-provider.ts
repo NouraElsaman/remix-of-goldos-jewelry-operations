@@ -344,18 +344,20 @@ export const supabaseServices: ServiceRegistry = {
         }
       }
 
-      return updatedRows.map((row) => ({
-        karat: row.karat,
-        opening: Number(row.opening_weight),
-        received: Number(row.received_weight),
-        sold: Number(row.sold_weight),
-        returned: 0,
-        adjusted: 0,
-        expected: Number(row.expected_weight),
-        counted: row.counted_weight !== null ? Number(row.counted_weight) : null,
-        variance: row.variance !== null ? Number(row.variance) : null,
-        status: row.status,
-      }));
+      return updatedRows
+        .filter((row) => [18, 21, 24].includes(Math.round(Number(row.karat))))
+        .map((row) => ({
+          karat: row.karat,
+          opening: Number(row.opening_weight),
+          received: Number(row.received_weight),
+          sold: Number(row.sold_weight),
+          returned: 0,
+          adjusted: 0,
+          expected: Number(row.expected_weight),
+          counted: row.counted_weight !== null ? Number(row.counted_weight) : null,
+          variance: row.variance !== null ? Number(row.variance) : null,
+          status: row.status,
+        }));
     },
 
     submitCounted: async (karat: number, counted: number) => {
