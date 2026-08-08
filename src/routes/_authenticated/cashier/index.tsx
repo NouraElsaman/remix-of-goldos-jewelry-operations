@@ -48,6 +48,7 @@ function CashierPage() {
   const [saleKarat, setSaleKarat] = useState<number>(21);
   const [saleGoldPrice, setSaleGoldPrice] = useState<string>("");
   const [saleHandwork, setSaleHandwork] = useState<string>("");
+  const [saleHandworkType, setSaleHandworkType] = useState<"egp" | "pct">("egp");
   const [saleCustomerName, setSaleCustomerName] = useState<string>("");
   const [saleCustomerPhone, setSaleCustomerPhone] = useState<string>("");
   const [salePaymentMethod, setSalePaymentMethod] = useState<string>("cash");
@@ -58,7 +59,7 @@ function CashierPage() {
   // ── Walk-in Purchase States ───────────────────────────────────────────────
   const [purchaseWeight, setPurchaseWeight] = useState<string>("");
   const [purchaseKarat, setPurchaseKarat] = useState<string>("20.5");
-  const [purchase24KPrice, setPurchase24KPrice] = useState<string>("");
+  const [purchase21KPrice, setPurchase21KPrice] = useState<string>("");
   const [purchaseDeduction, setPurchaseDeduction] = useState<string>("2"); // 2% default
   const [purchaseCustomerName, setPurchaseCustomerName] = useState<string>("");
   const [purchaseCustomerPhone, setPurchaseCustomerPhone] = useState<string>("");
@@ -80,8 +81,8 @@ function CashierPage() {
     refetchOnMount: "always",
   });
 
-  // Today's 24K buy rate reference
-  const rate24KBuy = todayPrices.find((p) => p.karat === 24)?.rateBuy || 3880;
+  // Today's 21K buy rate reference
+  const rate21KBuy = todayPrices.find((p) => p.karat === 21)?.rateBuy || 3395;
 
   // Query available finished inventory items from database
   const { data: availableItems = [] } = useQuery({
@@ -149,12 +150,12 @@ function CashierPage() {
     }
   }, [saleKarat, todayPrices, isSalePriceManuallyEdited]);
 
-  // Auto-fill 24K buy price when page loads / database price loads
+  // Auto-fill 21K buy price when page loads / database price loads
   useEffect(() => {
-    if (rate24KBuy && !isPurchasePriceManuallyEdited) {
-      setPurchase24KPrice(String(rate24KBuy));
+    if (rate21KBuy && !isPurchasePriceManuallyEdited) {
+      setPurchase21KPrice(String(rate21KBuy));
     }
-  }, [rate24KBuy, isPurchasePriceManuallyEdited]);
+  }, [rate21KBuy, isPurchasePriceManuallyEdited]);
 
   // ── Sale Calculations ─────────────────────────────────────────────────────
   const weightVal = parseFloat(saleWeight) || 0;
@@ -162,19 +163,23 @@ function CashierPage() {
   const handworkVal = parseFloat(saleHandwork) || 0;
 
   const saleGoldValue = weightVal * goldPriceVal;
-  const saleHandworkValue = weightVal * handworkVal;
+  const saleHandworkValue =
+    saleHandworkType === "pct"
+      ? saleGoldValue * (handworkVal / 100)
+      : weightVal * handworkVal;
+
   const saleSubtotal = saleGoldValue + saleHandworkValue;
-  const saleTaxValue = saleHandworkValue * 0.14; // VAT 14% on labor only
+  const saleTaxValue = 0; // VAT removed
   const saleFinalTotal = saleSubtotal + saleTaxValue;
 
   // ── Purchase Calculations ──────────────────────────────────────────────────
   const pWeightVal = parseFloat(purchaseWeight) || 0;
   const pKaratVal = parseFloat(purchaseKarat) || 20.5;
   const pDeductionVal = parseFloat(purchaseDeduction) || 0;
-  const p24BuyVal = parseFloat(purchase24KPrice) || rate24KBuy;
+  const p21BuyVal = parseFloat(purchase21KPrice) || rate21KBuy;
 
-  // Buying Rate of Karat = 24K Buy Rate * (Karat / 24)
-  const purchaseCalculatedRate = p24BuyVal * (pKaratVal / 24);
+  // Buying Rate of Karat = 21K Buy Rate * (Karat / 21)
+  const purchaseCalculatedRate = p21BuyVal * (pKaratVal / 21);
   const purchaseNetWeight = pWeightVal * (1 - pDeductionVal / 100);
   const purchaseFinalPayout = purchaseNetWeight * purchaseCalculatedRate;
 
@@ -203,6 +208,7 @@ function CashierPage() {
   const resetForms = () => {
     setSaleWeight("");
     setSaleHandwork("");
+    setSaleHandworkType("egp");
     setSaleCustomerName("");
     setSaleCustomerPhone("");
     setSaleItemType("ring");
@@ -390,13 +396,11 @@ function CashierPage() {
                       id="sale-karat"
                       value={saleKarat}
                       onChange={(e) => setSaleKarat(Number(e.target.value))}
-                      className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                      className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring h-10"
                     >
                       <option value="24">24K</option>
-                      <option value="22">22K</option>
                       <option value="21">21K</option>
                       <option value="18">18K</option>
-                      <option value="14">14K</option>
                     </select>
                   </div>
 
@@ -432,16 +436,27 @@ function CashierPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="sale-handwork">
-                      {locale === "ar" ? "المصنعية للجرام (ج.م)" : "Handwork/g (EGP)"}
+                      {locale === "ar" ? "نوع وقيمة المصنعية" : "Handwork Type & Value"}
                     </Label>
-                    <Input
-                      id="sale-handwork"
-                      type="number"
-                      required
-                      value={saleHandwork}
-                      onChange={(e) => setSaleHandwork(e.target.value)}
-                      placeholder="e.g. 150"
-                    />
+                    <div className="flex gap-2">
+                      <select
+                        value={saleHandworkType}
+                        onChange={(e) => setSaleHandworkType(e.target.value as any)}
+                        className="rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring w-28 h-10"
+                      >
+                        <option value="egp">{locale === "ar" ? "ج.م / جرام" : "EGP / g"}</option>
+                        <option value="pct">%</option>
+                      </select>
+                      <Input
+                        id="sale-handwork"
+                        type="number"
+                        required
+                        value={saleHandwork}
+                        onChange={(e) => setSaleHandwork(e.target.value)}
+                        placeholder={saleHandworkType === "pct" ? "e.g. 5" : "e.g. 150"}
+                        className="flex-1 h-10"
+                      />
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="sale-item-type">{locale === "ar" ? "نوع القطعة" : "Item Category"}</Label>
@@ -449,13 +464,12 @@ function CashierPage() {
                       id="sale-item-type"
                       value={saleItemType}
                       onChange={(e) => setSaleItemType(e.target.value)}
-                      className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                      className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring h-10"
                     >
                       <option value="ring">{locale === "ar" ? "خاتم" : "Ring"}</option>
                       <option value="bracelet">{locale === "ar" ? "إسورة" : "Bracelet"}</option>
                       <option value="necklace">{locale === "ar" ? "قلادة / سلسلة" : "Necklace"}</option>
                       <option value="earring">{locale === "ar" ? "حلق" : "Earring"}</option>
-                      <option value="lazurde">{locale === "ar" ? "خاتم لازوردي" : "L'azurde Ring"}</option>
                       <option value="other">{locale === "ar" ? "أخرى" : "Other"}</option>
                     </select>
                   </div>
@@ -544,17 +558,17 @@ function CashierPage() {
                   </div>
 
                    <div className="space-y-2">
-                    <Label htmlFor="p-price-24">{locale === "ar" ? "سعر جرام عيار 24 شراء (ج.م)" : "24K Buying Rate/g (EGP)"}</Label>
+                    <Label htmlFor="p-price-21">{locale === "ar" ? "سعر جرام عيار 21 شراء (ج.م)" : "21K Buying Rate/g (EGP)"}</Label>
                     <Input
-                      id="p-price-24"
+                      id="p-price-21"
                       type="number"
                       required
-                      value={purchase24KPrice}
+                      value={purchase21KPrice}
                       onChange={(e) => {
-                        setPurchase24KPrice(e.target.value);
+                        setPurchase21KPrice(e.target.value);
                         setIsPurchasePriceManuallyEdited(true);
                       }}
-                      placeholder="e.g. 6654"
+                      placeholder="e.g. 3395"
                     />
                   </div>
 
@@ -572,7 +586,7 @@ function CashierPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="p-deduct">{locale === "ar" ? "خصم الأوساخ والهالك (%)" : "Deduction/Loss (%)"}</Label>
+                    <Label htmlFor="p-deduct">{locale === "ar" ? "خصم ضريبة ودمغة (%)" : "Taxes & Stamp Deduction (%)"}</Label>
                     <Input
                       id="p-deduct"
                       type="number"
@@ -589,13 +603,12 @@ function CashierPage() {
                       id="p-item-type"
                       value={purchaseItemType}
                       onChange={(e) => setPurchaseItemType(e.target.value)}
-                      className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                      className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring h-10"
                     >
                       <option value="ring">{locale === "ar" ? "خاتم كسر" : "Scrap Ring"}</option>
                       <option value="bracelet">{locale === "ar" ? "إسورة كسر" : "Scrap Bracelet"}</option>
                       <option value="necklace">{locale === "ar" ? "قلادة / سلسلة كسر" : "Scrap Necklace"}</option>
                       <option value="earring">{locale === "ar" ? "حلق كسر" : "Scrap Earring"}</option>
-                      <option value="lazurde">{locale === "ar" ? "لازوردي كسر" : "Scrap L'azurde"}</option>
                       <option value="other">{locale === "ar" ? "ذهب كسر آخر" : "Other Scrap"}</option>
                     </select>
                   </div>
@@ -724,24 +737,12 @@ function CashierPage() {
                   <span className="font-mono text-foreground">{saleHandworkValue.toLocaleString()} ج.م</span>
                 </div>
                 <div className="flex justify-between border-b pb-2 text-sm text-muted-foreground">
-                  <span>{locale === "ar" ? "ضريبة القيمة المضافة (14% على المصنعية)" : "VAT (14% on labor)"}</span>
-                  <span className="font-mono text-foreground">{saleTaxValue.toLocaleString()} ج.م</span>
-                </div>
-                <div className="flex justify-between border-b pb-2 text-sm text-muted-foreground">
                   <span>{locale === "ar" ? "المجموع الفرعي" : "Subtotal"}</span>
                   <span className="font-mono text-foreground">{saleSubtotal.toLocaleString()} ج.م</span>
                 </div>
                 <div className="flex justify-between pt-2 text-lg font-bold text-gold-deep">
                   <span>{locale === "ar" ? "إجمالي الفاتورة" : "Final Price"}</span>
                   <span className="font-mono">{saleFinalTotal.toLocaleString()} ج.م</span>
-                </div>
-
-                <div className="bg-gold-soft/10 border border-gold/20 p-3.5 rounded-2xl text-[11px] text-gold-deep leading-relaxed">
-                  {locale === "ar" ? (
-                    "* يتم احتساب ضريبة القيمة المضافة قانونياً على مصنعية المشغولات فقط وليس على قيمة الذهب الخام."
-                  ) : (
-                    "* According to Egyptian Law, 14% VAT is applied strictly on the labor/making charge (Handwork) value, not the gold value."
-                  )}
                 </div>
               </div>
             ) : (
@@ -751,7 +752,7 @@ function CashierPage() {
                   <span className="font-mono text-foreground">{pWeightVal} جم</span>
                 </div>
                 <div className="flex justify-between border-b pb-2 text-sm text-muted-foreground">
-                  <span>{locale === "ar" ? "خصم الهالك والمقاومة (2%)" : "Deduction Weight (2%)"}</span>
+                  <span>{locale === "ar" ? `خصم ضريبة ودمغة (${pDeductionVal}%)` : `Taxes & Stamp Deduction (${pDeductionVal}%)`}</span>
                   <span className="font-mono text-foreground">{(pWeightVal * (pDeductionVal / 100)).toFixed(3)} جم</span>
                 </div>
                 <div className="flex justify-between border-b pb-2 text-sm text-muted-foreground">
@@ -759,8 +760,8 @@ function CashierPage() {
                   <span className="font-mono text-foreground">{purchaseNetWeight.toFixed(3)} جم</span>
                 </div>
                 <div className="flex justify-between border-b pb-2 text-sm text-muted-foreground">
-                  <span>{locale === "ar" ? "سعر شراء عيار 24 اليوم" : "24K buy rate"}</span>
-                  <span className="font-mono text-foreground">{rate24KBuy.toLocaleString()} ج.م</span>
+                  <span>{locale === "ar" ? "سعر شراء عيار 21 اليوم" : "21K buy rate reference"}</span>
+                  <span className="font-mono text-foreground">{rate21KBuy.toLocaleString()} ج.م</span>
                 </div>
                 <div className="flex justify-between border-b pb-2 text-sm text-muted-foreground">
                   <span>{locale === "ar" ? `سعر شراء عيار ${purchaseKarat} المحتسب` : `Calculated ${purchaseKarat}K rate`}</span>

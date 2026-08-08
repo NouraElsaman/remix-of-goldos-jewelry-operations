@@ -86,6 +86,7 @@ export type Invoice = {
   itemType?: string | undefined;
   itemId?: string | undefined;
   itemSku?: string | undefined;
+  itemCompany?: string | undefined;
 };
 
 export type ReconciliationStatus = "open" | "closed";

@@ -30,6 +30,7 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
   const deductVal = invoice.deductionPct !== undefined ? invoice.deductionPct : (invoice.deduction_pct || 0);
   const idImg = invoice.idImageUrl || invoice.id_image_url || "";
   const itemSku = invoice.itemSku || invoice.item_sku || "";
+  const company = invoice.itemCompany || invoice.item_company || invoice.company || "";
 
   const triggerPrint = () => {
     window.print();
@@ -108,6 +109,11 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
                       {locale === "ar" ? `كود القطعة: ${itemSku}` : `SKU: ${itemSku}`}
                     </div>
                   )}
+                  {company && (
+                    <div className="text-[10px] text-muted-foreground font-semibold mt-0.5">
+                      {locale === "ar" ? `الشركة المصنعة: ${company}` : `Company: ${company}`}
+                    </div>
+                  )}
                 </td>
                 <td className="py-2.5 text-end font-mono">{weight} جم</td>
                 <td className="py-2.5 text-end font-mono">{Number(totalVal).toLocaleString()} ج.م</td>
@@ -123,10 +129,12 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
                   <span>{locale === "ar" ? "المجموع الفرعي:" : "Subtotal:"}</span>
                   <span>{Number(subtotalVal).toLocaleString()} ج.م</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>{locale === "ar" ? "ضريبة القيمة المضافة:" : "VAT:"}</span>
-                  <span>{Number(taxVal).toLocaleString()} ج.م</span>
-                </div>
+                {Number(taxVal) > 0 && (
+                  <div className="flex justify-between">
+                    <span>{locale === "ar" ? "ضريبة القيمة المضافة:" : "VAT:"}</span>
+                    <span>{Number(taxVal).toLocaleString()} ج.م</span>
+                  </div>
+                )}
               </>
             )}
             {Number(deductVal) > 0 && (
