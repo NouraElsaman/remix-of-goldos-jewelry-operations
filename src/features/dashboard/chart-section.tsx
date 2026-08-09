@@ -21,14 +21,16 @@ export function ChartSection({
   isLoading,
   t,
   locale,
+  revenueChangePct,
 }: {
   analytics: AnalyticsSummary | undefined;
   isLoading: boolean;
   t: (key: TranslationKey) => string;
   locale: Locale;
+  revenueChangePct?: number | null;
 }) {
   const revenueData = analytics?.revenueTrend ?? [];
-  const karatData = (analytics?.weightByKarat ?? []).map((d, i) => ({
+  const karatData = (analytics?.inventoryWeightByKarat ?? []).map((d, i) => ({
     label: d.label,
     value: d.value,
     color: [
@@ -39,6 +41,11 @@ export function ChartSection({
     ][i % 4],
   }));
 
+  const showGrowth = revenueChangePct !== undefined && revenueChangePct !== null;
+  const isPositive = showGrowth && revenueChangePct > 0;
+  const isNegative = showGrowth && revenueChangePct < 0;
+  const colorClass = isPositive ? "text-success" : isNegative ? "text-destructive" : "text-muted-foreground";
+
   return (
     <div className="grid gap-6 lg:grid-cols-3">
       {/* Revenue trend — spans 2 cols */}
@@ -47,10 +54,12 @@ export function ChartSection({
         description={t("dashboard.vsYesterday")}
         className="lg:col-span-2"
         actions={
-          <span className="flex items-center gap-1 text-xs text-success">
-            <ArrowUpRight className="size-3.5" aria-hidden />
-            +4.2%
-          </span>
+          showGrowth ? (
+            <span className={`flex items-center gap-1 text-xs ${colorClass}`}>
+              {!isNegative && <ArrowUpRight className="size-3.5" aria-hidden />}
+              {revenueChangePct >= 0 ? "+" : ""}{revenueChangePct}%
+            </span>
+          ) : undefined
         }
       >
         {isLoading ? (
@@ -66,7 +75,7 @@ export function ChartSection({
 
       {/* Karat distribution donut */}
       <ChartContainer
-        title={t("analytics.weightByKarat")}
+        title={locale === "ar" ? "وزن المخزون حسب العيار" : "Inventory Weight by Karat"}
         description={t("common.grams")}
       >
         {isLoading ? (

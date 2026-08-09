@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -26,8 +26,14 @@ import { canAccessRoute } from "@/lib/rbac";
 import { services } from "@/services";
 
 import type { ShopSettings } from "@/services";
+import { supabase } from "@/services/supabase/supabase-provider";
+
+const settingsSearchSchema = z.object({
+  tab: z.enum(["store", "receipt", "pricing", "security"]).optional().catch("store"),
+});
 
 export const Route = createFileRoute("/_authenticated/settings/")({
+  validateSearch: (search) => settingsSearchSchema.parse(search),
   beforeLoad: () => {
     const role = getCurrentRole();
     if (!canAccessRoute(role, "/settings")) {
@@ -48,11 +54,9 @@ const storeSchema = z.object({
   shopName: requiredString(),
   ownerName: requiredString(),
   email: z.string().email("البريد الإلكتروني غير صحيح"),
-  phone: z
-    .string()
-    .regex(/^01[0125][0-9]{8}$/, "يجب أن يكون رقم هاتف مصري صحيح"),
-  commercialRegister: z.string().regex(/^\d+$/, "يجب أن يحتوي على أرقام فقط"),
-  taxId: z.string().regex(/^\d+$/, "يجب أن يحتوي على أرقام فقط"), // TODO: official ETA validation later
+  phone: requiredString(),
+  commercialRegister: requiredString(),
+  taxId: requiredString(),
   governorate: requiredString(),
   city: requiredString(),
   address: requiredString(),
@@ -62,7 +66,7 @@ const storeSchema = z.object({
 const receiptSchema = z.object({
   receiptHeader: requiredString(),
   receiptFooter: requiredString(),
-  returnPolicy: requiredString(),
+  returnPolicy: z.string().optional(),
 });
 
 const pricingSchema = z.object({
@@ -86,6 +90,8 @@ const securitySchema = z
 function SettingsPage() {
   const { t } = useI18n();
   const queryClient = useQueryClient();
+  const navigate = useNavigate({ from: Route.fullPath });
+  const { tab = "store" } = Route.useSearch();
 
   const { data: settings, isLoading } = useQuery({
     queryKey: ["settings"],
@@ -102,14 +108,32 @@ function SettingsPage() {
   });
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setLogoFile(file);
       const url = URL.createObjectURL(file);
       setLogoPreview(url);
     }
+  };
+
+  const uploadStoreLogo = async (file: File): Promise<string> => {
+    const fileExt = file.name.split(".").pop() || "jpg";
+    const fileName = `logo-${Date.now()}.${fileExt}`;
+    const filePath = `logos/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("store-logos")
+      .upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage.from("store-logos").getPublicUrl(filePath);
+    return data.publicUrl;
   };
 
   const storeForm = useForm<z.infer<typeof storeSchema>>({
@@ -140,6 +164,7 @@ function SettingsPage() {
 
   const isAnyDirty =
     storeForm.formState.isDirty ||
+    Boolean(logoFile) ||
     receiptForm.formState.isDirty ||
     pricingForm.formState.isDirty ||
     securityForm.formState.isDirty;
@@ -164,7 +189,11 @@ function SettingsPage() {
         description={t("settings.subtitle")}
       />
 
-      <Tabs defaultValue="store" className="gap-4">
+      <Tabs
+        value={tab}
+        onValueChange={(val) => navigate({ search: { tab: val as any } })}
+        className="gap-4"
+      >
         <TabsList className="rounded-xl">
           <TabsTrigger value="store" className="rounded-lg">
             معلومات المحل
@@ -186,9 +215,23 @@ function SettingsPage() {
             description="البيانات الأساسية للمحل والتي تظهر في التقارير والفواتير."
           >
             <form
-              onSubmit={storeForm.handleSubmit((data) =>
-                updateMutation.mutate(data),
-              )}
+              onSubmit={storeForm.handleSubmit(async (data) => {
+                let logoUrl = settings?.logoUrl;
+                if (logoFile) {
+                  try {
+                    setIsUploading(true);
+                    logoUrl = await uploadStoreLogo(logoFile);
+                    setLogoFile(null);
+                  } catch (err) {
+                    console.error("Logo upload failed:", err);
+                    toast.error("فشل رفع الشعار");
+                    return;
+                  } finally {
+                    setIsUploading(false);
+                  }
+                }
+                updateMutation.mutate({ ...data, logoUrl });
+              })}
               className="grid gap-6 md:grid-cols-2 max-w-4xl"
             >
               <div className="md:col-span-2 flex items-center gap-6">
@@ -288,13 +331,14 @@ function SettingsPage() {
                 <Button
                   type="submit"
                   disabled={
-                    !storeForm.formState.isDirty ||
+                    (!storeForm.formState.isDirty && !logoFile) ||
                     !storeForm.formState.isValid ||
-                    updateMutation.isPending
+                    updateMutation.isPending ||
+                    isUploading
                   }
                   className="h-11 w-32 rounded-xl"
                 >
-                  {updateMutation.isPending
+                  {updateMutation.isPending || isUploading
                     ? "جاري الحفظ..."
                     : t("common.save")}
                 </Button>

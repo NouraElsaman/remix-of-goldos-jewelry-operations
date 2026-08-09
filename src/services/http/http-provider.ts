@@ -106,6 +106,11 @@ export const httpServices: ServiceRegistry = {
       apiRequest<Paginated<Invoice>>("/sales/invoices", {
         query: toQuery(params),
       }),
+    createInvoice: (input) =>
+      apiRequest<Invoice>("/sales/invoices", {
+        method: "POST",
+        body: input,
+      }),
   },
 
   // ── Reconciliation ────────────────────────────────────────────────────────

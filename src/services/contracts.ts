@@ -55,6 +55,10 @@ export type DashboardSummary = {
   prices: GoldPrice[];
   recentActivity: ActivityEvent[];
   alerts: DashboardAlert[];
+  isReconciliationClosed?: boolean;
+  revenueChangePct?: number | null;
+  purchasesChangePct?: number | null;
+  transactionsChangeCount?: number | null;
 };
 
 export type AnalyticsSeriesPoint = { label: string; value: number };
@@ -62,6 +66,7 @@ export type AnalyticsSeriesPoint = { label: string; value: number };
 export type AnalyticsSummary = {
   revenueTrend: AnalyticsSeriesPoint[];
   weightByKarat: AnalyticsSeriesPoint[];
+  inventoryWeightByKarat: AnalyticsSeriesPoint[];
 };
 
 /**
@@ -166,14 +171,19 @@ export interface GoldPriceService {
 export interface InventoryService {
   list(params?: ListParams): Promise<Paginated<InventoryItem>>;
   byId(id: ID): Promise<InventoryItem | null>;
+  createItem(input: Omit<InventoryItem, "id" | "barcode" | "status">): Promise<InventoryItem>;
 }
 
 export interface SalesService {
   listInvoices(params?: ListParams): Promise<Paginated<Invoice>>;
+  createInvoice(input: Omit<Invoice, "id" | "createdAt" | "number">): Promise<Invoice>;
 }
 
 export interface ReconciliationService {
   currentDay(): Promise<ReconciliationRow[]>;
+  submitCounted(karat: number, counted: number): Promise<void>;
+  reopenToday(): Promise<void>;
+  updateOpeningWeights(inputs: { karat: number; weight: number }[]): Promise<void>;
 }
 
 export interface ReportsService {

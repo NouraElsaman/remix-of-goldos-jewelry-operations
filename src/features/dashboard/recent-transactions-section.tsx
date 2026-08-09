@@ -1,10 +1,12 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Eye, Printer } from "lucide-react";
 
 import {
   DataTable,
   SectionCard,
   StatusBadge,
   TableContainer,
+  ReceiptModal,
 } from "@/components/shared";
 import type { DataTableColumn } from "@/components/shared";
 import type { Invoice, PaymentMethod } from "@/types/domain";
@@ -42,6 +44,8 @@ export function RecentTransactionsSection({
   locale: Locale;
   title: string;
 }) {
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+
   const columns = useMemo<DataTableColumn<Invoice>[]>(
     () => [
       {
@@ -98,22 +102,45 @@ export function RecentTransactionsSection({
           </span>
         ),
       },
+      {
+        id: "actions",
+        header: locale === "ar" ? "الفاتورة" : "Receipt",
+        cell: (row) => (
+          <button
+            onClick={() => setSelectedInvoice(row)}
+            className="flex size-7 items-center justify-center rounded-lg border border-gold/30 bg-gold-soft/50 text-gold-deep hover:bg-gold-soft transition-colors cursor-pointer"
+            title={locale === "ar" ? "عرض وطباعة الفاتورة" : "View/Print Receipt"}
+          >
+            <Printer className="size-3.5" />
+          </button>
+        ),
+        width: "4rem",
+      },
     ],
     [t, locale],
   );
 
   return (
-    <SectionCard title={title} padded={false}>
-      <TableContainer>
-        <DataTable
-          columns={columns}
-          rows={invoices}
-          getRowId={(row) => row.id}
-          isLoading={isLoading}
-          emptyTitle={t("common.empty")}
-          emptyDescription={t("common.placeholderNote")}
+    <>
+      <SectionCard title={title} padded={false}>
+        <TableContainer>
+          <DataTable
+            columns={columns}
+            rows={invoices}
+            getRowId={(row) => row.id}
+            isLoading={isLoading}
+            emptyTitle={t("common.empty")}
+            emptyDescription={t("common.placeholderNote")}
+          />
+        </TableContainer>
+      </SectionCard>
+
+      {selectedInvoice && (
+        <ReceiptModal
+          invoice={selectedInvoice}
+          onClose={() => setSelectedInvoice(null)}
         />
-      </TableContainer>
-    </SectionCard>
+      )}
+    </>
   );
 }

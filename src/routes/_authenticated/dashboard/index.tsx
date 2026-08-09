@@ -1,7 +1,10 @@
 import { getCurrentRole } from "@/lib/auth";
 import { canAccessRoute } from "@/lib/rbac";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { supabase } from "@/services/supabase/supabase-provider";
 
 import { PageHeader } from "@/components/shared";
 import { PageTransition } from "@/lib/motion";
@@ -49,6 +52,37 @@ export const Route = createFileRoute("/_authenticated/dashboard/")({
  */
 function DashboardPage() {
   const { t, locale } = useI18n();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const subscription = supabase
+      .channel("invoices-dashboard-channel")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "invoices" },
+        (payload) => {
+          const newInvoice = payload.new;
+          const typeLabel = newInvoice.transaction_type === "sale" ? "بيع جديدة" : "شراء ذهب كسر";
+          
+          toast.info(
+            locale === "ar"
+              ? `🔔 تم تسجيل عملية ${typeLabel} بمبلغ ${Number(newInvoice.final_total).toLocaleString()} ج.م`
+              : `🔔 New ${newInvoice.transaction_type} of ${Number(newInvoice.final_total).toLocaleString()} EGP registered`,
+            {
+              duration: 5000,
+            }
+          );
+
+          void queryClient.invalidateQueries({ queryKey: queryKeys.dashboard() });
+          void queryClient.invalidateQueries({ queryKey: queryKeys.sales.invoices({ pageSize: 5 }) });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(subscription);
+    };
+  }, [queryClient, locale]);
 
   // ── Data fetching ─────────────────────────────────────────────────────────
   const { data: dashboard, isLoading: dashLoading } = useQuery({
@@ -105,6 +139,7 @@ function DashboardPage() {
         isLoading={analyticsLoading}
         t={t}
         locale={locale}
+        revenueChangePct={dashboard?.revenueChangePct}
       />
 
       {/* ── Section 4: Activity + Alerts (side-by-side on large screens) ──── */}

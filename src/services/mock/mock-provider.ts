@@ -49,6 +49,9 @@ export const mockServices: ServiceRegistry = {
         prices: mockGoldPrices,
         recentActivity: mockActivity,
         alerts: mockAlerts,
+        revenueChangePct: 4.2,
+        purchasesChangePct: 1.8,
+        transactionsChangeCount: 2,
       }),
   },
   goldPrices: {
@@ -75,12 +78,53 @@ export const mockServices: ServiceRegistry = {
     list: async (params) => delay(paginate(mockInventory, params)),
     byId: async (id) =>
       delay(mockInventory.find((item) => item.id === id) ?? null),
+    createItem: async (input) => {
+      const newItem = {
+        ...input,
+        id: `itm_${Math.random()}`,
+        barcode: `628100000${Math.floor(1000 + Math.random() * 9000)}`,
+        status: "in_stock" as const,
+      };
+      mockInventory.push(newItem);
+      return delay(newItem);
+    },
   },
   sales: {
     listInvoices: async (params) => delay(paginate(mockInvoices, params)),
+    createInvoice: async (input) =>
+      delay({
+        id: Math.random().toString(36).substring(7),
+        number: `INV-${Date.now()}`,
+        createdAt: new Date().toISOString(),
+        ...input,
+      }),
   },
   reconciliation: {
     currentDay: async () => delay(mockReconciliation),
+    submitCounted: async (karat, counted) => {
+      const row = mockReconciliation.find((r) => r.karat === karat);
+      if (row) {
+        row.counted = counted;
+        row.variance = counted - row.expected;
+        row.status = "closed";
+      }
+    },
+    reopenToday: async () => {
+      mockReconciliation.forEach((r) => {
+        r.status = "open";
+        r.counted = null;
+        r.variance = null;
+      });
+    },
+    updateOpeningWeights: async (inputs) => {
+      inputs.forEach((input) => {
+        const row = mockReconciliation.find((r) => r.karat === input.karat);
+        if (row) {
+          row.opening = input.weight;
+          row.expected = input.weight + row.received - row.sold;
+        }
+      });
+    },
   },
   reports: {
     available: async () =>
@@ -116,9 +160,13 @@ export const mockServices: ServiceRegistry = {
         ],
         weightByKarat: [
           { label: "24K", value: 180.4 },
-          { label: "22K", value: 1442.26 },
           { label: "21K", value: 964.21 },
           { label: "18K", value: 320.6 },
+        ],
+        inventoryWeightByKarat: [
+          { label: "24K", value: 500.0 },
+          { label: "21K", value: 1200.0 },
+          { label: "18K", value: 850.0 },
         ],
       }),
   },

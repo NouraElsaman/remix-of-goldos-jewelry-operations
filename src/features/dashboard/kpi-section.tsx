@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Users,
   AlertTriangle,
+  ShieldCheck,
 } from "lucide-react";
 
 import { KpiCard } from "@/components/shared";
@@ -55,7 +56,10 @@ export function KpiSection({
         value: formatMoney(data?.revenueToday ?? 0, locale),
         hint: t("dashboard.vsYesterday"),
         icon: Receipt,
-        trend: { value: "+4.2%", direction: "up" },
+        trend: data?.revenueChangePct !== undefined && data.revenueChangePct !== null ? {
+          value: `${data.revenueChangePct >= 0 ? "+" : ""}${data.revenueChangePct}%`,
+          direction: data.revenueChangePct > 0 ? "up" : data.revenueChangePct < 0 ? "down" : "flat"
+        } : undefined,
         accent: true,
       },
       {
@@ -64,14 +68,20 @@ export function KpiSection({
         value: formatMoney(data?.purchasesToday ?? 0, locale),
         hint: t("dashboard.vsYesterday"),
         icon: ShoppingCart,
-        trend: { value: "+1.8%", direction: "up" },
+        trend: data?.purchasesChangePct !== undefined && data.purchasesChangePct !== null ? {
+          value: `${data.purchasesChangePct >= 0 ? "+" : ""}${data.purchasesChangePct}%`,
+          direction: data.purchasesChangePct > 0 ? "up" : data.purchasesChangePct < 0 ? "down" : "flat"
+        } : undefined,
       },
       {
         id: "transactions",
         labelKey: "dashboard.transactions",
         value: formatNumber(data?.transactionsToday ?? 0, locale),
         icon: Coins,
-        trend: { value: "+2", direction: "up" },
+        trend: data?.transactionsChangeCount !== undefined && data.transactionsChangeCount !== null ? {
+          value: `${data.transactionsChangeCount >= 0 ? "+" : ""}${data.transactionsChangeCount}`,
+          direction: data.transactionsChangeCount > 0 ? "up" : data.transactionsChangeCount < 0 ? "down" : "flat"
+        } : undefined,
       },
       {
         id: "inventoryValue",
@@ -104,9 +114,13 @@ export function KpiSection({
       {
         id: "reconciliation",
         labelKey: "dashboard.reconciliationStatus",
-        value: t("dashboard.openReconciliation"),
-        icon: AlertTriangle,
-        trend: { value: "معلق", direction: "flat" },
+        value: data?.isReconciliationClosed
+          ? (locale === "ar" ? "مطابقة مكتملة" : "Matching Closed")
+          : (locale === "ar" ? "مطابقة مفتوحة" : "Matching Open"),
+        icon: data?.isReconciliationClosed ? ShieldCheck : AlertTriangle,
+        trend: data?.isReconciliationClosed
+          ? { value: locale === "ar" ? "مغلق" : "Closed", direction: "up" as const }
+          : { value: locale === "ar" ? "معلق" : "Pending", direction: "flat" as const },
       },
       {
         id: "users",

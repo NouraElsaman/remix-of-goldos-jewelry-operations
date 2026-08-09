@@ -21,14 +21,12 @@ import type { ComputedItemPrice, PricingConfig } from "@/services/contracts";
 
 export const KARAT_PURITY: Record<Karat, number> = {
   24: 1.0,
-  22: 22 / 24,
   21: 21 / 24,
   18: 18 / 24,
-  14: 14 / 24,
 } as const;
 
 /** All karats this shop supports, in display order. */
-export const SUPPORTED_KARATS: Karat[] = [24, 22, 21, 18, 14];
+export const SUPPORTED_KARATS: Karat[] = [24, 21, 18];
 
 // ── Default pricing configuration ─────────────────────────────────────────
 
@@ -176,5 +174,18 @@ export function extractKaratTrend(
   return prices
     .filter((p) => p.karat === karat)
     .sort((a, b) => a.date.localeCompare(b.date))
-    .map((p) => ({ label: p.date.slice(5), value: p.rate })); // "MM-DD"
+    .map((p) => {
+      let label = p.date.slice(5, 10);
+      try {
+        const d = new Date(p.date);
+        if (!isNaN(d.getTime()) && p.date.includes("T")) {
+          const month = String(d.getMonth() + 1).padStart(2, "0");
+          const day = String(d.getDate()).padStart(2, "0");
+          const hours = String(d.getHours()).padStart(2, "0");
+          const minutes = String(d.getMinutes()).padStart(2, "0");
+          label = `${month}-${day} ${hours}:${minutes}`;
+        }
+      } catch {}
+      return { label, value: p.rate };
+    });
 }
