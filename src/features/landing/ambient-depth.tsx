@@ -1,1 +1,17 @@
-aW1wb3J0IHsgY24gfSBmcm9tICJAL2xpYi91dGlscyI7CgovKioKICogRXh0cmVtZWx5IHNvZnQgY2hhbXBhZ25lIGxpZ2h0IGZhbGxvZmYgdGhhdCBnaXZlcyBmbGF0IGl2b3J5IHNlY3Rpb25zIGRlcHRoLgogKiBQdXJlIHN0YXRpYyBDU1MgZ3JhZGllbnRzIOKAlCBubyBibHVyIGxheWVycywgbm8gYW5pbWF0aW9uLCBubyBjb21wb3NpdGluZyBjb3N0LgogKi8KZXhwb3J0IGZ1bmN0aW9uIEFtYmllbnREZXB0aCh7IGNsYXNzTmFtZSB9OiB7IGNsYXNzTmFtZT86IHN0cmluZyB8IHVuZGVmaW5lZCB9KSB7CiAgcmV0dXJuICgKICAgIDxkaXYKICAgICAgYXJpYS1oaWRkZW4KICAgICAgY2xhc3NOYW1lPXtjbigKICAgICAgICAiYXRtb3NwaGVyZS1zb2Z0IHBvaW50ZXItZXZlbnRzLW5vbmUgYWJzb2x1dGUgaW5zZXQtMCAtei0xMCBvdmVyZmxvdy1oaWRkZW4gb3BhY2l0eS02MCBzbTpvcGFjaXR5LTEwMCIsCiAgICAgICAgY2xhc3NOYW1lLAogICAgICApfQogICAgLz4KICApOwp9Cg==
+import { cn } from "@/lib/utils";
+
+/**
+ * Extremely soft champagne light falloff that gives flat ivory sections depth.
+ * Pure static CSS gradients — no blur layers, no animation, no compositing cost.
+ */
+export function AmbientDepth({ className }: { className?: string | undefined }) {
+  return (
+    <div
+      aria-hidden
+      className={cn(
+        "atmosphere-soft pointer-events-none absolute inset-0 -z-10 overflow-hidden opacity-60 sm:opacity-100",
+        className,
+      )}
+    />
+  );
+}

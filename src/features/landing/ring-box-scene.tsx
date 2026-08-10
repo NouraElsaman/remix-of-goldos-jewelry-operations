@@ -1,1 +1,81 @@
-aW1wb3J0IHsgdXNlRWZmZWN0LCB1c2VSZWYgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7IHVzZVJlZHVjZWRNb3Rpb24sIHVzZVNjcm9sbCwgdXNlU3ByaW5nLCB0eXBlIE1vdGlvblZhbHVlIH0gZnJvbSAibW90aW9uL3JlYWN0IjsKCmltcG9ydCB7IGNuIH0gZnJvbSAiQC9saWIvdXRpbHMiOwppbXBvcnQgeyBjcmVhdGVSaW5nQm94UmVuZGVyZXIsIHR5cGUgUmluZ0JveFJlbmRlcmVyIH0gZnJvbSAiLi9yaW5nLWJveC1yZW5kZXJlciI7CgovKioKICogU2Nyb2xsLWRyaXZlbiwgZnVsbHkgcmV2ZXJzaWJsZSByaW5nLWJveCBhc3NlbWJseS4KICoKICogVGhlIHNjZW5lIGlzIGEgc2luZ2xlIGxpZ2h0d2VpZ2h0IFdlYkdMIHNjZW5lIChvbmUgcmVuZGVyZXIsIG9uZSBjYW1lcmEsCiAqIHJlbmRlci1vbi1kZW1hbmQpIGNvbnRhaW5pbmcgcmVhbCBnZW9tZXRyeTogYSBob2xsb3cgYmFzZSB3aXRoIHNpZGUgd2FsbHMgYW5kCiAqIGEgY2F2aXR5LCBhIHJlY2Vzc2VkIGN1c2hpb24sIGEgdm9sdW1ldHJpYyBnb2xkIHRvcnVzIGFuZCBhIGxpZCB3aXRoCiAqIHRoaWNrbmVzcywgc2lkZSB3YWxsLCB1bmRlcnNpZGUgYW5kIGlubmVyIGxpcC4KICoKICogQWxsIHRyYW5zZm9ybXMgYXJlIGRlcml2ZWQgZGV0ZXJtaW5pc3RpY2FsbHkgZnJvbSB0aGUgc2FtZSBgcHJvZ3Jlc3NgCiAqIE1vdGlvblZhbHVlLCBzbyBzY3JvbGxpbmcgdXB3YXJkIHJldmVyc2VzIHRoZSBhc3NlbWJseSBleGFjdGx5LgogKi8KZXhwb3J0IGZ1bmN0aW9uIFJpbmdCb3hTY2VuZSh7CiAgcHJvZ3Jlc3MsCiAgY2xhc3NOYW1lLAp9OiB7CiAgcHJvZ3Jlc3M6IE1vdGlvblZhbHVlPG51bWJlcj47CiAgY2xhc3NOYW1lPzogc3RyaW5nIHwgdW5kZWZpbmVkOwp9KSB7CiAgY29uc3QgaG9zdFJlZiA9IHVzZVJlZjxIVE1MRGl2RWxlbWVudD4obnVsbCk7CiAgY29uc3QgcmVkdWNlID0gdXNlUmVkdWNlZE1vdGlvbigpOwoKICAvLyBTbW9vdGggdGhlIHJhdyBzY3JvbGwgdmFsdWUgc28gbW90aW9uIGZlZWxzIHdlaWdodGVkLCBuZXZlciB0d2l0Y2h5LgogIGNvbnN0IHAgPSB1c2VTcHJpbmcocHJvZ3Jlc3MsIHsgc3RpZmZuZXNzOiA5MCwgZGFtcGluZzogMjYsIG1hc3M6IDAuNiB9KTsKCiAgdXNlRWZmZWN0KCgpID0+IHsKICAgIGNvbnN0IGhvc3QgPSBob3N0UmVmLmN1cnJlbnQ7CiAgICBpZiAoIWhvc3QpIHJldHVybjsKCiAgICBsZXQgcmVuZGVyZXI6IFJpbmdCb3hSZW5kZXJlciB8IG51bGwgPSBudWxsOwogICAgbGV0IGRpc3Bvc2VkID0gZmFsc2U7CiAgICBjb25zdCBzb3VyY2UgPSByZWR1Y2UgPyBwcm9ncmVzcyA6IHA7CgogICAgdm9pZCBjcmVhdGVSaW5nQm94UmVuZGVyZXIoaG9zdCkudGhlbigoaW5zdGFuY2UpID0+IHsKICAgICAgaWYgKGRpc3Bvc2VkKSB7CiAgICAgICAgaW5zdGFuY2UuZGlzcG9zZSgpOwogICAgICAgIHJldHVybjsKICAgICAgfQogICAgICByZW5kZXJlciA9IGluc3RhbmNlOwogICAgICByZW5kZXJlci5zZXRQcm9ncmVzcyhzb3VyY2UuZ2V0KCkpOwogICAgfSk7CgogICAgY29uc3QgdW5zdWJzY3JpYmUgPSBzb3VyY2Uub24oImNoYW5nZSIsICh2YWx1ZSkgPT4gcmVuZGVyZXI/LnNldFByb2dyZXNzKHZhbHVlKSk7CgogICAgcmV0dXJuICgpID0+IHsKICAgICAgZGlzcG9zZWQgPSB0cnVlOwogICAgICB1bnN1YnNjcmliZSgpOwogICAgICByZW5kZXJlcj8uZGlzcG9zZSgpOwogICAgICByZW5kZXJlciA9IG51bGw7CiAgICB9OwogIH0sIFtwLCBwcm9ncmVzcywgcmVkdWNlXSk7CgogIHJldHVybiAoCiAgICA8ZGl2CiAgICAgIGNsYXNzTmFtZT17Y24oInJlbGF0aXZlIGZsZXggYXNwZWN0LXNxdWFyZSB3LWZ1bGwgaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIiwgY2xhc3NOYW1lKX0KICAgICAgYXJpYS1oaWRkZW4KICAgID4KICAgICAgey8qIEFtYmllbnQgd2FybSBzdHVkaW8gbGlnaHQgYmVoaW5kIHRoZSBwcm9kdWN0IOKAlCBzdGF0aWMgZ3JhZGllbnQsIG5vIGJsdXIgKi99CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJhdXJhLWdvbGQgcG9pbnRlci1ldmVudHMtbm9uZSBhYnNvbHV0ZSBpbnNldC1bNiVdIHJvdW5kZWQtWzUwJV0iIC8+CgogICAgICA8ZGl2IHJlZj17aG9zdFJlZn0gY2xhc3NOYW1lPSJyZWxhdGl2ZSBoLWZ1bGwgdy1mdWxsIiAvPgogICAgPC9kaXY+CiAgKTsKfQoKLyoqCiAqIEhvb2sgd2lyaW5nIGEgc2VjdGlvbiBlbGVtZW50IHRvIGEgMOKGkjEgYXNzZW1ibHkgcHJvZ3Jlc3MgdmFsdWUuCiAqLwpleHBvcnQgZnVuY3Rpb24gdXNlQXNzZW1ibHlQcm9ncmVzcygpIHsKICBjb25zdCByZWYgPSB1c2VSZWY8SFRNTERpdkVsZW1lbnQ+KG51bGwpOwogIGNvbnN0IHsgc2Nyb2xsWVByb2dyZXNzIH0gPSB1c2VTY3JvbGwoewogICAgdGFyZ2V0OiByZWYsCiAgICBvZmZzZXQ6IFsic3RhcnQgc3RhcnQiLCAiZW5kIGVuZCJdLAogIH0pOwogIHJldHVybiB7IHJlZiwgcHJvZ3Jlc3M6IHNjcm9sbFlQcm9ncmVzcyB9Owp9Cg==
+import { useEffect, useRef } from "react";
+import { useReducedMotion, useScroll, useSpring, type MotionValue } from "motion/react";
+
+import { cn } from "@/lib/utils";
+import { createRingBoxRenderer, type RingBoxRenderer } from "./ring-box-renderer";
+
+/**
+ * Scroll-driven, fully reversible ring-box assembly.
+ *
+ * The scene is a single lightweight WebGL scene (one renderer, one camera,
+ * render-on-demand) containing real geometry: a hollow base with side walls and
+ * a cavity, a recessed cushion, a volumetric gold torus and a lid with
+ * thickness, side wall, underside and inner lip.
+ *
+ * All transforms are derived deterministically from the same `progress`
+ * MotionValue, so scrolling upward reverses the assembly exactly.
+ */
+export function RingBoxScene({
+  progress,
+  className,
+}: {
+  progress: MotionValue<number>;
+  className?: string | undefined;
+}) {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+
+  // Smooth the raw scroll value so motion feels weighted, never twitchy.
+  const p = useSpring(progress, { stiffness: 90, damping: 26, mass: 0.6 });
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+
+    let renderer: RingBoxRenderer | null = null;
+    let disposed = false;
+    const source = reduce ? progress : p;
+
+    void createRingBoxRenderer(host).then((instance) => {
+      if (disposed) {
+        instance.dispose();
+        return;
+      }
+      renderer = instance;
+      renderer.setProgress(source.get());
+    });
+
+    const unsubscribe = source.on("change", (value) => renderer?.setProgress(value));
+
+    return () => {
+      disposed = true;
+      unsubscribe();
+      renderer?.dispose();
+      renderer = null;
+    };
+  }, [p, progress, reduce]);
+
+  return (
+    <div
+      className={cn("relative flex aspect-square w-full items-center justify-center", className)}
+      aria-hidden
+    >
+      {/* Ambient warm studio light behind the product — static gradient, no blur */}
+      <div className="aura-gold pointer-events-none absolute inset-[6%] rounded-[50%]" />
+
+      <div ref={hostRef} className="relative h-full w-full" />
+    </div>
+  );
+}
+
+/**
+ * Hook wiring a section element to a 0→1 assembly progress value.
+ */
+export function useAssemblyProgress() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"],
+  });
+  return { ref, progress: scrollYProgress };
+}

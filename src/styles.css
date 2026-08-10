@@ -1,1 +1,315 @@
-QGltcG9ydCAidGFpbHdpbmRjc3MiIHNvdXJjZShub25lKTsKQHNvdXJjZSAiLi4vc3JjIjsKQGltcG9ydCAidHctYW5pbWF0ZS1jc3MiOwoKLyoKICogR29sZE9TIGRlc2lnbiBzeXN0ZW0g4oCUIEx1eHVyeSBFbnRlcnByaXNlIE9wZXJhdGluZyBTeXN0ZW0uCiAqCiAqIERlc2lnbiBQaGlsb3NvcGh5OgogKiAtIENhbnZhczogV2FybSwgc2VyZW5lIGFsYWJhc3RlciB3aGl0ZSAob2tsY2ggMC45ODQgMC4wMDUgODUpCiAqIC0gU3VyZmFjZXM6IFB1cmUgY3Jpc3AgcG9yY2VsYWluIHdoaXRlIChva2xjaCAxIDAgMCkKICogLSBBY2NlbnRzOiBDaGFtcGFnbmUgZ29sZCAmIGRlZXAgYnVybmlzaGVkIGdvbGQKICogLSBUeXBlOiBEZWVwIGNoYXJjb2FsIHNsYXRlIChuZXZlciBwdXJlIGJsYWNrKSBmb3IgdWx0aW1hdGUgZXllIGNvbWZvcnQKICogLSBCb3JkZXJzOiBIYWlybGluZSBkZWxpY2F0ZSBib3JkZXJzIHdpdGggY3Jpc3AgY29udHJhc3QKICogLSBFbGV2YXRpb246IE11bHRpLWxheWVyZWQgc29mdCBhbWJpZW50IHNoYWRvd3MgKFN0cmlwZSAmIEFwcGxlIHN0eWxlKQogKgogKiBBTEwgc3R5bGluZyBpbmhlcml0cyBmcm9tIHRoZXNlIHNlbWFudGljIHRva2Vucy4KICovCgpAdGhlbWUgaW5saW5lIHsKICAvKiAtLS0tIFJhZGl1cyBzY2FsZSAtLS0tICovCiAgLS1yYWRpdXMtc206IGNhbGModmFyKC0tcmFkaXVzKSAtIDZweCk7CiAgLS1yYWRpdXMtbWQ6IGNhbGModmFyKC0tcmFkaXVzKSAtIDNweCk7CiAgLS1yYWRpdXMtbGc6IHZhcigtLXJhZGl1cyk7CiAgLS1yYWRpdXMteGw6IGNhbGModmFyKC0tcmFkaXVzKSArIDRweCk7CiAgLS1yYWRpdXMtMnhsOiBjYWxjKHZhcigtLXJhZGl1cykgKyA4cHgpOwogIC0tcmFkaXVzLTN4bDogY2FsYyh2YXIoLS1yYWRpdXMpICsgMTRweCk7CiAgLS1yYWRpdXMtNHhsOiBjYWxjKHZhcigtLXJhZGl1cykgKyAyMnB4KTsKCiAgLyogLS0tLSBDb2xvciB0b2tlbnMgLS0tLSAqLwogIC0tY29sb3ItYmFja2dyb3VuZDogdmFyKC0tYmFja2dyb3VuZCk7CiAgLS1jb2xvci1mb3JlZ3JvdW5kOiB2YXIoLS1mb3JlZ3JvdW5kKTsKICAtLWNvbG9yLWNhcmQ6IHZhcigtLWNhcmQpOwogIC0tY29sb3ItY2FyZC1mb3JlZ3JvdW5kOiB2YXIoLS1jYXJkLWZvcmVncm91bmQpOwogIC0tY29sb3ItcG9wb3ZlcjogdmFyKC0tcG9wb3Zlcik7CiAgLS1jb2xvci1wb3BvdmVyLWZvcmVncm91bmQ6IHZhcigtLXBvcG92ZXItZm9yZWdyb3VuZCk7CiAgLS1jb2xvci1wcmltYXJ5OiB2YXIoLS1wcmltYXJ5KTsKICAtLWNvbG9yLXByaW1hcnktZm9yZWdyb3VuZDogdmFyKC0tcHJpbWFyeS1mb3JlZ3JvdW5kKTsKICAtLWNvbG9yLXNlY29uZGFyeTogdmFyKC0tc2Vjb25kYXJ5KTsKICAtLWNvbG9yLXNlY29uZGFyeS1mb3JlZ3JvdW5kOiB2YXIoLS1zZWNvbmRhcnktZm9yZWdyb3VuZCk7CiAgLS1jb2xvci1tdXRlZDogdmFyKC0tbXV0ZWQpOwogIC0tY29sb3ItbXV0ZWQtZm9yZWdyb3VuZDogdmFyKC0tbXV0ZWQtZm9yZWdyb3VuZCk7CiAgLS1jb2xvci1hY2NlbnQ6IHZhcigtLWFjY2VudCk7CiAgLS1jb2xvci1hY2NlbnQtZm9yZWdyb3VuZDogdmFyKC0tYWNjZW50LWZvcmVncm91bmQpOwogIC0tY29sb3ItZGVzdHJ1Y3RpdmU6IHZhcigtLWRlc3RydWN0aXZlKTsKICAtLWNvbG9yLWRlc3RydWN0aXZlLWZvcmVncm91bmQ6IHZhcigtLWRlc3RydWN0aXZlLWZvcmVncm91bmQpOwogIC0tY29sb3Itc3VjY2VzczogdmFyKC0tc3VjY2Vzcyk7CiAgLS1jb2xvci1zdWNjZXNzLWZvcmVncm91bmQ6IHZhcigtLXN1Y2Nlc3MtZm9yZWdyb3VuZCk7CiAgLS1jb2xvci13YXJuaW5nOiB2YXIoLS13YXJuaW5nKTsKICAtLWNvbG9yLXdhcm5pbmctZm9yZWdyb3VuZDogdmFyKC0td2FybmluZy1mb3JlZ3JvdW5kKTsKICAtLWNvbG9yLWluZm86IHZhcigtLWluZm8pOwogIC0tY29sb3ItaW5mby1mb3JlZ3JvdW5kOiB2YXIoLS1pbmZvLWZvcmVncm91bmQpOwogIC0tY29sb3ItZ29sZDogdmFyKC0tZ29sZCk7CiAgLS1jb2xvci1nb2xkLXNvZnQ6IHZhcigtLWdvbGQtc29mdCk7CiAgLS1jb2xvci1nb2xkLWRlZXA6IHZhcigtLWdvbGQtZGVlcCk7CiAgLS1jb2xvci1nb2xkLWZvcmVncm91bmQ6IHZhcigtLWdvbGQtZm9yZWdyb3VuZCk7CiAgLS1jb2xvci1zdXJmYWNlOiB2YXIoLS1zdXJmYWNlKTsKICAtLWNvbG9yLXN1cmZhY2UtbXV0ZWQ6IHZhcigtLXN1cmZhY2UtbXV0ZWQpOwogIC0tY29sb3ItYm9yZGVyOiB2YXIoLS1ib3JkZXIpOwogIC0tY29sb3ItYm9yZGVyLXN0cm9uZzogdmFyKC0tYm9yZGVyLXN0cm9uZyk7CiAgLS1jb2xvci1pbnB1dDogdmFyKC0taW5wdXQpOwogIC0tY29sb3ItcmluZzogdmFyKC0tcmluZyk7CiAgLS1jb2xvci1yaW5nLW9mZnNldC1iYWNrZ3JvdW5kOiB2YXIoLS1iYWNrZ3JvdW5kKTsKICAtLWNvbG9yLWNoYXJ0LTE6IHZhcigtLWNoYXJ0LTEpOwogIC0tY29sb3ItY2hhcnQtMjogdmFyKC0tY2hhcnQtMik7CiAgLS1jb2xvci1jaGFydC0zOiB2YXIoLS1jaGFydC0zKTsKICAtLWNvbG9yLWNoYXJ0LTQ6IHZhcigtLWNoYXJ0LTQpOwogIC0tY29sb3ItY2hhcnQtNTogdmFyKC0tY2hhcnQtNSk7CiAgLS1jb2xvci1zaWRlYmFyOiB2YXIoLS1zaWRlYmFyKTsKICAtLWNvbG9yLXNpZGViYXItZm9yZWdyb3VuZDogdmFyKC0tc2lkZWJhci1mb3JlZ3JvdW5kKTsKICAtLWNvbG9yLXNpZGViYXItcHJpbWFyeTogdmFyKC0tc2lkZWJhci1wcmltYXJ5KTsKICAtLWNvbG9yLXNpZGViYXItcHJpbWFyeS1mb3JlZ3JvdW5kOiB2YXIoLS1zaWRlYmFyLXByaW1hcnktZm9yZWdyb3VuZCk7CiAgLS1jb2xvci1zaWRlYmFyLWFjY2VudDogdmFyKC0tc2lkZWJhci1hY2NlbnQpOwogIC0tY29sb3Itc2lkZWJhci1hY2NlbnQtZm9yZWdyb3VuZDogdmFyKC0tc2lkZWJhci1hY2NlbnQtZm9yZWdyb3VuZCk7CiAgLS1jb2xvci1zaWRlYmFyLWJvcmRlcjogdmFyKC0tc2lkZWJhci1ib3JkZXIpOwogIC0tY29sb3Itc2lkZWJhci1yaW5nOiB2YXIoLS1zaWRlYmFyLXJpbmcpOwoKICAvKiAtLS0tIFR5cG9ncmFwaHkgLS0tLSAqLwogIC0tZm9udC1zYW5zOiB2YXIoLS1mb250LWxhdGluKTsKICAtLWZvbnQtYXJhYmljOiB2YXIoLS1mb250LWFyKTsKICAtLWZvbnQtZGlzcGxheTogdmFyKC0tZm9udC1sYXRpbik7CgogIC8qIC0tLS0gRWxldmF0aW9uIC0tLS0gKi8KICAtLXNoYWRvdy1oYWlybGluZTogdmFyKC0tZWxldmF0aW9uLWhhaXJsaW5lKTsKICAtLXNoYWRvdy1zb2Z0OiB2YXIoLS1lbGV2YXRpb24tc29mdCk7CiAgLS1zaGFkb3ctcmFpc2VkOiB2YXIoLS1lbGV2YXRpb24tcmFpc2VkKTsKICAtLXNoYWRvdy1mbG9hdGluZzogdmFyKC0tZWxldmF0aW9uLWZsb2F0aW5nKTsKICAtLXNoYWRvdy1nb2xkOiB2YXIoLS1lbGV2YXRpb24tZ29sZCk7CgogIC8qIC0tLS0gQnJlYWtwb2ludHMgLS0tLSAqLwogIC0tYnJlYWtwb2ludC14czogMzByZW07CiAgLS1icmVha3BvaW50LXNtOiA0MHJlbTsKICAtLWJyZWFrcG9pbnQtbWQ6IDQ4cmVtOwogIC0tYnJlYWtwb2ludC1sZzogNjRyZW07CiAgLS1icmVha3BvaW50LXhsOiA4MHJlbTsKICAtLWJyZWFrcG9pbnQtMnhsOiA5NnJlbTsKfQoKOnJvb3QgewogIC0tcmFkaXVzOiAwLjg3NXJlbTsKCiAgLyogRm9udHMg4oCUIEFyYWJpYyBmaXJzdCwgTGF0aW4gZmFsbGJhY2sgY2hhaW4gKi8KICAtLWZvbnQtYXI6ICJJQk0gUGxleCBTYW5zIEFyYWJpYyIsICJJbnRlciIsIHVpLXNhbnMtc2VyaWYsIHN5c3RlbS11aSwgc2Fucy1zZXJpZjsKICAtLWZvbnQtbGF0aW46ICJJbnRlciIsICJJQk0gUGxleCBTYW5zIEFyYWJpYyIsIHVpLXNhbnMtc2VyaWYsIHN5c3RlbS11aSwgc2Fucy1zZXJpZjsKCiAgLyogQ2FudmFzICYgc3VyZmFjZXMg4oCUIFdhcm0sIHNlcmVuZSB3aGl0ZSBjYW52YXMgKi8KICAtLWJhY2tncm91bmQ6IG9rbGNoKDAuOTg0IDAuMDA1IDg1KTsKICAtLWZvcmVncm91bmQ6IG9rbGNoKDAuMjIgMC4wMTQgNjApOwogIC0tc3VyZmFjZTogb2tsY2goMSAwIDApOwogIC0tc3VyZmFjZS1tdXRlZDogb2tsY2goMC45NyAwLjAwNyA4NCk7CiAgLS1jYXJkOiBva2xjaCgxIDAgMCk7CiAgLS1jYXJkLWZvcmVncm91bmQ6IG9rbGNoKDAuMjIgMC4wMTQgNjApOwogIC0tcG9wb3Zlcjogb2tsY2goMSAwIDApOwogIC0tcG9wb3Zlci1mb3JlZ3JvdW5kOiBva2xjaCgwLjIyIDAuMDE0IDYwKTsKCiAgLyogUHJpbWFyeSA9IGRlZXAgY2hhcmNvYWwsIEFjY2VudCA9IGNoYW1wYWduZSBnb2xkICovCiAgLS1wcmltYXJ5OiBva2xjaCgwLjIyIDAuMDE0IDYyKTsKICAtLXByaW1hcnktZm9yZWdyb3VuZDogb2tsY2goMC45OSAwLjAwNCA4NSk7CiAgLS1zZWNvbmRhcnk6IG9rbGNoKDAuOTY1IDAuMDA4IDg0KTsKICAtLXNlY29uZGFyeS1mb3JlZ3JvdW5kOiBva2xjaCgwLjI4IDAuMDE0IDYyKTsKICAtLW11dGVkOiBva2xjaCgwLjk2NSAwLjAwOCA4NCk7CiAgLS1tdXRlZC1mb3JlZ3JvdW5kOiBva2xjaCgwLjUgMC4wMTQgNjgpOwogIC0tYWNjZW50OiBva2xjaCgwLjk1NSAwLjAyIDg3KTsKICAtLWFjY2VudC1mb3JlZ3JvdW5kOiBva2xjaCgwLjM0IDAuMDQ1IDcyKTsKCiAgLyogQ2hhbXBhZ25lICYgQnVybmlzaGVkIEdvbGQgUGFsZXR0ZSAqLwogIC0tZ29sZDogb2tsY2goMC43OCAwLjA4NSA4Mik7CiAgLS1nb2xkLXNvZnQ6IG9rbGNoKDAuOTYgMC4wMjUgODgpOwogIC0tZ29sZC1kZWVwOiBva2xjaCgwLjYyIDAuMDg1IDcyKTsKICAtLWdvbGQtZm9yZWdyb3VuZDogb2tsY2goMC4yMiAwLjAyIDYyKTsKCiAgLyogUmVmaW5lZCBTdGF0dXMgUGFsZXR0ZSAqLwogIC0tZGVzdHJ1Y3RpdmU6IG9rbGNoKDAuNTYgMC4xNiAyNik7CiAgLS1kZXN0cnVjdGl2ZS1mb3JlZ3JvdW5kOiBva2xjaCgwLjk5IDAuMDA0IDg1KTsKICAtLXN1Y2Nlc3M6IG9rbGNoKDAuNTUgMC4xMyAxNDgpOwogIC0tc3VjY2Vzcy1mb3JlZ3JvdW5kOiBva2xjaCgwLjk5IDAuMDA0IDg1KTsKICAtLXdhcm5pbmc6IG9rbGNoKDAuNzIgMC4xMyA3Mik7CiAgLS13YXJuaW5nLWZvcmVncm91bmQ6IG9rbGNoKDAuMjIgMC4wMiA2Mik7CiAgLS1pbmZvOiBva2xjaCgwLjU2IDAuMSAyNDUpOwogIC0taW5mby1mb3JlZ3JvdW5kOiBva2xjaCgwLjk5IDAuMDA0IDg1KTsKCiAgLyogSGFpcmxpbmUgTGluZXMgJiBGb2N1cyBSaW5ncyAqLwogIC0tYm9yZGVyOiBva2xjaCgwLjkyNSAwLjAwNiA4NCk7CiAgLS1ib3JkZXItc3Ryb25nOiBva2xjaCgwLjg1IDAuMDEgODQpOwogIC0taW5wdXQ6IG9rbGNoKDAuOTI1IDAuMDA2IDg0KTsKICAtLXJpbmc6IG9rbGNoKDAuNjIgMC4wODUgNzIgLyAwLjM1KTsKCiAgLyogQ2hhcnRzICovCiAgLS1jaGFydC0xOiBva2xjaCgwLjc4IDAuMDg1IDgyKTsKICAtLWNoYXJ0LTI6IG9rbGNoKDAuNjIgMC4wODUgNzIpOwogIC0tY2hhcnQtMzogb2tsY2goMC40MiAwLjAyIDYyKTsKICAtLWNoYXJ0LTQ6IG9rbGNoKDAuNjggMC4wOCAxNDgpOwogIC0tY2hhcnQtNTogb2tsY2goMC42NCAwLjA5IDI0NSk7CgogIC8qIFNpZGViYXIgKi8KICAtLXNpZGViYXI6IG9rbGNoKDAuOTkyIDAuMDA0IDg1KTsKICAtLXNpZGViYXItZm9yZWdyb3VuZDogb2tsY2goMC4zIDAuMDEyIDYyKTsKICAtLXNpZGViYXItcHJpbWFyeTogb2tsY2goMC4yMiAwLjAxNCA2Mik7CiAgLS1zaWRlYmFyLXByaW1hcnktZm9yZWdyb3VuZDogb2tsY2goMC45OSAwLjAwNCA4NSk7CiAgLS1zaWRlYmFyLWFjY2VudDogb2tsY2goMC45NTUgMC4wMiA4Nyk7CiAgLS1zaWRlYmFyLWFjY2VudC1mb3JlZ3JvdW5kOiBva2xjaCgwLjI4IDAuMDMgNjgpOwogIC0tc2lkZWJhci1ib3JkZXI6IG9rbGNoKDAuOTM1IDAuMDA2IDg0KTsKICAtLXNpZGViYXItcmluZzogb2tsY2goMC42MiAwLjA4NSA3MiAvIDAuMzUpOwoKICAvKiBMYXllcmVkIEVsZXZhdGlvbiBTaGFkb3dzIOKAlCBDcmlzcCwgd2VpZ2h0bGVzcywgbW9kZXJuICovCiAgLS1lbGV2YXRpb24taGFpcmxpbmU6IDAgMXB4IDAgMCBva2xjaCgwLjIgMC4wMSA2MCAvIDAuMDMpOwogIC0tZWxldmF0aW9uLXNvZnQ6CiAgICAwIDFweCAycHggMCBva2xjaCgwLjIgMC4wMSA2MCAvIDAuMDMpLCAwIDRweCAxNnB4IC0ycHggb2tsY2goMC4yIDAuMDEgNjAgLyAwLjA0KTsKICAtLWVsZXZhdGlvbi1yYWlzZWQ6CiAgICAwIDFweCAzcHggMCBva2xjaCgwLjIgMC4wMSA2MCAvIDAuMDQpLCAwIDhweCAyNHB4IC00cHggb2tsY2goMC4yIDAuMDEgNjAgLyAwLjA2KTsKICAtLWVsZXZhdGlvbi1mbG9hdGluZzoKICAgIDAgMnB4IDRweCAwIG9rbGNoKDAuMiAwLjAxIDYwIC8gMC4wNCksIDAgMjBweCA0OHB4IC0xMnB4IG9rbGNoKDAuMiAwLjAxIDYwIC8gMC4xMik7CiAgLS1lbGV2YXRpb24tZ29sZDogMCA4cHggMjRweCAtOHB4IG9rbGNoKDAuNjIgMC4wODUgNzIgLyAwLjMpOwoKICAvKiBNb3Rpb24gKi8KICAtLW1vdGlvbi1mYXN0OiAxMjBtczsKICAtLW1vdGlvbi1iYXNlOiAxODBtczsKICAtLW1vdGlvbi1zbG93OiAyNjBtczsKICAtLW1vdGlvbi1lYXNlOiBjdWJpYy1iZXppZXIoMC4xNiwgMSwgMC4zLCAxKTsKCiAgLyogTGF5b3V0IHJoeXRobSAqLwogIC0tc2lkZWJhci13aWR0aDogMTdyZW07CiAgLS1zaWRlYmFyLXdpZHRoLWljb246IDRyZW07CiAgLS10b3BiYXItaGVpZ2h0OiA0LjI1cmVtOwogIC0tY29udGVudC1tYXg6IDk2cmVtOwp9CgpAbGF5ZXIgYmFzZSB7CiAgKiB7CiAgICBib3JkZXItY29sb3I6IHZhcigtLWNvbG9yLWJvcmRlcik7CiAgfQoKICBodG1sIHsKICAgIC13ZWJraXQtZm9udC1zbW9vdGhpbmc6IGFudGlhbGlhc2VkOwogICAgLW1vei1vc3gtZm9udC1zbW9vdGhpbmc6IGdyYXlzY2FsZTsKICAgIHRleHQtcmVuZGVyaW5nOiBvcHRpbWl6ZUxlZ2liaWxpdHk7CiAgfQoKICBib2R5IHsKICAgIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWNvbG9yLWJhY2tncm91bmQpOwogICAgY29sb3I6IHZhcigtLWNvbG9yLWZvcmVncm91bmQpOwogICAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtbGF0aW4pOwogICAgZm9udC1mZWF0dXJlLXNldHRpbmdzOiAiY3YxMSIsICJzczAxIiwgImN2MDUiOwogIH0KCiAgaHRtbFtsYW5nPSJhciJdIGJvZHkgewogICAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtYXIpOwogIH0KCiAgLyogVGFidWxhciBudW1iZXJzIGZvciBjbGVhbiBudW1lcmljIGFsaWdubWVudCAqLwogIHRhYmxlLAogIFtkYXRhLW51bWVyaWNdIHsKICAgIGZvbnQtdmFyaWFudC1udW1lcmljOiB0YWJ1bGFyLW51bXMgbGluaW5nLW51bXM7CiAgfQoKICBoMSwKICBoMiwKICBoMywKICBoNCB7CiAgICBsZXR0ZXItc3BhY2luZzogLTAuMDE4ZW07CiAgfQoKICA6OnNlbGVjdGlvbiB7CiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1nb2xkLXNvZnQpOwogICAgY29sb3I6IHZhcigtLWdvbGQtZm9yZWdyb3VuZCk7CiAgfQoKICAvKiBIaWdoIHF1YWxpdHkgZm9jdXMgc3R5bGVzICovCiAgOmZvY3VzLXZpc2libGUgewogICAgb3V0bGluZTogbm9uZTsKICB9Cn0KCkB1dGlsaXR5IHN1cmZhY2UtY2FyZCB7CiAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tc3VyZmFjZSk7CiAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsKICBib3JkZXItcmFkaXVzOiB2YXIoLS1yYWRpdXMtMnhsKTsKICBib3gtc2hhZG93OiB2YXIoLS1lbGV2YXRpb24tc29mdCk7Cn0KCkB1dGlsaXR5IHRleHQtZ3JhZGllbnQtZ29sZCB7CiAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgdmFyKC0tZ29sZC1kZWVwKSwgdmFyKC0tZ29sZCkpOwogIC13ZWJraXQtYmFja2dyb3VuZC1jbGlwOiB0ZXh0OwogIGJhY2tncm91bmQtY2xpcDogdGV4dDsKICBjb2xvcjogdHJhbnNwYXJlbnQ7Cn0KCkB1dGlsaXR5IHNjcm9sbGJhci1zbGltIHsKICBzY3JvbGxiYXItd2lkdGg6IHRoaW47CiAgc2Nyb2xsYmFyLWNvbG9yOiB2YXIoLS1ib3JkZXItc3Ryb25nKSB0cmFuc3BhcmVudDsKfQoKLyog4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACiAqIEF0bW9zcGhlcmljIGxpZ2h0IGxheWVycyDigJQgcmVmbGVjdGVkIGNoYW1wYWduZS1nb2xkIGxpZ2h0IG9uIGl2b3J5LgogKiBQdXJlIENTUyByYWRpYWwgZmFsbG9mZjogbm8gdmlzaWJsZSBibG9icywgbm8gbmV3IGNvbXBvbmVudHMuCiAqIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCAqLwoKQHV0aWxpdHkgYXRtb3NwaGVyZS1oZXJvIHsKICBiYWNrZ3JvdW5kLWltYWdlOgogICAgcmFkaWFsLWdyYWRpZW50KAogICAgICAxMjAlIDc4JSBhdCA3OCUgMTglLAogICAgICBva2xjaCgwLjk0IDAuMDUgODQgLyAwLjQpIDAlLAogICAgICBva2xjaCgwLjk2NSAwLjAzIDg2IC8gMC4yMikgMzQlLAogICAgICB0cmFuc3BhcmVudCA3MCUKICAgICksCiAgICByYWRpYWwtZ3JhZGllbnQoOTAlIDYwJSBhdCAxMCUgNCUsIG9rbGNoKDAuOTcgMC4wMjIgODggLyAwLjM0KSAwJSwgdHJhbnNwYXJlbnQgNjglKSwKICAgIHJhZGlhbC1ncmFkaWVudCgxNDAlIDEwMCUgYXQgNTAlIDEwOCUsIG9rbGNoKDAuOTU1IDAuMDI4IDg2IC8gMC4yNikgMCUsIHRyYW5zcGFyZW50IDcyJSk7Cn0KCkB1dGlsaXR5IGF0bW9zcGhlcmUtc29mdCB7CiAgYmFja2dyb3VuZC1pbWFnZToKICAgIHJhZGlhbC1ncmFkaWVudCgxMDAlIDYyJSBhdCA1MCUgMCUsIG9rbGNoKDAuOTU4IDAuMDI2IDg2IC8gMC4zKSAwJSwgdHJhbnNwYXJlbnQgNzAlKSwKICAgIHJhZGlhbC1ncmFkaWVudCgxMTAlIDcwJSBhdCA1MCUgMTAwJSwgb2tsY2goMC45NTUgMC4wMyA4NCAvIDAuMjIpIDAlLCB0cmFuc3BhcmVudCA3NCUpOwp9CgpAdXRpbGl0eSBhdXJhLWdvbGQgewogIGJhY2tncm91bmQtaW1hZ2U6CiAgICByYWRpYWwtZ3JhZGllbnQoCiAgICAgIDYyJSA1MiUgYXQgNTIlIDQ2JSwKICAgICAgb2tsY2goMC45IDAuMDcgODQgLyAwLjQyKSAwJSwKICAgICAgb2tsY2goMC45NSAwLjA0IDg2IC8gMC4yNikgMzglLAogICAgICB0cmFuc3BhcmVudCA3MiUKICAgICksCiAgICByYWRpYWwtZ3JhZGllbnQoNDQlIDY2JSBhdCAzOCUgNjIlLCBva2xjaCgwLjkzIDAuMDU1IDgwIC8gMC4yNCkgMCUsIHRyYW5zcGFyZW50IDcwJSk7Cn0KCkB1dGlsaXR5IHNlYW0td2FybSB7CiAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KAogICAgdG8gYm90dG9tLAogICAgdHJhbnNwYXJlbnQgMCUsCiAgICBva2xjaCgwLjk2IDAuMDI1IDg4IC8gMC41KSA1MCUsCiAgICB0cmFuc3BhcmVudCAxMDAlCiAgKTsKfQoKLyogRWxsaXB0aWNhbCBzdHVkaW8gcGVkZXN0YWwgdGhhdCBhbmNob3JzIGEgY2VudGVyZWQgdmlzdWFsIGFuY2hvci4gKi8KQHV0aWxpdHkgcGVkZXN0YWwtZ29sZCB7CiAgYmFja2dyb3VuZC1pbWFnZTogcmFkaWFsLWdyYWRpZW50KAogICAgNTglIDUwJSBhdCA1MCUgNTAlLAogICAgb2tsY2goMC44NCAwLjA3IDgwIC8gMC4zKSAwJSwKICAgIG9rbGNoKDAuOTIgMC4wNSA4NCAvIDAuMTQpIDQ4JSwKICAgIHRyYW5zcGFyZW50IDc4JQogICk7Cn0KCi8qIFN0YXRpYyBjaGFtcGFnbmUgZmllbGQgaW5zaWRlIHRoZSBoZXJvIGxvZ28gY2FyZCDigJQgZ3JhZGllbnRzIG9ubHksIG5vIGJsdXIuICovCkB1dGlsaXR5IGNhcmQtZmllbGQtZ29sZCB7CiAgYmFja2dyb3VuZC1pbWFnZToKICAgIHJhZGlhbC1ncmFkaWVudCgKICAgICAgNTglIDQ2JSBhdCA1MCUgNDQlLAogICAgICBva2xjaCgwLjkzIDAuMDU1IDg0IC8gMC40KSAwJSwKICAgICAgb2tsY2goMC45NiAwLjAzIDg2IC8gMC4yKSA0NiUsCiAgICAgIHRyYW5zcGFyZW50IDc2JQogICAgKSwKICAgIHJhZGlhbC1ncmFkaWVudCg5MCUgNjAlIGF0IDUwJSAxMDglLCBva2xjaCgwLjk1IDAuMDM1IDg0IC8gMC4yMikgMCUsIHRyYW5zcGFyZW50IDcyJSk7Cn0K
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+/*
+ * GoldOS design system — Luxury Enterprise Operating System.
+ *
+ * Design Philosophy:
+ * - Canvas: Warm, serene alabaster white (oklch 0.984 0.005 85)
+ * - Surfaces: Pure crisp porcelain white (oklch 1 0 0)
+ * - Accents: Champagne gold & deep burnished gold
+ * - Type: Deep charcoal slate (never pure black) for ultimate eye comfort
+ * - Borders: Hairline delicate borders with crisp contrast
+ * - Elevation: Multi-layered soft ambient shadows (Stripe & Apple style)
+ *
+ * ALL styling inherits from these semantic tokens.
+ */
+
+@theme inline {
+  /* ---- Radius scale ---- */
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 14px);
+  --radius-4xl: calc(var(--radius) + 22px);
+
+  /* ---- Color tokens ---- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-deep: var(--gold-deep);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ---- Typography ---- */
+  --font-sans: var(--font-latin);
+  --font-arabic: var(--font-ar);
+  --font-display: var(--font-latin);
+
+  /* ---- Elevation ---- */
+  --shadow-hairline: var(--elevation-hairline);
+  --shadow-soft: var(--elevation-soft);
+  --shadow-raised: var(--elevation-raised);
+  --shadow-floating: var(--elevation-floating);
+  --shadow-gold: var(--elevation-gold);
+
+  /* ---- Breakpoints ---- */
+  --breakpoint-xs: 30rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* Fonts — Arabic first, Latin fallback chain */
+  --font-ar: "IBM Plex Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-latin: "Inter", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+
+  /* Canvas & surfaces — Warm, serene white canvas */
+  --background: oklch(0.984 0.005 85);
+  --foreground: oklch(0.22 0.014 60);
+  --surface: oklch(1 0 0);
+  --surface-muted: oklch(0.97 0.007 84);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.014 60);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.014 60);
+
+  /* Primary = deep charcoal, Accent = champagne gold */
+  --primary: oklch(0.22 0.014 62);
+  --primary-foreground: oklch(0.99 0.004 85);
+  --secondary: oklch(0.965 0.008 84);
+  --secondary-foreground: oklch(0.28 0.014 62);
+  --muted: oklch(0.965 0.008 84);
+  --muted-foreground: oklch(0.5 0.014 68);
+  --accent: oklch(0.955 0.02 87);
+  --accent-foreground: oklch(0.34 0.045 72);
+
+  /* Champagne & Burnished Gold Palette */
+  --gold: oklch(0.78 0.085 82);
+  --gold-soft: oklch(0.96 0.025 88);
+  --gold-deep: oklch(0.62 0.085 72);
+  --gold-foreground: oklch(0.22 0.02 62);
+
+  /* Refined Status Palette */
+  --destructive: oklch(0.56 0.16 26);
+  --destructive-foreground: oklch(0.99 0.004 85);
+  --success: oklch(0.55 0.13 148);
+  --success-foreground: oklch(0.99 0.004 85);
+  --warning: oklch(0.72 0.13 72);
+  --warning-foreground: oklch(0.22 0.02 62);
+  --info: oklch(0.56 0.1 245);
+  --info-foreground: oklch(0.99 0.004 85);
+
+  /* Hairline Lines & Focus Rings */
+  --border: oklch(0.925 0.006 84);
+  --border-strong: oklch(0.85 0.01 84);
+  --input: oklch(0.925 0.006 84);
+  --ring: oklch(0.62 0.085 72 / 0.35);
+
+  /* Charts */
+  --chart-1: oklch(0.78 0.085 82);
+  --chart-2: oklch(0.62 0.085 72);
+  --chart-3: oklch(0.42 0.02 62);
+  --chart-4: oklch(0.68 0.08 148);
+  --chart-5: oklch(0.64 0.09 245);
+
+  /* Sidebar */
+  --sidebar: oklch(0.992 0.004 85);
+  --sidebar-foreground: oklch(0.3 0.012 62);
+  --sidebar-primary: oklch(0.22 0.014 62);
+  --sidebar-primary-foreground: oklch(0.99 0.004 85);
+  --sidebar-accent: oklch(0.955 0.02 87);
+  --sidebar-accent-foreground: oklch(0.28 0.03 68);
+  --sidebar-border: oklch(0.935 0.006 84);
+  --sidebar-ring: oklch(0.62 0.085 72 / 0.35);
+
+  /* Layered Elevation Shadows — Crisp, weightless, modern */
+  --elevation-hairline: 0 1px 0 0 oklch(0.2 0.01 60 / 0.03);
+  --elevation-soft:
+    0 1px 2px 0 oklch(0.2 0.01 60 / 0.03), 0 4px 16px -2px oklch(0.2 0.01 60 / 0.04);
+  --elevation-raised:
+    0 1px 3px 0 oklch(0.2 0.01 60 / 0.04), 0 8px 24px -4px oklch(0.2 0.01 60 / 0.06);
+  --elevation-floating:
+    0 2px 4px 0 oklch(0.2 0.01 60 / 0.04), 0 20px 48px -12px oklch(0.2 0.01 60 / 0.12);
+  --elevation-gold: 0 8px 24px -8px oklch(0.62 0.085 72 / 0.3);
+
+  /* Motion */
+  --motion-fast: 120ms;
+  --motion-base: 180ms;
+  --motion-slow: 260ms;
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout rhythm */
+  --sidebar-width: 17rem;
+  --sidebar-width-icon: 4rem;
+  --topbar-height: 4.25rem;
+  --content-max: 96rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-latin);
+    font-feature-settings: "cv11", "ss01", "cv05";
+  }
+
+  html[lang="ar"] body {
+    font-family: var(--font-ar);
+  }
+
+  /* Tabular numbers for clean numeric alignment */
+  table,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.018em;
+  }
+
+  ::selection {
+    background: var(--gold-soft);
+    color: var(--gold-foreground);
+  }
+
+  /* High quality focus styles */
+  :focus-visible {
+    outline: none;
+  }
+}
+
+@utility surface-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elevation-soft);
+}
+
+@utility text-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility scrollbar-slim {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Atmospheric light layers — reflected champagne-gold light on ivory.
+ * Pure CSS radial falloff: no visible blobs, no new components.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+@utility atmosphere-hero {
+  background-image:
+    radial-gradient(
+      120% 78% at 78% 18%,
+      oklch(0.94 0.05 84 / 0.4) 0%,
+      oklch(0.965 0.03 86 / 0.22) 34%,
+      transparent 70%
+    ),
+    radial-gradient(90% 60% at 10% 4%, oklch(0.97 0.022 88 / 0.34) 0%, transparent 68%),
+    radial-gradient(140% 100% at 50% 108%, oklch(0.955 0.028 86 / 0.26) 0%, transparent 72%);
+}
+
+@utility atmosphere-soft {
+  background-image:
+    radial-gradient(100% 62% at 50% 0%, oklch(0.958 0.026 86 / 0.3) 0%, transparent 70%),
+    radial-gradient(110% 70% at 50% 100%, oklch(0.955 0.03 84 / 0.22) 0%, transparent 74%);
+}
+
+@utility aura-gold {
+  background-image:
+    radial-gradient(
+      62% 52% at 52% 46%,
+      oklch(0.9 0.07 84 / 0.42) 0%,
+      oklch(0.95 0.04 86 / 0.26) 38%,
+      transparent 72%
+    ),
+    radial-gradient(44% 66% at 38% 62%, oklch(0.93 0.055 80 / 0.24) 0%, transparent 70%);
+}
+
+@utility seam-warm {
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    oklch(0.96 0.025 88 / 0.5) 50%,
+    transparent 100%
+  );
+}
+
+/* Elliptical studio pedestal that anchors a centered visual anchor. */
+@utility pedestal-gold {
+  background-image: radial-gradient(
+    58% 50% at 50% 50%,
+    oklch(0.84 0.07 80 / 0.3) 0%,
+    oklch(0.92 0.05 84 / 0.14) 48%,
+    transparent 78%
+  );
+}
+
+/* Static champagne field inside the hero logo card — gradients only, no blur. */
+@utility card-field-gold {
+  background-image:
+    radial-gradient(
+      58% 46% at 50% 44%,
+      oklch(0.93 0.055 84 / 0.4) 0%,
+      oklch(0.96 0.03 86 / 0.2) 46%,
+      transparent 76%
+    ),
+    radial-gradient(90% 60% at 50% 108%, oklch(0.95 0.035 84 / 0.22) 0%, transparent 72%);
+}

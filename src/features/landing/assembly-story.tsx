@@ -1,1 +1,159 @@
-aW1wb3J0IHsgbW90aW9uIH0gZnJvbSAibW90aW9uL3JlYWN0IjsKaW1wb3J0IHR5cGUgeyBMdWNpZGVJY29uIH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHsgQmFkZ2VDaGVjaywgQmFyQ2hhcnQzLCBDb2lucywgRmlsZVRleHQsIFBhY2thZ2UsIFNoaWVsZENoZWNrLCBVc2VycyB9IGZyb20gImx1Y2lkZS1yZWFjdCI7CgppbXBvcnQgeyBBbWJpZW50RGVwdGggfSBmcm9tICIuL2FtYmllbnQtZGVwdGgiOwppbXBvcnQgeyBHb2xkQmFycyB9IGZyb20gIi4vZ29sZC1iYXJzIjsKaW1wb3J0IHsgUmluZ0JveFNjZW5lLCB1c2VBc3NlbWJseVByb2dyZXNzIH0gZnJvbSAiLi9yaW5nLWJveC1zY2VuZSI7Cgp0eXBlIFBpbGxhciA9IHsKICBpY29uOiBMdWNpZGVJY29uOwogIGFyOiBzdHJpbmc7CiAgZW46IHN0cmluZzsKICBkZXNjQXI6IHN0cmluZzsKICBkZXNjRW46IHN0cmluZzsKfTsKCmNvbnN0IFBJTExBUlM6IFBpbGxhcltdID0gWwogIHsKICAgIGljb246IFBhY2thZ2UsCiAgICBhcjogItil2K/Yp9ix2Kkg2KfZhNmF2K7YstmI2YYiLAogICAgZW46ICJJbnZlbnRvcnkgTWFuYWdlbWVudCIsCiAgICBkZXNjQXI6ICLYqtiq2KjZkdi5INmD2YQg2YLYt9i52Kkg2KjYp9mE2LnZitin2LEg2YjYp9mE2YjYstmGINin2YTYtdin2YHZiiDZiNin2YTYr9ix2KzYjCDYqNiv2YLYqSDYqti12YQg2KXZhNmJIDAuMDAxINis2LHYp9mFLiIsCiAgICBkZXNjRW46ICJUcmFjayBldmVyeSBwaWVjZSBieSBrYXJhdCwgbmV0IHdlaWdodCBhbmQgdHJheSDigJQgdG8gMC4wMDFnIHByZWNpc2lvbi4iLAogIH0sCiAgewogICAgaWNvbjogQ29pbnMsCiAgICBhcjogItiq2K3Yr9mK2Ksg2KPYs9i52KfYsSDYp9mE2LDZh9ioIiwKICAgIGVuOiAiTGl2ZSBHb2xkIFByaWNpbmciLAogICAgZGVzY0FyOiAi2KPYs9i52KfYsSDYp9mE2LnZitin2LHYp9iqINio2KfZhNis2YbZitmHINin2YTZhdi12LHZiiDYqtmP2K3Yr9mO2ZHYqyDZhNit2LjZitmL2Kcg2YjYqtmP2LfYqNmO2ZHZgiDYqtmE2YLYp9im2YrZi9inINi52YTZiSDZg9mEINi52YXZhNmK2Kkg2KjZiti5LiIsCiAgICBkZXNjRW46ICJFR1Aga2FyYXQgcmF0ZXMgdXBkYXRlIGluc3RhbnRseSBhbmQgYXBwbHkgYXV0b21hdGljYWxseSBhY3Jvc3MgZXZlcnkgc2FsZS4iLAogIH0sCiAgewogICAgaWNvbjogVXNlcnMsCiAgICBhcjogItil2K/Yp9ix2Kkg2KfZhNi52YXZhNin2KEiLAogICAgZW46ICJDbGllbnQgTWFuYWdlbWVudCIsCiAgICBkZXNjQXI6ICLYs9is2YQg2YPYp9mF2YQg2YTZg9mEINi52YXZitmEOiDYp9mE2YXYtNiq2LHZitin2KrYjCDYp9mE2YXYsdiq2KzYudin2KrYjCDZiNin2YTYqtmB2LbZitmE2KfYqiDZgdmKINmF2YPYp9mGINmI2KfYrdivLiIsCiAgICBkZXNjRW46ICJBIGNvbXBsZXRlIHJlY29yZCBwZXIgY2xpZW50OiBwdXJjaGFzZXMsIHJldHVybnMgYW5kIHByZWZlcmVuY2VzLiIsCiAgfSwKICB7CiAgICBpY29uOiBCYXJDaGFydDMsCiAgICBhcjogItin2YTYqtmC2KfYsdmK2LEiLAogICAgZW46ICJSZXBvcnRpbmciLAogICAgZGVzY0FyOiAi2KrZgtin2LHZitixINmF2KjZiti52KfYqiDZiNmF2K7YstmI2YYg2YjYttix2YrYqNipINis2KfZh9iy2Kkg2YTZhNi32KjYp9i52Kkg2YjYp9mE2KrYtdiv2YrYsSDZgdmKINij2Yog2YTYrdi42Kkg2KrYrdiq2KfYrNmH2KcuIiwKICAgIGRlc2NFbjogIlNhbGVzLCBpbnZlbnRvcnkgYW5kIFZBVCByZXBvcnRzIHJlYWR5IHRvIHByaW50IG9yIGV4cG9ydCBhbnl0aW1lLiIsCiAgfSwKICB7CiAgICBpY29uOiBGaWxlVGV4dCwKICAgIGFyOiAi2KfZhNmB2YjYp9iq2YrYsSIsCiAgICBlbjogIkludm9pY2luZyIsCiAgICBkZXNjQXI6ICLZgdmI2KfYqtmK2LEg2KPZhtmK2YLYqSDZhNmE2LTYutmEINmI2KfZhNiz2KjYp9im2YMg2YXYuSDYp9it2KrYs9in2Kgg2KfZhNmF2LXZhti52YrYqSDZiNin2YTYttix2YrYqNipINiq2YTZgtin2KbZitmL2KcuIiwKICAgIGRlc2NFbjogIlJlZmluZWQgaW52b2ljZXMgZm9yIGpld2VscnkgYW5kIGJ1bGxpb24gd2l0aCBhdXRvbWF0aWMgbWFraW5nLWNoYXJnZSBhbmQgVkFULiIsCiAgfSwKICB7CiAgICBpY29uOiBTaGllbGRDaGVjaywKICAgIGFyOiAi2KfZhNij2YXYp9mGIiwKICAgIGVuOiAiU2VjdXJpdHkiLAogICAgZGVzY0FyOiAi2LXZhNin2K3Zitin2Kog2K/ZgtmK2YLYqSDZhNmD2YQg2K/ZiNix2Iwg2YjYs9is2YQg2KrYr9mC2YrZgiDZg9in2YXZhCDZhNmD2YQg2K3YsdmD2Kkg2K/Yp9iu2YQg2KfZhNmG2LjYp9mFLiIsCiAgICBkZXNjRW46ICJHcmFudWxhciByb2xlIHBlcm1pc3Npb25zIGFuZCBhIGZ1bGwgYXVkaXQgdHJhaWwgZm9yIGV2ZXJ5IGFjdGlvbi4iLAogIH0sCiAgewogICAgaWNvbjogQmFkZ2VDaGVjaywKICAgIGFyOiAi2LPZh9mI2YTYqSDYp9mE2KfYs9iq2K7Yr9in2YUiLAogICAgZW46ICJFZmZvcnRsZXNzIHRvIFVzZSIsCiAgICBkZXNjQXI6ICLZiNin2KzZh9ipINi52LHYqNmK2Kkg2YfYp9iv2KbYqSDZitiq2YLZhtmH2Kcg2KfZhNmD2KfYtNmK2LEg2YXZhiDYo9mI2YQg2YrZiNmFINiv2YjZhiDYo9mKINiq2K/YsdmK2Kgg2YXYudmC2K8uIiwKICAgIGRlc2NFbjogIkEgY2FsbSBBcmFiaWMtZmlyc3QgaW50ZXJmYWNlIHlvdXIgY2FzaGllciBtYXN0ZXJzIG9uIGRheSBvbmUuIiwKICB9LApdOwoKLyoqCiAqIFRoZSBjZW50ZXJwaWVjZTogYSBzY3JvbGwtZHJpdmVuIHJpbmctYm94IGFzc2VtYmx5IGxvY2tlZCBiZXNpZGUgdGhlCiAqICJ3aHkgSmF3aGFyYSBUZWNoIiBwaWxsYXJzLCB3aGljaCByZXZlYWwgb25lIGJ5IG9uZSBhcyB0aGUgYm94IGNvbWVzIHRvZ2V0aGVyLgogKi8KZXhwb3J0IGZ1bmN0aW9uIEFzc2VtYmx5U3RvcnkoeyBsb2NhbGUgfTogeyBsb2NhbGU6IHN0cmluZyB9KSB7CiAgY29uc3QgeyByZWYsIHByb2dyZXNzIH0gPSB1c2VBc3NlbWJseVByb2dyZXNzKCk7CiAgY29uc3QgaXNBciA9IGxvY2FsZSA9PT0gImFyIjsKCiAgcmV0dXJuICgKICAgIDxzZWN0aW9uIGlkPSJ3aHkiIHJlZj17cmVmfSBjbGFzc05hbWU9InJlbGF0aXZlIj4KICAgICAgPEdvbGRCYXJzIC8+CiAgICAgIDxBbWJpZW50RGVwdGggLz4KICAgICAgPGRpdiBjbGFzc05hbWU9InBvaW50ZXItZXZlbnRzLW5vbmUgYWJzb2x1dGUgaW5zZXQteC0wIHRvcC0wIC16LTEwIGgtWzM0cmVtXSBzZWFtLXdhcm0gb3BhY2l0eS04MCIgLz4KCiAgICAgIDxkaXYgY2xhc3NOYW1lPSJyZWxhdGl2ZSBteC1hdXRvIGdyaWQgbWF4LXctWzg2cmVtXSBnYXAteC0xNiBweC00IHNtOnB4LTYgbGc6Z3JpZC1jb2xzLTIgbGc6cHgtMTIiPgogICAgICAgIHsvKiBTdGlja3kgcmluZyBib3ggc3RhZ2UgKi99CiAgICAgICAgPGRpdiBjbGFzc05hbWU9InRvcC0wIGgtW21pbig3MHZoLDMwcmVtKV0gbGc6c3RpY2t5IGxnOmgtc2NyZWVuIj4KICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJyZWxhdGl2ZSBmbGV4IGgtZnVsbCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIiPgogICAgICAgICAgICA8ZGl2CiAgICAgICAgICAgICAgYXJpYS1oaWRkZW4KICAgICAgICAgICAgICBjbGFzc05hbWU9ImF1cmEtZ29sZCBwb2ludGVyLWV2ZW50cy1ub25lIGFic29sdXRlIGluc2V0LVs2JV0gLXotMTAgcm91bmRlZC1bNTAlXSBvcGFjaXR5LTcwIGxnOm9wYWNpdHktOTAiCiAgICAgICAgICAgIC8+CiAgICAgICAgICAgIDxSaW5nQm94U2NlbmUKICAgICAgICAgICAgICBwcm9ncmVzcz17cHJvZ3Jlc3N9CiAgICAgICAgICAgICAgY2xhc3NOYW1lPSJ3LVs4MiVdIG1heC13LVttaW4oMzByZW0sNjh2aCldIHNtOnctZnVsbCIKICAgICAgICAgICAgLz4KICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvZGl2PgoKICAgICAgICB7LyogUGlsbGFycyAqL30KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icHktMjAgbGc6cHktWzIwdmhdIj4KICAgICAgICAgIDxtb3Rpb24uZGl2CiAgICAgICAgICAgIGluaXRpYWw9e3sgb3BhY2l0eTogMCwgeTogMjggfX0KICAgICAgICAgICAgd2hpbGVJblZpZXc9e3sgb3BhY2l0eTogMSwgeTogMCB9fQogICAgICAgICAgICB2aWV3cG9ydD17eyBvbmNlOiB0cnVlLCBtYXJnaW46ICItMTAwcHgiIH19CiAgICAgICAgICAgIHRyYW5zaXRpb249e3sgZHVyYXRpb246IDAuOSwgZWFzZTogWzAuMTYsIDEsIDAuMywgMV0gfX0KICAgICAgICAgICAgY2xhc3NOYW1lPSJtYi0xNiBzcGFjZS15LTYiCiAgICAgICAgICA+CiAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0idGV4dC1bMC43cmVtXSBmb250LXNlbWlib2xkIHVwcGVyY2FzZSB0cmFja2luZy1bMC40ZW1dIHRleHQtZ29sZC1kZWVwIj4KICAgICAgICAgICAgICB7aXNBciA/ICLYp9mE2KrZhdmK2ZHYsiIgOiAiVGhlIERpZmZlcmVuY2UifQogICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgIDxoMiBjbGFzc05hbWU9InRleHQtWzIuNHJlbV0gZm9udC1leHRyYWJvbGQgbGVhZGluZy1bMS4yOF0gdHJhY2tpbmctdGlnaHQgdGV4dC1mb3JlZ3JvdW5kIHNtOnRleHQtWzMuMXJlbV0iPgogICAgICAgICAgICAgIHtpc0FyID8gItmE2YXYp9iw2Kcg2KzZiNmH2LHYqSDYqtmD2J8iIDogIldoeSBKYXdoYXJhIFRlY2g/In0KICAgICAgICAgICAgPC9oMj4KICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJtYXgtdy1tZCB0ZXh0LWJhc2UgbGVhZGluZy1bMi4xXSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPgogICAgICAgICAgICAgIHtpc0FyCiAgICAgICAgICAgICAgICA/ICLZhdmG2LjZiNmF2Kkg2YjYp9it2K/YqSDYqtis2YXYuSDZg9mEINmF2Kcg2YrYrdiq2KfYrNmHINmF2K3ZhCDYp9mE2LDZh9io2Iwg2YXYtdmF2YXYqSDYqNmH2K/ZiNihINmI2K/ZgtipINiq2YTZitmCINio2KfZhNmF2LnYr9mGINin2YTYsNmKINiq2KjZiti52YcuIgogICAgICAgICAgICAgICAgOiAiT25lIHN5c3RlbSBob2xkaW5nIGV2ZXJ5dGhpbmcgYSBqZXdlbHJ5IGhvdXNlIG5lZWRzIOKAlCBidWlsdCB3aXRoIHRoZSBwcmVjaXNpb24gdGhlIG1ldGFsIGRlc2VydmVzLiJ9CiAgICAgICAgICAgIDwvcD4KICAgICAgICAgIDwvbW90aW9uLmRpdj4KCiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS02IGxnOnNwYWNlLXktMTAiPgogICAgICAgICAgICB7UElMTEFSUy5tYXAoKHBpbGxhciwgaW5kZXgpID0+ICgKICAgICAgICAgICAgICA8UGlsbGFyQ2FyZCBrZXk9e3BpbGxhci5lbn0gcGlsbGFyPXtwaWxsYXJ9IGluZGV4PXtpbmRleH0gaXNBcj17aXNBcn0gLz4KICAgICAgICAgICAgKSl9CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L3NlY3Rpb24+CiAgKTsKfQoKZnVuY3Rpb24gUGlsbGFyQ2FyZCh7IHBpbGxhciwgaW5kZXgsIGlzQXIgfTogeyBwaWxsYXI6IFBpbGxhcjsgaW5kZXg6IG51bWJlcjsgaXNBcjogYm9vbGVhbiB9KSB7CiAgY29uc3QgSWNvbiA9IHBpbGxhci5pY29uOwogIHJldHVybiAoCiAgICA8bW90aW9uLmFydGljbGUKICAgICAgaW5pdGlhbD17eyBvcGFjaXR5OiAwLCB5OiAzNCB9fQogICAgICB3aGlsZUluVmlldz17eyBvcGFjaXR5OiAxLCB5OiAwIH19CiAgICAgIHZpZXdwb3J0PXt7IG9uY2U6IHRydWUsIG1hcmdpbjogIi0xNSUgMHB4IC0xNSUgMHB4IiB9fQogICAgICB0cmFuc2l0aW9uPXt7IGR1cmF0aW9uOiAwLjg1LCBlYXNlOiBbMC4xNiwgMSwgMC4zLCAxXSB9fQogICAgICB3aGlsZUhvdmVyPXt7IHk6IC00IH19CiAgICAgIGNsYXNzTmFtZT0iZ3JvdXAgcmVsYXRpdmUgZmxleCBpdGVtcy1zdGFydCBnYXAtNCBvdmVyZmxvdy1oaWRkZW4gcm91bmRlZC1bMS41cmVtXSBib3JkZXIgYm9yZGVyLXdoaXRlLzcwIGJnLXN1cmZhY2UvNzAgcC01IHNtOmdhcC02IHNtOnJvdW5kZWQtWzJyZW1dIHNtOnAtOCBzaGFkb3ctc29mdCBiYWNrZHJvcC1ibHVyLXhsIHRyYW5zaXRpb24tW2JveC1zaGFkb3csYm9yZGVyLWNvbG9yXSBkdXJhdGlvbi01MDAgaG92ZXI6Ym9yZGVyLWdvbGQvMzUgaG92ZXI6c2hhZG93LWZsb2F0aW5nIgogICAgPgogICAgICA8c3BhbiBjbGFzc05hbWU9InBvaW50ZXItZXZlbnRzLW5vbmUgYWJzb2x1dGUgaW5zZXQteC0wIHRvcC0wIGgtcHggYmctZ3JhZGllbnQtdG8tciBmcm9tLXRyYW5zcGFyZW50IHZpYS13aGl0ZSB0by10cmFuc3BhcmVudCIgLz4KICAgICAgPHNwYW4gY2xhc3NOYW1lPSJmbGV4IHNpemUtMTEgc2hyaW5rLTAgc206c2l6ZS0xNCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgcm91bmRlZC0yeGwgYm9yZGVyIGJvcmRlci1ib3JkZXIvNjAgYmctc3VyZmFjZS1tdXRlZC82MCB0ZXh0LWdvbGQtZGVlcCB0cmFuc2l0aW9uLWFsbCBkdXJhdGlvbi01MDAgZ3JvdXAtaG92ZXI6Ym9yZGVyLWdvbGQvNDAgZ3JvdXAtaG92ZXI6YmctZ29sZC1zb2Z0Ij4KICAgICAgICA8SWNvbiBjbGFzc05hbWU9InNpemUtNSBzbTpzaXplLTYiIHN0cm9rZVdpZHRoPXsxLjZ9IGFyaWEtaGlkZGVuIC8+CiAgICAgIDwvc3Bhbj4KICAgICAgPGRpdiBjbGFzc05hbWU9InNwYWNlLXktMi41Ij4KICAgICAgICA8aDMgY2xhc3NOYW1lPSJ0ZXh0LWxnIGZvbnQtYm9sZCBzbTp0ZXh0LXhsIHRyYWNraW5nLXRpZ2h0IHRleHQtZm9yZWdyb3VuZCI+CiAgICAgICAgICB7aXNBciA/IHBpbGxhci5hciA6IHBpbGxhci5lbn0KICAgICAgICA8L2gzPgogICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSBsZWFkaW5nLVsyLjA1XSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPgogICAgICAgICAge2lzQXIgPyBwaWxsYXIuZGVzY0FyIDogcGlsbGFyLmRlc2NFbn0KICAgICAgICA8L3A+CiAgICAgIDwvZGl2PgogICAgICA8c3BhbiBjbGFzc05hbWU9ImFic29sdXRlIGJvdHRvbS00IGVuZC01IGZvbnQtbW9ubyBzbTpib3R0b20tNiBzbTplbmQtOCB0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZC80MCI+CiAgICAgICAge1N0cmluZyhpbmRleCArIDEpLnBhZFN0YXJ0KDIsICIwIil9CiAgICAgIDwvc3Bhbj4KICAgIDwvbW90aW9uLmFydGljbGU+CiAgKTsKfQo=
+import { motion } from "motion/react";
+import type { LucideIcon } from "lucide-react";
+import { BadgeCheck, BarChart3, Coins, FileText, Package, ShieldCheck, Users } from "lucide-react";
+
+import { AmbientDepth } from "./ambient-depth";
+import { GoldBars } from "./gold-bars";
+import { RingBoxScene, useAssemblyProgress } from "./ring-box-scene";
+
+type Pillar = {
+  icon: LucideIcon;
+  ar: string;
+  en: string;
+  descAr: string;
+  descEn: string;
+};
+
+const PILLARS: Pillar[] = [
+  {
+    icon: Package,
+    ar: "إدارة المخزون",
+    en: "Inventory Management",
+    descAr: "تتبّع كل قطعة بالعيار والوزن الصافي والدرج، بدقة تصل إلى 0.001 جرام.",
+    descEn: "Track every piece by karat, net weight and tray — to 0.001g precision.",
+  },
+  {
+    icon: Coins,
+    ar: "تحديث أسعار الذهب",
+    en: "Live Gold Pricing",
+    descAr: "أسعار العيارات بالجنيه المصري تُحدَّث لحظيًا وتُطبَّق تلقائيًا على كل عملية بيع.",
+    descEn: "EGP karat rates update instantly and apply automatically across every sale.",
+  },
+  {
+    icon: Users,
+    ar: "إدارة العملاء",
+    en: "Client Management",
+    descAr: "سجل كامل لكل عميل: المشتريات، المرتجعات، والتفضيلات في مكان واحد.",
+    descEn: "A complete record per client: purchases, returns and preferences.",
+  },
+  {
+    icon: BarChart3,
+    ar: "التقارير",
+    en: "Reporting",
+    descAr: "تقارير مبيعات ومخزون وضريبة جاهزة للطباعة والتصدير في أي لحظة تحتاجها.",
+    descEn: "Sales, inventory and VAT reports ready to print or export anytime.",
+  },
+  {
+    icon: FileText,
+    ar: "الفواتير",
+    en: "Invoicing",
+    descAr: "فواتير أنيقة للشغل والسبائك مع احتساب المصنعية والضريبة تلقائيًا.",
+    descEn: "Refined invoices for jewelry and bullion with automatic making-charge and VAT.",
+  },
+  {
+    icon: ShieldCheck,
+    ar: "الأمان",
+    en: "Security",
+    descAr: "صلاحيات دقيقة لكل دور، وسجل تدقيق كامل لكل حركة داخل النظام.",
+    descEn: "Granular role permissions and a full audit trail for every action.",
+  },
+  {
+    icon: BadgeCheck,
+    ar: "سهولة الاستخدام",
+    en: "Effortless to Use",
+    descAr: "واجهة عربية هادئة يتقنها الكاشير من أول يوم دون أي تدريب معقد.",
+    descEn: "A calm Arabic-first interface your cashier masters on day one.",
+  },
+];
+
+/**
+ * The centerpiece: a scroll-driven ring-box assembly locked beside the
+ * "why Jawhara Tech" pillars, which reveal one by one as the box comes together.
+ */
+export function AssemblyStory({ locale }: { locale: string }) {
+  const { ref, progress } = useAssemblyProgress();
+  const isAr = locale === "ar";
+
+  return (
+    <section id="why" ref={ref} className="relative">
+      <GoldBars />
+      <AmbientDepth />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] seam-warm opacity-80" />
+
+      <div className="relative mx-auto grid max-w-[86rem] gap-x-16 px-4 sm:px-6 lg:grid-cols-2 lg:px-12">
+        {/* Sticky ring box stage */}
+        <div className="top-0 h-[min(70vh,30rem)] lg:sticky lg:h-screen">
+          <div className="relative flex h-full items-center justify-center">
+            <div
+              aria-hidden
+              className="aura-gold pointer-events-none absolute inset-[6%] -z-10 rounded-[50%] opacity-70 lg:opacity-90"
+            />
+            <RingBoxScene
+              progress={progress}
+              className="w-[82%] max-w-[min(30rem,68vh)] sm:w-full"
+            />
+          </div>
+        </div>
+
+        {/* Pillars */}
+        <div className="py-20 lg:py-[20vh]">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-16 space-y-6"
+          >
+            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-gold-deep">
+              {isAr ? "التميّز" : "The Difference"}
+            </span>
+            <h2 className="text-[2.4rem] font-extrabold leading-[1.28] tracking-tight text-foreground sm:text-[3.1rem]">
+              {isAr ? "لماذا جوهرة تك؟" : "Why Jawhara Tech?"}
+            </h2>
+            <p className="max-w-md text-base leading-[2.1] text-muted-foreground">
+              {isAr
+                ? "منظومة واحدة تجمع كل ما يحتاجه محل الذهب، مصممة بهدوء ودقة تليق بالمعدن الذي تبيعه."
+                : "One system holding everything a jewelry house needs — built with the precision the metal deserves."}
+            </p>
+          </motion.div>
+
+          <div className="space-y-6 lg:space-y-10">
+            {PILLARS.map((pillar, index) => (
+              <PillarCard key={pillar.en} pillar={pillar} index={index} isAr={isAr} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PillarCard({ pillar, index, isAr }: { pillar: Pillar; index: number; isAr: boolean }) {
+  const Icon = pillar.icon;
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 34 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-15% 0px -15% 0px" }}
+      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -4 }}
+      className="group relative flex items-start gap-4 overflow-hidden rounded-[1.5rem] border border-white/70 bg-surface/70 p-5 sm:gap-6 sm:rounded-[2rem] sm:p-8 shadow-soft backdrop-blur-xl transition-[box-shadow,border-color] duration-500 hover:border-gold/35 hover:shadow-floating"
+    >
+      <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent" />
+      <span className="flex size-11 shrink-0 sm:size-14 items-center justify-center rounded-2xl border border-border/60 bg-surface-muted/60 text-gold-deep transition-all duration-500 group-hover:border-gold/40 group-hover:bg-gold-soft">
+        <Icon className="size-5 sm:size-6" strokeWidth={1.6} aria-hidden />
+      </span>
+      <div className="space-y-2.5">
+        <h3 className="text-lg font-bold sm:text-xl tracking-tight text-foreground">
+          {isAr ? pillar.ar : pillar.en}
+        </h3>
+        <p className="text-sm leading-[2.05] text-muted-foreground">
+          {isAr ? pillar.descAr : pillar.descEn}
+        </p>
+      </div>
+      <span className="absolute bottom-4 end-5 font-mono sm:bottom-6 sm:end-8 text-xs text-muted-foreground/40">
+        {String(index + 1).padStart(2, "0")}
+      </span>
+    </motion.article>
+  );
+}

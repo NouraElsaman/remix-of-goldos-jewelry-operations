@@ -1,1 +1,393 @@
-LyoqCiAqIExpZ2h0d2VpZ2h0IFdlYkdMIHJlbmRlcmVyIGZvciB0aGUgbGFuZGluZy1wYWdlIHJpbmcgYm94LgogKgogKiBPbmUgc2NlbmUsIG9uZSBjYW1lcmEsIG9uZSByZW5kZXJlciwgcmVuZGVyLW9uLWRlbWFuZC4gSXQgZXhwb3NlcyBhIHNpbmdsZQogKiBgc2V0UHJvZ3Jlc3MoMOKGkjEpYCBlbnRyeSBwb2ludCBzbyB0aGUgd2hvbGUgc2NlbmUgc3RheXMgYSBwdXJlIGZ1bmN0aW9uIG9mCiAqIHRoZSBzY3JvbGwgTW90aW9uVmFsdWUgYW5kIHJldmVyc2VzIHBlcmZlY3RseSB3aGVuIHNjcm9sbGluZyB1cHdhcmQuCiAqLwppbXBvcnQgdHlwZSAqIGFzIFRIUkVFX05TIGZyb20gInRocmVlIjsKCmV4cG9ydCB0eXBlIFJpbmdCb3hSZW5kZXJlciA9IHsKICBzZXRQcm9ncmVzczogKHZhbHVlOiBudW1iZXIpID0+IHZvaWQ7CiAgZGlzcG9zZTogKCkgPT4gdm9pZDsKfTsKCi8qKiBQaWVjZXdpc2UtbGluZWFyIGtleWZyYW1lIHNhbXBsaW5nIOKAlCBtaXJyb3JzIG1vdGlvbidzIGB1c2VUcmFuc2Zvcm1gLiAqLwpmdW5jdGlvbiBrZXlmcmFtZSh0OiBudW1iZXIsIGlucHV0OiBudW1iZXJbXSwgb3V0cHV0OiBudW1iZXJbXSkgewogIGlmICh0IDw9IGlucHV0WzBdISkgcmV0dXJuIG91dHB1dFswXSE7CiAgZm9yIChsZXQgaSA9IDE7IGkgPCBpbnB1dC5sZW5ndGg7IGkrKykgewogICAgY29uc3QgYSA9IGlucHV0W2kgLSAxXSE7CiAgICBjb25zdCBiID0gaW5wdXRbaV0hOwogICAgaWYgKHQgPD0gYikgewogICAgICBjb25zdCBrID0gYiA9PT0gYSA/IDAgOiAodCAtIGEpIC8gKGIgLSBhKTsKICAgICAgcmV0dXJuIG91dHB1dFtpIC0gMV0hICsgKG91dHB1dFtpXSEgLSBvdXRwdXRbaSAtIDFdISkgKiBrOwogICAgfQogIH0KICByZXR1cm4gb3V0cHV0W291dHB1dC5sZW5ndGggLSAxXSE7Cn0KCmZ1bmN0aW9uIHJvdW5kZWRSZWN0KFRIUkVFOiB0eXBlb2YgVEhSRUVfTlMsIHc6IG51bWJlciwgaDogbnVtYmVyLCByOiBudW1iZXIpIHsKICBjb25zdCBzaGFwZSA9IG5ldyBUSFJFRS5TaGFwZSgpOwogIGNvbnN0IHggPSAtdyAvIDI7CiAgY29uc3QgeSA9IC1oIC8gMjsKICBzaGFwZS5tb3ZlVG8oeCArIHIsIHkpOwogIHNoYXBlLmxpbmVUbyh4ICsgdyAtIHIsIHkpOwogIHNoYXBlLnF1YWRyYXRpY0N1cnZlVG8oeCArIHcsIHksIHggKyB3LCB5ICsgcik7CiAgc2hhcGUubGluZVRvKHggKyB3LCB5ICsgaCAtIHIpOwogIHNoYXBlLnF1YWRyYXRpY0N1cnZlVG8oeCArIHcsIHkgKyBoLCB4ICsgdyAtIHIsIHkgKyBoKTsKICBzaGFwZS5saW5lVG8oeCArIHIsIHkgKyBoKTsKICBzaGFwZS5xdWFkcmF0aWNDdXJ2ZVRvKHgsIHkgKyBoLCB4LCB5ICsgaCAtIHIpOwogIHNoYXBlLmxpbmVUbyh4LCB5ICsgcik7CiAgc2hhcGUucXVhZHJhdGljQ3VydmVUbyh4LCB5LCB4ICsgciwgeSk7CiAgcmV0dXJuIHNoYXBlOwp9CgpmdW5jdGlvbiByb3VuZGVkUGF0aChUSFJFRTogdHlwZW9mIFRIUkVFX05TLCB3OiBudW1iZXIsIGg6IG51bWJlciwgcjogbnVtYmVyKSB7CiAgY29uc3QgcyA9IHJvdW5kZWRSZWN0KFRIUkVFLCB3LCBoLCByKTsKICByZXR1cm4gbmV3IFRIUkVFLlBhdGgocy5nZXRQb2ludHMoNDgpKTsKfQoKLyoqIEV4dHJ1ZGVzIGEgKG9wdGlvbmFsbHkgaG9sbG93KSByb3VuZGVkIHNsYWIgbHlpbmcgZmxhdCBvbiB0aGUgWFogcGxhbmUuICovCmZ1bmN0aW9uIHNsYWIoCiAgVEhSRUU6IHR5cGVvZiBUSFJFRV9OUywKICBvcHRzOiB7CiAgICB3OiBudW1iZXI7CiAgICBkOiBudW1iZXI7CiAgICByOiBudW1iZXI7CiAgICBoZWlnaHQ6IG51bWJlcjsKICAgIGJldmVsOiBudW1iZXI7CiAgICBob2xlPzogW251bWJlciwgbnVtYmVyLCBudW1iZXJdOwogIH0sCikgewogIGNvbnN0IHNoYXBlID0gcm91bmRlZFJlY3QoVEhSRUUsIG9wdHMudywgb3B0cy5kLCBvcHRzLnIpOwogIGlmIChvcHRzLmhvbGUpIHNoYXBlLmhvbGVzLnB1c2gocm91bmRlZFBhdGgoVEhSRUUsIG9wdHMuaG9sZVswXSwgb3B0cy5ob2xlWzFdLCBvcHRzLmhvbGVbMl0pKTsKICBjb25zdCBnZW8gPSBuZXcgVEhSRUUuRXh0cnVkZUdlb21ldHJ5KHNoYXBlLCB7CiAgICBkZXB0aDogTWF0aC5tYXgob3B0cy5oZWlnaHQgLSBvcHRzLmJldmVsICogMiwgMC4wMDEpLAogICAgYmV2ZWxFbmFibGVkOiB0cnVlLAogICAgYmV2ZWxUaGlja25lc3M6IG9wdHMuYmV2ZWwsCiAgICBiZXZlbFNpemU6IG9wdHMuYmV2ZWwsCiAgICBiZXZlbFNlZ21lbnRzOiAzLAogICAgY3VydmVTZWdtZW50czogMTIsCiAgfSk7CiAgZ2VvLnJvdGF0ZVgoLU1hdGguUEkgLyAyKTsKICBnZW8udHJhbnNsYXRlKDAsIG9wdHMuYmV2ZWwsIDApOwogIGdlby5jb21wdXRlVmVydGV4Tm9ybWFscygpOwogIHJldHVybiBnZW87Cn0KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBjcmVhdGVSaW5nQm94UmVuZGVyZXIoaG9zdDogSFRNTEVsZW1lbnQpOiBQcm9taXNlPFJpbmdCb3hSZW5kZXJlcj4gewogIGNvbnN0IFRIUkVFID0gYXdhaXQgaW1wb3J0KCJ0aHJlZSIpOwogIGNvbnN0IHsgUm9vbUVudmlyb25tZW50IH0gPSBhd2FpdCBpbXBvcnQoInRocmVlL2V4YW1wbGVzL2pzbS9lbnZpcm9ubWVudHMvUm9vbUVudmlyb25tZW50LmpzIik7CgogIC8vIEFkYXB0aXZlIERQUjogZnVsbCBxdWFsaXR5IG9ubHkgb24gY2FwYWJsZSBkZXNrdG9wcywgMXggb24gbW9iaWxlL2xvdy1wb3dlci4KICBjb25zdCBjb3JlcyA9IG5hdmlnYXRvci5oYXJkd2FyZUNvbmN1cnJlbmN5ID8/IDQ7CiAgY29uc3QgY29hcnNlID0gd2luZG93Lm1hdGNoTWVkaWE/LigiKHBvaW50ZXI6IGNvYXJzZSkiKS5tYXRjaGVzID8/IGZhbHNlOwogIGNvbnN0IG5hcnJvdyA9IHdpbmRvdy5pbm5lcldpZHRoIDwgNzY4OwogIGNvbnN0IGRwckNhcCA9IGNvYXJzZSB8fCBuYXJyb3cgPyAxIDogY29yZXMgPj0gOCA/IDEuNzUgOiAxLjI1OwoKICBjb25zdCByZW5kZXJlciA9IG5ldyBUSFJFRS5XZWJHTFJlbmRlcmVyKHsKICAgIGFudGlhbGlhczogIWNvYXJzZSwKICAgIGFscGhhOiB0cnVlLAogICAgcG93ZXJQcmVmZXJlbmNlOiAibG93LXBvd2VyIiwKICB9KTsKICByZW5kZXJlci5zZXRQaXhlbFJhdGlvKE1hdGgubWluKHdpbmRvdy5kZXZpY2VQaXhlbFJhdGlvIHx8IDEsIGRwckNhcCkpOwoKICByZW5kZXJlci50b25lTWFwcGluZyA9IFRIUkVFLkFDRVNGaWxtaWNUb25lTWFwcGluZzsKICByZW5kZXJlci50b25lTWFwcGluZ0V4cG9zdXJlID0gMS4xMjsKICByZW5kZXJlci5zaGFkb3dNYXAuZW5hYmxlZCA9IHRydWU7CiAgcmVuZGVyZXIuc2hhZG93TWFwLnR5cGUgPSBUSFJFRS5QQ0ZTb2Z0U2hhZG93TWFwOwogIHJlbmRlcmVyLmRvbUVsZW1lbnQuc3R5bGUud2lkdGggPSAiMTAwJSI7CiAgcmVuZGVyZXIuZG9tRWxlbWVudC5zdHlsZS5oZWlnaHQgPSAiMTAwJSI7CiAgcmVuZGVyZXIuZG9tRWxlbWVudC5zdHlsZS5kaXNwbGF5ID0gImJsb2NrIjsKICBob3N0LmFwcGVuZENoaWxkKHJlbmRlcmVyLmRvbUVsZW1lbnQpOwoKICBjb25zdCBzY2VuZSA9IG5ldyBUSFJFRS5TY2VuZSgpOwogIGNvbnN0IGNhbWVyYSA9IG5ldyBUSFJFRS5QZXJzcGVjdGl2ZUNhbWVyYSgzMCwgMSwgMC4xLCAxMDApOwogIGNhbWVyYS5wb3NpdGlvbi5zZXQoMCwgMy4wLCA3LjIpOwogIGNhbWVyYS5sb29rQXQoMCwgMS4wNSwgMCk7CgogIC8vIFNvZnQgc3R1ZGlvIGVudmlyb25tZW50IOKAlCBnaXZlcyB0aGUgZ29sZCBiZWxpZXZhYmxlIHJlZmxlY3Rpb25zLgogIGNvbnN0IHBtcmVtID0gbmV3IFRIUkVFLlBNUkVNR2VuZXJhdG9yKHJlbmRlcmVyKTsKICBjb25zdCBlbnZSVCA9IHBtcmVtLmZyb21TY2VuZShuZXcgUm9vbUVudmlyb25tZW50KCksIDAuMDQpOwogIHNjZW5lLmVudmlyb25tZW50ID0gZW52UlQudGV4dHVyZTsKCiAgY29uc3QgaGVtaSA9IG5ldyBUSFJFRS5IZW1pc3BoZXJlTGlnaHQoMHhmZmY2ZTgsIDB4ZDhjZWMwLCAxLjEpOwogIHNjZW5lLmFkZChoZW1pKTsKICBjb25zdCBrZXkgPSBuZXcgVEhSRUUuRGlyZWN0aW9uYWxMaWdodCgweGZmZjRlMiwgMi4xKTsKICBrZXkucG9zaXRpb24uc2V0KDEuOCwgNi40LCAyLjYpOwogIGtleS5jYXN0U2hhZG93ID0gdHJ1ZTsKICBrZXkuc2hhZG93Lm1hcFNpemUuc2V0KGNvYXJzZSA/IDEwMjQgOiAyMDQ4LCBjb2Fyc2UgPyAxMDI0IDogMjA0OCk7CiAga2V5LnNoYWRvdy5yYWRpdXMgPSA5OwogIGtleS5zaGFkb3cuYmlhcyA9IC0wLjAwMDg7CiAgY29uc3QgY2FtID0ga2V5LnNoYWRvdy5jYW1lcmE7CiAgY2FtLm5lYXIgPSAxOwogIGNhbS5mYXIgPSAxNjsKICBjYW0ubGVmdCA9IC0zLjU7CiAgY2FtLnJpZ2h0ID0gMy41OwogIGNhbS50b3AgPSAzLjU7CiAgY2FtLmJvdHRvbSA9IC0zLjU7CiAgc2NlbmUuYWRkKGtleSk7CiAgY29uc3QgZmlsbCA9IG5ldyBUSFJFRS5EaXJlY3Rpb25hbExpZ2h0KDB4ZmZmZmZmLCAwLjUpOwogIGZpbGwucG9zaXRpb24uc2V0KC0zLCAyLCAtMi41KTsKICBzY2VuZS5hZGQoZmlsbCk7CgogIC8vIOKUgOKUgCBNYXRlcmlhbHMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACiAgY29uc3QgaXZvcnkgPSBuZXcgVEhSRUUuTWVzaFBoeXNpY2FsTWF0ZXJpYWwoewogICAgY29sb3I6IDB4ZjNlZGUyLAogICAgcm91Z2huZXNzOiAwLjUyLAogICAgbWV0YWxuZXNzOiAwLAogICAgY2xlYXJjb2F0OiAwLjM1LAogICAgY2xlYXJjb2F0Um91Z2huZXNzOiAwLjQ1LAogICAgZW52TWFwSW50ZW5zaXR5OiAwLjgsCiAgfSk7CiAgY29uc3QgaXZvcnlJbm5lciA9IG5ldyBUSFJFRS5NZXNoUGh5c2ljYWxNYXRlcmlhbCh7CiAgICBjb2xvcjogMHhkZWQxYmQsCiAgICByb3VnaG5lc3M6IDAuNzgsCiAgICBtZXRhbG5lc3M6IDAsCiAgICBlbnZNYXBJbnRlbnNpdHk6IDAuNSwKICB9KTsKICBjb25zdCBjdXNoaW9uTWF0ID0gbmV3IFRIUkVFLk1lc2hQaHlzaWNhbE1hdGVyaWFsKHsKICAgIGNvbG9yOiAweGU2ZDdiZCwKICAgIHJvdWdobmVzczogMC45NSwKICAgIG1ldGFsbmVzczogMCwKICAgIHNoZWVuOiAwLjgsCiAgICBzaGVlblJvdWdobmVzczogMC43LAogICAgc2hlZW5Db2xvcjogbmV3IFRIUkVFLkNvbG9yKDB4ZmZmNWU2KSwKICAgIGVudk1hcEludGVuc2l0eTogMC40LAogIH0pOwogIGNvbnN0IGdvbGRNYXQgPSBuZXcgVEhSRUUuTWVzaFBoeXNpY2FsTWF0ZXJpYWwoewogICAgY29sb3I6IDB4ZDljMDk2LAogICAgbWV0YWxuZXNzOiAxLAogICAgcm91Z2huZXNzOiAwLjIyLAogICAgZW52TWFwSW50ZW5zaXR5OiAxLjI1LAogIH0pOwoKICBjb25zdCBkaXNwb3NhYmxlczogeyBkaXNwb3NlOiAoKSA9PiB2b2lkIH1bXSA9IFtpdm9yeSwgaXZvcnlJbm5lciwgY3VzaGlvbk1hdCwgZ29sZE1hdF07CiAgY29uc3QgYWRkID0gPFQgZXh0ZW5kcyBUSFJFRV9OUy5CdWZmZXJHZW9tZXRyeT4oZzogVCkgPT4gewogICAgZGlzcG9zYWJsZXMucHVzaChnKTsKICAgIHJldHVybiBnOwogIH07CgogIC8vIOKUgOKUgCBCYXNlOiBib3R0b20gc2xhYiArIGhvbGxvdyB3YWxsIHJpbmcgKHJlYWwgY2F2aXR5KSDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICBjb25zdCBXID0gMi4yOwogIGNvbnN0IFJJTV9UT1AgPSAwLjkyOwogIGNvbnN0IEZMT09SX1RPUCA9IDAuMTY7CgogIGNvbnN0IGJhc2VHcm91cCA9IG5ldyBUSFJFRS5Hcm91cCgpOwogIGNvbnN0IGJvdHRvbSA9IG5ldyBUSFJFRS5NZXNoKAogICAgYWRkKHNsYWIoVEhSRUUsIHsgdzogVywgZDogVywgcjogMC4yNiwgaGVpZ2h0OiBGTE9PUl9UT1AsIGJldmVsOiAwLjAzNSB9KSksCiAgICBpdm9yeSwKICApOwogIGJvdHRvbS5jYXN0U2hhZG93ID0gdHJ1ZTsKICBib3R0b20ucmVjZWl2ZVNoYWRvdyA9IHRydWU7CiAgYmFzZUdyb3VwLmFkZChib3R0b20pOwoKICBjb25zdCB3YWxsID0gbmV3IFRIUkVFLk1lc2goCiAgICBhZGQoCiAgICAgIHNsYWIoVEhSRUUsIHsKICAgICAgICB3OiBXLAogICAgICAgIGQ6IFcsCiAgICAgICAgcjogMC4yNiwKICAgICAgICBoZWlnaHQ6IFJJTV9UT1AgLSBGTE9PUl9UT1AsCiAgICAgICAgYmV2ZWw6IDAuMDMsCiAgICAgICAgaG9sZTogW1cgLSAwLjM2LCBXIC0gMC4zNiwgMC4xNl0sCiAgICAgIH0pLAogICAgKSwKICAgIGl2b3J5LAogICk7CiAgd2FsbC5wb3NpdGlvbi55ID0gRkxPT1JfVE9QOwogIHdhbGwuY2FzdFNoYWRvdyA9IHRydWU7CiAgd2FsbC5yZWNlaXZlU2hhZG93ID0gdHJ1ZTsKICBiYXNlR3JvdXAuYWRkKHdhbGwpOwoKICAvLyBDYXZpdHkgbGluZXIg4oCUIHNsaWdodGx5IGRhcmtlciBpbm5lciBzdXJmYWNlIGZvciBvY2NsdXNpb24gZGVwdGguCiAgY29uc3QgbGluZXIgPSBuZXcgVEhSRUUuTWVzaCgKICAgIGFkZChzbGFiKFRIUkVFLCB7IHc6IFcgLSAwLjM4LCBkOiBXIC0gMC4zOCwgcjogMC4xNSwgaGVpZ2h0OiAwLjAyLCBiZXZlbDogMC4wMDggfSkpLAogICAgaXZvcnlJbm5lciwKICApOwogIGxpbmVyLnBvc2l0aW9uLnkgPSBGTE9PUl9UT1A7CiAgbGluZXIucmVjZWl2ZVNoYWRvdyA9IHRydWU7CiAgYmFzZUdyb3VwLmFkZChsaW5lcik7CgogIC8vIEN1c2hpb24g4oCUIHJlY2Vzc2VkIGJlbG93IHRoZSByaW0sIHNvZnQgcm91bmRlZCB2b2x1bWUuCiAgY29uc3QgQ1VTSElPTl9IID0gMC4yNjsKICBjb25zdCBjdXNoaW9uID0gbmV3IFRIUkVFLk1lc2goCiAgICBhZGQoc2xhYihUSFJFRSwgeyB3OiBXIC0gMC41MiwgZDogVyAtIDAuNTIsIHI6IDAuMTYsIGhlaWdodDogQ1VTSElPTl9ILCBiZXZlbDogMC4wOSB9KSksCiAgICBjdXNoaW9uTWF0LAogICk7CiAgY3VzaGlvbi5wb3NpdGlvbi55ID0gRkxPT1JfVE9QICsgMC4wMjsKICBjdXNoaW9uLmNhc3RTaGFkb3cgPSB0cnVlOwogIGN1c2hpb24ucmVjZWl2ZVNoYWRvdyA9IHRydWU7CiAgYmFzZUdyb3VwLmFkZChjdXNoaW9uKTsKICBjb25zdCBDVVNISU9OX1RPUCA9IEZMT09SX1RPUCArIDAuMDIgKyBDVVNISU9OX0g7CgogIC8vIFNsaXQgdGhlIHJpbmcgc2VhdHMgaW50by4KICBjb25zdCBzbGl0ID0gbmV3IFRIUkVFLk1lc2goYWRkKG5ldyBUSFJFRS5Cb3hHZW9tZXRyeSgwLjUsIDAuMDQsIDAuMDkpKSwgaXZvcnlJbm5lcik7CiAgc2xpdC5wb3NpdGlvbi5zZXQoMCwgQ1VTSElPTl9UT1AgLSAwLjAxNSwgMC4wMik7CiAgc2xpdC5yZWNlaXZlU2hhZG93ID0gdHJ1ZTsKICBiYXNlR3JvdXAuYWRkKHNsaXQpOwogIHNjZW5lLmFkZChiYXNlR3JvdXApOwoKICAvLyDilIDilIAgUmluZzogdm9sdW1ldHJpYyB0b3J1cyBzdGFuZGluZyBpbiB0aGUgY3VzaGlvbiBzbGl0IOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAogIGNvbnN0IFJJTkdfUiA9IDAuMzY7CiAgY29uc3QgcmluZ0dyb3VwID0gbmV3IFRIUkVFLkdyb3VwKCk7CiAgY29uc3QgcmluZyA9IG5ldyBUSFJFRS5NZXNoKGFkZChuZXcgVEhSRUUuVG9ydXNHZW9tZXRyeShSSU5HX1IsIDAuMDc1LCAyMCwgOTYpKSwgZ29sZE1hdCk7CiAgcmluZy5jYXN0U2hhZG93ID0gdHJ1ZTsKICByaW5nLnJlY2VpdmVTaGFkb3cgPSB0cnVlOwogIHJpbmdHcm91cC5hZGQocmluZyk7CiAgcmluZ0dyb3VwLnJvdGF0aW9uLnggPSAtMS4xMjsKICByaW5nR3JvdXAucm90YXRpb24ueSA9IC0wLjI4OwogIHJpbmdHcm91cC5yb3RhdGlvbi56ID0gMC4wNjsKICBjb25zdCBSSU5HX1JFU1RfWSA9IENVU0hJT05fVE9QICsgMC4wOTsKICBzY2VuZS5hZGQocmluZ0dyb3VwKTsKCiAgLy8g4pSA4pSAIExpZDogdG9wIHNsYWIgKyBpbm5lciBsaXAgb24gdGhlIHVuZGVyc2lkZSDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICBjb25zdCBsaWRHcm91cCA9IG5ldyBUSFJFRS5Hcm91cCgpOwogIGNvbnN0IExJRF9IID0gMC4zMjsKICBjb25zdCBsaWRUb3AgPSBuZXcgVEhSRUUuTWVzaCgKICAgIGFkZChzbGFiKFRIUkVFLCB7IHc6IFcsIGQ6IFcsIHI6IDAuMjYsIGhlaWdodDogTElEX0gsIGJldmVsOiAwLjA1IH0pKSwKICAgIGl2b3J5LAogICk7CiAgbGlkVG9wLmNhc3RTaGFkb3cgPSB0cnVlOwogIGxpZFRvcC5yZWNlaXZlU2hhZG93ID0gdHJ1ZTsKICBsaWRHcm91cC5hZGQobGlkVG9wKTsKCiAgY29uc3QgbGlwID0gbmV3IFRIUkVFLk1lc2goCiAgICBhZGQoCiAgICAgIHNsYWIoVEhSRUUsIHsKICAgICAgICB3OiBXIC0gMC40MiwKICAgICAgICBkOiBXIC0gMC40MiwKICAgICAgICByOiAwLjE1LAogICAgICAgIGhlaWdodDogMC4xMiwKICAgICAgICBiZXZlbDogMC4wMiwKICAgICAgICBob2xlOiBbVyAtIDAuNjYsIFcgLSAwLjY2LCAwLjFdLAogICAgICB9KSwKICAgICksCiAgICBpdm9yeUlubmVyLAogICk7CiAgbGlwLnBvc2l0aW9uLnkgPSAtMC4xMjsKICBsaXAuY2FzdFNoYWRvdyA9IHRydWU7CiAgbGlkR3JvdXAuYWRkKGxpcCk7CgogIC8vIFVuZGVyc2lkZSBwYW5lbCBzbyB0aGUgZXhwbG9kZWQgbGlkIG5ldmVyIHJlYWRzIGFzIGFuIG9wZW4gc2hlbGwuCiAgY29uc3QgdW5kZXJzaWRlID0gbmV3IFRIUkVFLk1lc2goCiAgICBhZGQoc2xhYihUSFJFRSwgeyB3OiBXIC0gMC40NCwgZDogVyAtIDAuNDQsIHI6IDAuMTUsIGhlaWdodDogMC4wMiwgYmV2ZWw6IDAuMDA4IH0pKSwKICAgIGl2b3J5SW5uZXIsCiAgKTsKICB1bmRlcnNpZGUucG9zaXRpb24ueSA9IC0wLjAyOwogIGxpZEdyb3VwLmFkZCh1bmRlcnNpZGUpOwoKICAvLyBCcmFuZCBtYXJrLCBwcmludGVkIGZsYXQgb24gdGhlIGxpZCBzdXJmYWNlLgogIGNvbnN0IGxvYWRlciA9IG5ldyBUSFJFRS5UZXh0dXJlTG9hZGVyKCk7CiAgY29uc3QgbG9nb1RleCA9IGxvYWRlci5sb2FkKCIvbG9nby1hci5wbmciLCAoKSA9PiB7CiAgICBpbnZhbGlkYXRlKCk7CiAgfSk7CiAgbG9nb1RleC5jb2xvclNwYWNlID0gVEhSRUUuU1JHQkNvbG9yU3BhY2U7CiAgbG9nb1RleC5hbmlzb3Ryb3B5ID0gNDsKICBjb25zdCBsb2dvTWF0ID0gbmV3IFRIUkVFLk1lc2hCYXNpY01hdGVyaWFsKHsKICAgIG1hcDogbG9nb1RleCwKICAgIHRyYW5zcGFyZW50OiB0cnVlLAogICAgb3BhY2l0eTogMC45LAogICAgZGVwdGhXcml0ZTogZmFsc2UsCiAgfSk7CiAgZGlzcG9zYWJsZXMucHVzaChsb2dvTWF0LCBsb2dvVGV4KTsKICBjb25zdCBsb2dvID0gbmV3IFRIUkVFLk1lc2goYWRkKG5ldyBUSFJFRS5QbGFuZUdlb21ldHJ5KDEuMDUsIDAuNykpLCBsb2dvTWF0KTsKICBsb2dvLnJvdGF0aW9uLnggPSAtTWF0aC5QSSAvIDI7CiAgbG9nby5wb3NpdGlvbi5zZXQoMCwgTElEX0ggKyAwLjAwMiwgMC4wMik7CiAgbGlkR3JvdXAuYWRkKGxvZ28pOwogIHNjZW5lLmFkZChsaWRHcm91cCk7CgogIC8vIEdyb3VuZCBwbGFuZSBjYXRjaGluZyB0aGUgc29mdCBjb250YWN0IHNoYWRvdy4KICBjb25zdCBzaGFkb3dNYXQgPSBuZXcgVEhSRUUuU2hhZG93TWF0ZXJpYWwoeyBvcGFjaXR5OiAwLjE3IH0pOwogIGRpc3Bvc2FibGVzLnB1c2goc2hhZG93TWF0KTsKICBjb25zdCBncm91bmQgPSBuZXcgVEhSRUUuTWVzaChhZGQobmV3IFRIUkVFLlBsYW5lR2VvbWV0cnkoMTQsIDE0KSksIHNoYWRvd01hdCk7CiAgZ3JvdW5kLnJvdGF0aW9uLnggPSAtTWF0aC5QSSAvIDI7CiAgZ3JvdW5kLnBvc2l0aW9uLnkgPSAtMC4wMDE7CiAgZ3JvdW5kLnJlY2VpdmVTaGFkb3cgPSB0cnVlOwogIHNjZW5lLmFkZChncm91bmQpOwoKICAvLyDilIDilIAgUHJvZ3Jlc3Mg4oaSIHRyYW5zZm9ybXMgKHNhbWUga2V5ZnJhbWVzIGFzIHRoZSBvcmlnaW5hbCBjaG9yZW9ncmFwaHkpIOKUgOKUgAogIGZ1bmN0aW9uIGFwcGx5KHQ6IG51bWJlcikgewogICAgY29uc3QgcCA9IE1hdGgubWluKE1hdGgubWF4KHQsIDApLCAxKTsKCiAgICBjb25zdCBiYXNlWSA9IGtleWZyYW1lKHAsIFswLCAwLjQsIDFdLCBbMC40MiwgMCwgMF0pOwogICAgYmFzZUdyb3VwLnBvc2l0aW9uLnkgPSBiYXNlWTsKCiAgICBjb25zdCByaW5nTGlmdCA9IGtleWZyYW1lKHAsIFswLCAwLjU1LCAxXSwgWzAuOTUsIDAsIDBdKTsKICAgIGNvbnN0IHJpbmdTY2FsZSA9IGtleWZyYW1lKHAsIFswLCAwLjU1LCAxXSwgWzEuMDYsIDEsIDFdKTsKICAgIHJpbmdHcm91cC5wb3NpdGlvbi55ID0gUklOR19SRVNUX1kgKyByaW5nTGlmdCArIGJhc2VZOwogICAgcmluZ0dyb3VwLnNjYWxlLnNldFNjYWxhcihyaW5nU2NhbGUpOwoKICAgIGNvbnN0IGxpZFkgPSBrZXlmcmFtZShwLCBbMCwgMC43MiwgMV0sIFsxLjg1LCAwLjMsIDAuMDhdKTsKICAgIGNvbnN0IGxpZFNlYXQgPSBrZXlmcmFtZShwLCBbMC43MiwgMV0sIFswLCAxXSk7CiAgICBsaWRHcm91cC5wb3NpdGlvbi55ID0gUklNX1RPUCArIGxpZFkgLSBsaWRTZWF0ICogMC4xMjsKICAgIGxpZEdyb3VwLnJvdGF0aW9uLnogPSBrZXlmcmFtZShwLCBbMCwgMC41LCAxXSwgWy0wLjEsIC0wLjAzNSwgMF0pOwogICAgbGlkR3JvdXAucm90YXRpb24ueCA9IGtleWZyYW1lKHAsIFswLCAwLjUsIDFdLCBbMC4wNSwgMC4wMTUsIDBdKTsKICB9CgogIC8vIOKUgOKUgCBSZW5kZXIgb24gZGVtYW5kIOKAlCBubyBwZXJtYW5lbnQgYW5pbWF0aW9uIGxvb3Ag4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACiAgbGV0IHZpc2libGUgPSB0cnVlOwogIGxldCByYWYgPSAwOwogIGxldCBkZWFkID0gZmFsc2U7CgogIGNvbnN0IGRyYXcgPSAoKSA9PiB7CiAgICByYWYgPSAwOwogICAgaWYgKGRlYWQgfHwgIXZpc2libGUpIHJldHVybjsKICAgIHJlbmRlcmVyLnJlbmRlcihzY2VuZSwgY2FtZXJhKTsKICB9OwogIC8qKiBTY2hlZHVsZXMgZXhhY3RseSBvbmUgZnJhbWU7IG9mZi1zY3JlZW4gc2NlbmVzIG5ldmVyIHJlbmRlciBhdCBhbGwuICovCiAgY29uc3QgaW52YWxpZGF0ZSA9ICgpID0+IHsKICAgIGlmIChkZWFkIHx8ICF2aXNpYmxlIHx8IHJhZikgcmV0dXJuOwogICAgcmFmID0gcmVxdWVzdEFuaW1hdGlvbkZyYW1lKGRyYXcpOwogIH07CgogIGZ1bmN0aW9uIHJlc2l6ZSgpIHsKICAgIGNvbnN0IHcgPSBob3N0LmNsaWVudFdpZHRoIHx8IDE7CiAgICBjb25zdCBoID0gaG9zdC5jbGllbnRIZWlnaHQgfHwgMTsKICAgIHJlbmRlcmVyLnNldFNpemUodywgaCwgZmFsc2UpOwogICAgY2FtZXJhLmFzcGVjdCA9IHcgLyBoOwogICAgLy8gRnJhbWUgdGhlIHByb2R1Y3QgY29uc2lzdGVudGx5IG9uIG5hcnJvdyB2aWV3cG9ydHMuCiAgICBjYW1lcmEucG9zaXRpb24ueiA9IHcgPCA0MjAgPyA4LjEgOiA3LjI7CiAgICBjYW1lcmEudXBkYXRlUHJvamVjdGlvbk1hdHJpeCgpOwogICAgY2FtZXJhLmxvb2tBdCgwLCAxLjA1LCAwKTsKICAgIGludmFsaWRhdGUoKTsKICB9CgogIGNvbnN0IHJvID0gbmV3IFJlc2l6ZU9ic2VydmVyKHJlc2l6ZSk7CiAgcm8ub2JzZXJ2ZShob3N0KTsKICByZXNpemUoKTsKCiAgY29uc3QgaW8gPSBuZXcgSW50ZXJzZWN0aW9uT2JzZXJ2ZXIoCiAgICAoW2VudHJ5XSkgPT4gewogICAgICB2aXNpYmxlID0gZW50cnk/LmlzSW50ZXJzZWN0aW5nID8/IHRydWU7CiAgICAgIGlmICh2aXNpYmxlKSBpbnZhbGlkYXRlKCk7CiAgICAgIGVsc2UgaWYgKHJhZikgewogICAgICAgIGNhbmNlbEFuaW1hdGlvbkZyYW1lKHJhZik7CiAgICAgICAgcmFmID0gMDsKICAgICAgfQogICAgfSwKICAgIHsgcm9vdE1hcmdpbjogIjEyMHB4IiB9LAogICk7CiAgaW8ub2JzZXJ2ZShob3N0KTsKCiAgYXBwbHkoMCk7CiAgaW52YWxpZGF0ZSgpOwoKICByZXR1cm4gewogICAgc2V0UHJvZ3Jlc3ModmFsdWU6IG51bWJlcikgewogICAgICBhcHBseSh2YWx1ZSk7CiAgICAgIGludmFsaWRhdGUoKTsKICAgIH0sCiAgICBkaXNwb3NlKCkgewogICAgICBkZWFkID0gdHJ1ZTsKICAgICAgaWYgKHJhZikgY2FuY2VsQW5pbWF0aW9uRnJhbWUocmFmKTsKICAgICAgcm8uZGlzY29ubmVjdCgpOwogICAgICBpby5kaXNjb25uZWN0KCk7CiAgICAgIGZvciAoY29uc3QgZCBvZiBkaXNwb3NhYmxlcykgZC5kaXNwb3NlKCk7CiAgICAgIGVudlJULmRpc3Bvc2UoKTsKICAgICAgcG1yZW0uZGlzcG9zZSgpOwogICAgICByZW5kZXJlci5kaXNwb3NlKCk7CiAgICAgIGlmIChyZW5kZXJlci5kb21FbGVtZW50LnBhcmVudE5vZGUgPT09IGhvc3QpIGhvc3QucmVtb3ZlQ2hpbGQocmVuZGVyZXIuZG9tRWxlbWVudCk7CiAgICB9LAogIH07Cn0K
+/**
+ * Lightweight WebGL renderer for the landing-page ring box.
+ *
+ * One scene, one camera, one renderer, render-on-demand. It exposes a single
+ * `setProgress(0→1)` entry point so the whole scene stays a pure function of
+ * the scroll MotionValue and reverses perfectly when scrolling upward.
+ */
+import type * as THREE_NS from "three";
+
+export type RingBoxRenderer = {
+  setProgress: (value: number) => void;
+  dispose: () => void;
+};
+
+/** Piecewise-linear keyframe sampling — mirrors motion's `useTransform`. */
+function keyframe(t: number, input: number[], output: number[]) {
+  if (t <= input[0]!) return output[0]!;
+  for (let i = 1; i < input.length; i++) {
+    const a = input[i - 1]!;
+    const b = input[i]!;
+    if (t <= b) {
+      const k = b === a ? 0 : (t - a) / (b - a);
+      return output[i - 1]! + (output[i]! - output[i - 1]!) * k;
+    }
+  }
+  return output[output.length - 1]!;
+}
+
+function roundedRect(THREE: typeof THREE_NS, w: number, h: number, r: number) {
+  const shape = new THREE.Shape();
+  const x = -w / 2;
+  const y = -h / 2;
+  shape.moveTo(x + r, y);
+  shape.lineTo(x + w - r, y);
+  shape.quadraticCurveTo(x + w, y, x + w, y + r);
+  shape.lineTo(x + w, y + h - r);
+  shape.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  shape.lineTo(x + r, y + h);
+  shape.quadraticCurveTo(x, y + h, x, y + h - r);
+  shape.lineTo(x, y + r);
+  shape.quadraticCurveTo(x, y, x + r, y);
+  return shape;
+}
+
+function roundedPath(THREE: typeof THREE_NS, w: number, h: number, r: number) {
+  const s = roundedRect(THREE, w, h, r);
+  return new THREE.Path(s.getPoints(48));
+}
+
+/** Extrudes a (optionally hollow) rounded slab lying flat on the XZ plane. */
+function slab(
+  THREE: typeof THREE_NS,
+  opts: {
+    w: number;
+    d: number;
+    r: number;
+    height: number;
+    bevel: number;
+    hole?: [number, number, number];
+  },
+) {
+  const shape = roundedRect(THREE, opts.w, opts.d, opts.r);
+  if (opts.hole) shape.holes.push(roundedPath(THREE, opts.hole[0], opts.hole[1], opts.hole[2]));
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: Math.max(opts.height - opts.bevel * 2, 0.001),
+    bevelEnabled: true,
+    bevelThickness: opts.bevel,
+    bevelSize: opts.bevel,
+    bevelSegments: 3,
+    curveSegments: 12,
+  });
+  geo.rotateX(-Math.PI / 2);
+  geo.translate(0, opts.bevel, 0);
+  geo.computeVertexNormals();
+  return geo;
+}
+
+export async function createRingBoxRenderer(host: HTMLElement): Promise<RingBoxRenderer> {
+  const THREE = await import("three");
+  const { RoomEnvironment } = await import("three/examples/jsm/environments/RoomEnvironment.js");
+
+  // Adaptive DPR: full quality only on capable desktops, 1x on mobile/low-power.
+  const cores = navigator.hardwareConcurrency ?? 4;
+  const coarse = window.matchMedia?.("(pointer: coarse)").matches ?? false;
+  const narrow = window.innerWidth < 768;
+  const dprCap = coarse || narrow ? 1 : cores >= 8 ? 1.75 : 1.25;
+
+  const renderer = new THREE.WebGLRenderer({
+    antialias: !coarse,
+    alpha: true,
+    powerPreference: "low-power",
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, dprCap));
+
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.12;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.domElement.style.width = "100%";
+  renderer.domElement.style.height = "100%";
+  renderer.domElement.style.display = "block";
+  host.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+  camera.position.set(0, 3.0, 7.2);
+  camera.lookAt(0, 1.05, 0);
+
+  // Soft studio environment — gives the gold believable reflections.
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envRT = pmrem.fromScene(new RoomEnvironment(), 0.04);
+  scene.environment = envRT.texture;
+
+  const hemi = new THREE.HemisphereLight(0xfff6e8, 0xd8cec0, 1.1);
+  scene.add(hemi);
+  const key = new THREE.DirectionalLight(0xfff4e2, 2.1);
+  key.position.set(1.8, 6.4, 2.6);
+  key.castShadow = true;
+  key.shadow.mapSize.set(coarse ? 1024 : 2048, coarse ? 1024 : 2048);
+  key.shadow.radius = 9;
+  key.shadow.bias = -0.0008;
+  const cam = key.shadow.camera;
+  cam.near = 1;
+  cam.far = 16;
+  cam.left = -3.5;
+  cam.right = 3.5;
+  cam.top = 3.5;
+  cam.bottom = -3.5;
+  scene.add(key);
+  const fill = new THREE.DirectionalLight(0xffffff, 0.5);
+  fill.position.set(-3, 2, -2.5);
+  scene.add(fill);
+
+  // ── Materials ────────────────────────────────────────────────────────────
+  const ivory = new THREE.MeshPhysicalMaterial({
+    color: 0xf3ede2,
+    roughness: 0.52,
+    metalness: 0,
+    clearcoat: 0.35,
+    clearcoatRoughness: 0.45,
+    envMapIntensity: 0.8,
+  });
+  const ivoryInner = new THREE.MeshPhysicalMaterial({
+    color: 0xded1bd,
+    roughness: 0.78,
+    metalness: 0,
+    envMapIntensity: 0.5,
+  });
+  const cushionMat = new THREE.MeshPhysicalMaterial({
+    color: 0xe6d7bd,
+    roughness: 0.95,
+    metalness: 0,
+    sheen: 0.8,
+    sheenRoughness: 0.7,
+    sheenColor: new THREE.Color(0xfff5e6),
+    envMapIntensity: 0.4,
+  });
+  const goldMat = new THREE.MeshPhysicalMaterial({
+    color: 0xd9c096,
+    metalness: 1,
+    roughness: 0.22,
+    envMapIntensity: 1.25,
+  });
+
+  const disposables: { dispose: () => void }[] = [ivory, ivoryInner, cushionMat, goldMat];
+  const add = <T extends THREE_NS.BufferGeometry>(g: T) => {
+    disposables.push(g);
+    return g;
+  };
+
+  // ── Base: bottom slab + hollow wall ring (real cavity) ───────────────────
+  const W = 2.2;
+  const RIM_TOP = 0.92;
+  const FLOOR_TOP = 0.16;
+
+  const baseGroup = new THREE.Group();
+  const bottom = new THREE.Mesh(
+    add(slab(THREE, { w: W, d: W, r: 0.26, height: FLOOR_TOP, bevel: 0.035 })),
+    ivory,
+  );
+  bottom.castShadow = true;
+  bottom.receiveShadow = true;
+  baseGroup.add(bottom);
+
+  const wall = new THREE.Mesh(
+    add(
+      slab(THREE, {
+        w: W,
+        d: W,
+        r: 0.26,
+        height: RIM_TOP - FLOOR_TOP,
+        bevel: 0.03,
+        hole: [W - 0.36, W - 0.36, 0.16],
+      }),
+    ),
+    ivory,
+  );
+  wall.position.y = FLOOR_TOP;
+  wall.castShadow = true;
+  wall.receiveShadow = true;
+  baseGroup.add(wall);
+
+  // Cavity liner — slightly darker inner surface for occlusion depth.
+  const liner = new THREE.Mesh(
+    add(slab(THREE, { w: W - 0.38, d: W - 0.38, r: 0.15, height: 0.02, bevel: 0.008 })),
+    ivoryInner,
+  );
+  liner.position.y = FLOOR_TOP;
+  liner.receiveShadow = true;
+  baseGroup.add(liner);
+
+  // Cushion — recessed below the rim, soft rounded volume.
+  const CUSHION_H = 0.26;
+  const cushion = new THREE.Mesh(
+    add(slab(THREE, { w: W - 0.52, d: W - 0.52, r: 0.16, height: CUSHION_H, bevel: 0.09 })),
+    cushionMat,
+  );
+  cushion.position.y = FLOOR_TOP + 0.02;
+  cushion.castShadow = true;
+  cushion.receiveShadow = true;
+  baseGroup.add(cushion);
+  const CUSHION_TOP = FLOOR_TOP + 0.02 + CUSHION_H;
+
+  // Slit the ring seats into.
+  const slit = new THREE.Mesh(add(new THREE.BoxGeometry(0.5, 0.04, 0.09)), ivoryInner);
+  slit.position.set(0, CUSHION_TOP - 0.015, 0.02);
+  slit.receiveShadow = true;
+  baseGroup.add(slit);
+  scene.add(baseGroup);
+
+  // ── Ring: volumetric torus standing in the cushion slit ──────────────────
+  const RING_R = 0.36;
+  const ringGroup = new THREE.Group();
+  const ring = new THREE.Mesh(add(new THREE.TorusGeometry(RING_R, 0.075, 20, 96)), goldMat);
+  ring.castShadow = true;
+  ring.receiveShadow = true;
+  ringGroup.add(ring);
+  ringGroup.rotation.x = -1.12;
+  ringGroup.rotation.y = -0.28;
+  ringGroup.rotation.z = 0.06;
+  const RING_REST_Y = CUSHION_TOP + 0.09;
+  scene.add(ringGroup);
+
+  // ── Lid: top slab + inner lip on the underside ───────────────────────────
+  const lidGroup = new THREE.Group();
+  const LID_H = 0.32;
+  const lidTop = new THREE.Mesh(
+    add(slab(THREE, { w: W, d: W, r: 0.26, height: LID_H, bevel: 0.05 })),
+    ivory,
+  );
+  lidTop.castShadow = true;
+  lidTop.receiveShadow = true;
+  lidGroup.add(lidTop);
+
+  const lip = new THREE.Mesh(
+    add(
+      slab(THREE, {
+        w: W - 0.42,
+        d: W - 0.42,
+        r: 0.15,
+        height: 0.12,
+        bevel: 0.02,
+        hole: [W - 0.66, W - 0.66, 0.1],
+      }),
+    ),
+    ivoryInner,
+  );
+  lip.position.y = -0.12;
+  lip.castShadow = true;
+  lidGroup.add(lip);
+
+  // Underside panel so the exploded lid never reads as an open shell.
+  const underside = new THREE.Mesh(
+    add(slab(THREE, { w: W - 0.44, d: W - 0.44, r: 0.15, height: 0.02, bevel: 0.008 })),
+    ivoryInner,
+  );
+  underside.position.y = -0.02;
+  lidGroup.add(underside);
+
+  // Brand mark, printed flat on the lid surface.
+  const loader = new THREE.TextureLoader();
+  const logoTex = loader.load("/logo-ar.png", () => {
+    invalidate();
+  });
+  logoTex.colorSpace = THREE.SRGBColorSpace;
+  logoTex.anisotropy = 4;
+  const logoMat = new THREE.MeshBasicMaterial({
+    map: logoTex,
+    transparent: true,
+    opacity: 0.9,
+    depthWrite: false,
+  });
+  disposables.push(logoMat, logoTex);
+  const logo = new THREE.Mesh(add(new THREE.PlaneGeometry(1.05, 0.7)), logoMat);
+  logo.rotation.x = -Math.PI / 2;
+  logo.position.set(0, LID_H + 0.002, 0.02);
+  lidGroup.add(logo);
+  scene.add(lidGroup);
+
+  // Ground plane catching the soft contact shadow.
+  const shadowMat = new THREE.ShadowMaterial({ opacity: 0.17 });
+  disposables.push(shadowMat);
+  const ground = new THREE.Mesh(add(new THREE.PlaneGeometry(14, 14)), shadowMat);
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -0.001;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  // ── Progress → transforms (same keyframes as the original choreography) ──
+  function apply(t: number) {
+    const p = Math.min(Math.max(t, 0), 1);
+
+    const baseY = keyframe(p, [0, 0.4, 1], [0.42, 0, 0]);
+    baseGroup.position.y = baseY;
+
+    const ringLift = keyframe(p, [0, 0.55, 1], [0.95, 0, 0]);
+    const ringScale = keyframe(p, [0, 0.55, 1], [1.06, 1, 1]);
+    ringGroup.position.y = RING_REST_Y + ringLift + baseY;
+    ringGroup.scale.setScalar(ringScale);
+
+    const lidY = keyframe(p, [0, 0.72, 1], [1.85, 0.3, 0.08]);
+    const lidSeat = keyframe(p, [0.72, 1], [0, 1]);
+    lidGroup.position.y = RIM_TOP + lidY - lidSeat * 0.12;
+    lidGroup.rotation.z = keyframe(p, [0, 0.5, 1], [-0.1, -0.035, 0]);
+    lidGroup.rotation.x = keyframe(p, [0, 0.5, 1], [0.05, 0.015, 0]);
+  }
+
+  // ── Render on demand — no permanent animation loop ───────────────────────
+  let visible = true;
+  let raf = 0;
+  let dead = false;
+
+  const draw = () => {
+    raf = 0;
+    if (dead || !visible) return;
+    renderer.render(scene, camera);
+  };
+  /** Schedules exactly one frame; off-screen scenes never render at all. */
+  const invalidate = () => {
+    if (dead || !visible || raf) return;
+    raf = requestAnimationFrame(draw);
+  };
+
+  function resize() {
+    const w = host.clientWidth || 1;
+    const h = host.clientHeight || 1;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    // Frame the product consistently on narrow viewports.
+    camera.position.z = w < 420 ? 8.1 : 7.2;
+    camera.updateProjectionMatrix();
+    camera.lookAt(0, 1.05, 0);
+    invalidate();
+  }
+
+  const ro = new ResizeObserver(resize);
+  ro.observe(host);
+  resize();
+
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      visible = entry?.isIntersecting ?? true;
+      if (visible) invalidate();
+      else if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    },
+    { rootMargin: "120px" },
+  );
+  io.observe(host);
+
+  apply(0);
+  invalidate();
+
+  return {
+    setProgress(value: number) {
+      apply(value);
+      invalidate();
+    },
+    dispose() {
+      dead = true;
+      if (raf) cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      for (const d of disposables) d.dispose();
+      envRT.dispose();
+      pmrem.dispose();
+      renderer.dispose();
+      if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
+    },
+  };
+}

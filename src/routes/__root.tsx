@@ -1,1 +1,155 @@
-aW1wb3J0IHsgUXVlcnlDbGllbnQgfSBmcm9tICJAdGFuc3RhY2svcmVhY3QtcXVlcnkiOwppbXBvcnQgewogIE91dGxldCwKICBMaW5rLAogIGNyZWF0ZVJvb3RSb3V0ZVdpdGhDb250ZXh0LAogIHVzZVJvdXRlciwKICBIZWFkQ29udGVudCwKICBTY3JpcHRzLAp9IGZyb20gIkB0YW5zdGFjay9yZWFjdC1yb3V0ZXIiOwppbXBvcnQgeyB1c2VFZmZlY3QsIHR5cGUgUmVhY3ROb2RlIH0gZnJvbSAicmVhY3QiOwoKaW1wb3J0IGFwcENzcyBmcm9tICIuLi9zdHlsZXMuY3NzP3VybCI7CmltcG9ydCB7IHJlcG9ydExvdmFibGVFcnJvciB9IGZyb20gIi4uL2xpYi9sb3ZhYmxlLWVycm9yLXJlcG9ydGluZyI7CmltcG9ydCB7IEFwcFByb3ZpZGVycyB9IGZyb20gIi4uL2FwcC9wcm92aWRlcnMiOwoKZnVuY3Rpb24gTm90Rm91bmRDb21wb25lbnQoKSB7CiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IG1pbi1oLXNjcmVlbiBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgYmctYmFja2dyb3VuZCBweC00Ij4KICAgICAgPGRpdiBjbGFzc05hbWU9Im1heC13LW1kIHRleHQtY2VudGVyIj4KICAgICAgICA8aDEgY2xhc3NOYW1lPSJ0ZXh0LTd4bCBmb250LWJvbGQgdGV4dC1mb3JlZ3JvdW5kIj40MDQ8L2gxPgogICAgICAgIDxoMiBjbGFzc05hbWU9Im10LTQgdGV4dC14bCBmb250LXNlbWlib2xkIHRleHQtZm9yZWdyb3VuZCI+CiAgICAgICAgICBQYWdlIG5vdCBmb3VuZAogICAgICAgIDwvaDI+CiAgICAgICAgPHAgY2xhc3NOYW1lPSJtdC0yIHRleHQtc20gdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj4KICAgICAgICAgIFRoZSBwYWdlIHlvdSdyZSBsb29raW5nIGZvciBkb2Vzbid0IGV4aXN0IG9yIGhhcyBiZWVuIG1vdmVkLgogICAgICAgIDwvcD4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibXQtNiI+CiAgICAgICAgICA8TGluawogICAgICAgICAgICB0bz0iLyIKICAgICAgICAgICAgY2xhc3NOYW1lPSJpbmxpbmUtZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgcm91bmRlZC1tZCBiZy1wcmltYXJ5IHB4LTQgcHktMiB0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtcHJpbWFyeS1mb3JlZ3JvdW5kIHRyYW5zaXRpb24tY29sb3JzIGhvdmVyOmJnLXByaW1hcnkvOTAiCiAgICAgICAgICA+CiAgICAgICAgICAgIEdvIGhvbWUKICAgICAgICAgIDwvTGluaz4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICApOwp9CgpmdW5jdGlvbiBFcnJvckNvbXBvbmVudCh7IGVycm9yLCByZXNldCB9OiB7IGVycm9yOiBFcnJvcjsgcmVzZXQ6ICgpID0+IHZvaWQgfSkgewogIGNvbnNvbGUuZXJyb3IoZXJyb3IpOwogIGNvbnN0IHJvdXRlciA9IHVzZVJvdXRlcigpOwogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICByZXBvcnRMb3ZhYmxlRXJyb3IoZXJyb3IsIHsgYm91bmRhcnk6ICJ0YW5zdGFja19yb290X2Vycm9yX2NvbXBvbmVudCIgfSk7CiAgfSwgW2Vycm9yXSk7CgogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBtaW4taC1zY3JlZW4gaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGJnLWJhY2tncm91bmQgcHgtNCI+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJtYXgtdy1tZCB0ZXh0LWNlbnRlciI+CiAgICAgICAgPGgxIGNsYXNzTmFtZT0idGV4dC14bCBmb250LXNlbWlib2xkIHRyYWNraW5nLXRpZ2h0IHRleHQtZm9yZWdyb3VuZCI+CiAgICAgICAgICBUaGlzIHBhZ2UgZGlkbid0IGxvYWQKICAgICAgICA8L2gxPgogICAgICAgIDxwIGNsYXNzTmFtZT0ibXQtMiB0ZXh0LXNtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+CiAgICAgICAgICBTb21ldGhpbmcgd2VudCB3cm9uZyBvbiBvdXIgZW5kLiBZb3UgY2FuIHRyeSByZWZyZXNoaW5nIG9yIGhlYWQgYmFjawogICAgICAgICAgaG9tZS4KICAgICAgICA8L3A+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTYgZmxleCBmbGV4LXdyYXAganVzdGlmeS1jZW50ZXIgZ2FwLTIiPgogICAgICAgICAgPGJ1dHRvbgogICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiB7CiAgICAgICAgICAgICAgcm91dGVyLmludmFsaWRhdGUoKTsKICAgICAgICAgICAgICByZXNldCgpOwogICAgICAgICAgICB9fQogICAgICAgICAgICBjbGFzc05hbWU9ImlubGluZS1mbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciByb3VuZGVkLW1kIGJnLXByaW1hcnkgcHgtNCBweS0yIHRleHQtc20gZm9udC1tZWRpdW0gdGV4dC1wcmltYXJ5LWZvcmVncm91bmQgdHJhbnNpdGlvbi1jb2xvcnMgaG92ZXI6YmctcHJpbWFyeS85MCIKICAgICAgICAgID4KICAgICAgICAgICAgVHJ5IGFnYWluCiAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICAgIDxhCiAgICAgICAgICAgIGhyZWY9Ii8iCiAgICAgICAgICAgIGNsYXNzTmFtZT0iaW5saW5lLWZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHJvdW5kZWQtbWQgYm9yZGVyIGJvcmRlci1pbnB1dCBiZy1iYWNrZ3JvdW5kIHB4LTQgcHktMiB0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtZm9yZWdyb3VuZCB0cmFuc2l0aW9uLWNvbG9ycyBob3ZlcjpiZy1hY2NlbnQiCiAgICAgICAgICA+CiAgICAgICAgICAgIEdvIGhvbWUKICAgICAgICAgIDwvYT4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICApOwp9CgpleHBvcnQgY29uc3QgUm91dGUgPSBjcmVhdGVSb290Um91dGVXaXRoQ29udGV4dDx7IHF1ZXJ5Q2xpZW50OiBRdWVyeUNsaWVudCB9PigpKAogIHsKICAgIGhlYWQ6ICgpID0+ICh7CiAgICAgIG1ldGE6IFsKICAgICAgICB7IGNoYXJTZXQ6ICJ1dGYtOCIgfSwKICAgICAgICB7IG5hbWU6ICJ2aWV3cG9ydCIsIGNvbnRlbnQ6ICJ3aWR0aD1kZXZpY2Utd2lkdGgsIGluaXRpYWwtc2NhbGU9MSIgfSwKICAgICAgICB7IHRpdGxlOiAi2KzZiNmH2LHYqSDYqtmDIOKAlCDZhdmG2LXYqSDYpdiv2KfYsdipINmF2K3ZhNin2Kog2KfZhNiw2YfYqCDZiNin2YTZhdis2YjZh9ix2KfYqiDZgdmKINmF2LXYsSIgfSwKICAgICAgICB7CiAgICAgICAgICBuYW1lOiAiZGVzY3JpcHRpb24iLAogICAgICAgICAgY29udGVudDoKICAgICAgICAgICAgItis2YjZh9ix2Kkg2KrZgyDZhdmG2LXYqSDYqti02LrZitmEINmF2KrZg9in2YXZhNipINmE2KXYr9in2LHYqSDZhdit2YTYp9iqINin2YTYsNmH2Kgg2YjYp9mE2YXYrNmI2YfYsdin2Kog2YHZiiDZhdi12LEuINil2K/Yp9ix2Kkg2KfZhNmF2K7YstmI2YbYjCDYp9mE2KPYs9i52KfYsSDYp9mE2YrZiNmF2YrYqdiMINin2YTZg9in2LTZitix2Iwg2YjYp9mE2KrZgtin2LHZitixLiIsCiAgICAgICAgfSwKICAgICAgICB7IHByb3BlcnR5OiAib2c6dHlwZSIsIGNvbnRlbnQ6ICJ3ZWJzaXRlIiB9LAogICAgICAgIHsgbmFtZTogInR3aXR0ZXI6Y2FyZCIsIGNvbnRlbnQ6ICJzdW1tYXJ5X2xhcmdlX2ltYWdlIiB9LAogICAgICAgIHsgcHJvcGVydHk6ICJvZzp0aXRsZSIsIGNvbnRlbnQ6ICLYrNmI2YfYsdipINiq2YMg4oCUINmF2YbYtdipINil2K/Yp9ix2Kkg2YXYrdmE2KfYqiDYp9mE2LDZh9ioINmI2KfZhNmF2KzZiNmH2LHYp9iqINmB2Yog2YXYtdixIiB9LAogICAgICAgIHsgbmFtZTogInR3aXR0ZXI6dGl0bGUiLCBjb250ZW50OiAi2KzZiNmH2LHYqSDYqtmDIOKAlCDZhdmG2LXYqSDYpdiv2KfYsdipINmF2K3ZhNin2Kog2KfZhNiw2YfYqCDZiNin2YTZhdis2YjZh9ix2KfYqiDZgdmKINmF2LXYsSIgfSwKICAgICAgICB7IHByb3BlcnR5OiAib2c6ZGVzY3JpcHRpb24iLCBjb250ZW50OiAi2KzZiNmH2LHYqSDYqtmDINmF2YbYtdipINiq2LTYutmK2YQg2YXYqtmD2KfZhdmE2Kkg2YTYpdiv2KfYsdipINmF2K3ZhNin2Kog2KfZhNiw2YfYqCDZiNin2YTZhdis2YjZh9ix2KfYqiDZgdmKINmF2LXYsS4g2KXYr9in2LHYqSDYp9mE2YXYrtiy2YjZhtiMINin2YTYo9iz2LnYp9ixINin2YTZitmI2YXZitip2Iwg2KfZhNmD2KfYtNmK2LHYjCDZiNin2YTYqtmC2KfYsdmK2LEuIiB9LAogICAgICAgIHsgbmFtZTogInR3aXR0ZXI6ZGVzY3JpcHRpb24iLCBjb250ZW50OiAi2KzZiNmH2LHYqSDYqtmDINmF2YbYtdipINiq2LTYutmK2YQg2YXYqtmD2KfZhdmE2Kkg2YTYpdiv2KfYsdipINmF2K3ZhNin2Kog2KfZhNiw2YfYqCDZiNin2YTZhdis2YjZh9ix2KfYqiDZgdmKINmF2LXYsS4g2KXYr9in2LHYqSDYp9mE2YXYrtiy2YjZhtiMINin2YTYo9iz2LnYp9ixINin2YTZitmI2YXZitip2Iwg2KfZhNmD2KfYtNmK2LHYjCDZiNin2YTYqtmC2KfYsdmK2LEuIiB9LAogICAgICAgIHsgcHJvcGVydHk6ICJvZzppbWFnZSIsIGNvbnRlbnQ6ICJodHRwczovL3B1Yi1iYjJlMTAzYTMyZGI0ZTE5ODUyNGEyZTllZDhmMzViNC5yMi5kZXYvNWNkMTJiNWMwYmJiY2JkNWE4ZDkxZGE1ZjhlNmMwYWIvaWQtcHJldmlldy0yNDc5ZTFkNS0tMTJmM2M3NmMtNWMwOC00MGE1LTk3MmMtZjVmNWQ4N2M3NmU4LmxvdmFibGUuYXBwLTE3ODYzODg4NzQwNjAucG5nIiB9LAogICAgICAgIHsgbmFtZTogInR3aXR0ZXI6aW1hZ2UiLCBjb250ZW50OiAiaHR0cHM6Ly9wdWItYmIyZTEwM2EzMmRiNGUxOTg1MjRhMmU5ZWQ4ZjM1YjQucjIuZGV2LzVjZDEyYjVjMGJiYmNiZDVhOGQ5MWRhNWY4ZTZjMGFiL2lkLXByZXZpZXctMjQ3OWUxZDUtLTEyZjNjNzZjLTVjMDgtNDBhNS05NzJjLWY1ZjVkODdjNzZlOC5sb3ZhYmxlLmFwcC0xNzg2Mzg4ODc0MDYwLnBuZyIgfSwKICAgICAgXSwKICAgICAgbGlua3M6IFsKICAgICAgICB7CiAgICAgICAgICByZWw6ICJzdHlsZXNoZWV0IiwKICAgICAgICAgIGhyZWY6IGFwcENzcywKICAgICAgICB9LAogICAgICAgIHsgcmVsOiAicHJlY29ubmVjdCIsIGhyZWY6ICJodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tIiB9LAogICAgICAgIHsKICAgICAgICAgIHJlbDogInByZWNvbm5lY3QiLAogICAgICAgICAgaHJlZjogImh0dHBzOi8vZm9udHMuZ3N0YXRpYy5jb20iLAogICAgICAgICAgY3Jvc3NPcmlnaW46ICJhbm9ueW1vdXMiLAogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgcmVsOiAic3R5bGVzaGVldCIsCiAgICAgICAgICBocmVmOiAiaHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3MyP2ZhbWlseT1JQk0rUGxleCtTYW5zK0FyYWJpYzp3Z2h0QDQwMDs1MDA7NjAwOzcwMCZmYW1pbHk9SW50ZXI6d2dodEA0MDA7NTAwOzYwMDs3MDAmZGlzcGxheT1zd2FwIiwKICAgICAgICB9LAogICAgICAgIHsgcmVsOiAiaWNvbiIsIGhyZWY6ICIvZmF2aWNvbi5wbmciLCB0eXBlOiAiaW1hZ2UvcG5nIiB9LAogICAgICBdLAogICAgfSksCiAgICBzaGVsbENvbXBvbmVudDogUm9vdFNoZWxsLAogICAgY29tcG9uZW50OiBSb290Q29tcG9uZW50LAogICAgbm90Rm91bmRDb21wb25lbnQ6IE5vdEZvdW5kQ29tcG9uZW50LAogICAgZXJyb3JDb21wb25lbnQ6IEVycm9yQ29tcG9uZW50LAogIH0sCik7CgpmdW5jdGlvbiBSb290U2hlbGwoeyBjaGlsZHJlbiB9OiB7IGNoaWxkcmVuOiBSZWFjdE5vZGUgfSkgewogIHJldHVybiAoCiAgICA8aHRtbCBsYW5nPSJhciIgZGlyPSJydGwiPgogICAgICA8aGVhZD4KICAgICAgICA8SGVhZENvbnRlbnQgLz4KICAgICAgPC9oZWFkPgogICAgICA8Ym9keT4KICAgICAgICB7Y2hpbGRyZW59CiAgICAgICAgPFNjcmlwdHMgLz4KICAgICAgPC9ib2R5PgogICAgPC9odG1sPgogICk7Cn0KCi8qKgogKiBSb290IGNvbXBvbmVudDogb25seSBvd25zIGdsb2JhbCBwcm92aWRlcnMuCiAqCiAqIEFwcFNoZWxsIChzaWRlYmFyLCB0b3BiYXIsIGNvbW1hbmQgcGFsZXR0ZSkgaXMgaW50ZW50aW9uYWxseSBOT1QgaGVyZS4KICogSXQgbGl2ZXMgaW4gcm91dGVzL19hdXRoZW50aWNhdGVkLnRzeCBzbyB0aGF0IHB1YmxpYyBwYWdlcyAobG9naW4sIGV0Yy4pCiAqIGNhbiByZW5kZXIgd2l0aG91dCBpdC4KICovCmZ1bmN0aW9uIFJvb3RDb21wb25lbnQoKSB7CiAgY29uc3QgeyBxdWVyeUNsaWVudCB9ID0gUm91dGUudXNlUm91dGVDb250ZXh0KCk7CgogIHJldHVybiAoCiAgICA8QXBwUHJvdmlkZXJzIHF1ZXJ5Q2xpZW50PXtxdWVyeUNsaWVudH0+CiAgICAgIHsvKiBSZXF1aXJlZDogbmVzdGVkIHJvdXRlcyByZW5kZXIgaGVyZS4gUmVtb3ZpbmcgPE91dGxldCAvPiBicmVha3MgYWxsIGNoaWxkIHJvdXRlcy4gKi99CiAgICAgIDxPdXRsZXQgLz4KICAgIDwvQXBwUHJvdmlkZXJzPgogICk7Cn0K
+import { QueryClient } from "@tanstack/react-query";
+import {
+  Outlet,
+  Link,
+  createRootRouteWithContext,
+  useRouter,
+  HeadContent,
+  Scripts,
+} from "@tanstack/react-router";
+import { useEffect, type ReactNode } from "react";
+
+import appCss from "../styles.css?url";
+import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AppProviders } from "../app/providers";
+
+function NotFoundComponent() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="max-w-md text-center">
+        <h1 className="text-7xl font-bold text-foreground">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">
+          Page not found
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+        <div className="mt-6">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            Go home
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  console.error(error);
+  const router = useRouter();
+  useEffect(() => {
+    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+  }, [error]);
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="max-w-md text-center">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          This page didn't load
+        </h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Something went wrong on our end. You can try refreshing or head back
+          home.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <button
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            Try again
+          </button>
+          <a
+            href="/"
+            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          >
+            Go home
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+  {
+    head: () => ({
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { title: "جوهرة تك — منصة إدارة محلات الذهب والمجوهرات في مصر" },
+        {
+          name: "description",
+          content:
+            "جوهرة تك منصة تشغيل متكاملة لإدارة محلات الذهب والمجوهرات في مصر. إدارة المخزون، الأسعار اليومية، الكاشير، والتقارير.",
+        },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { property: "og:title", content: "جوهرة تك — منصة إدارة محلات الذهب والمجوهرات في مصر" },
+        { name: "twitter:title", content: "جوهرة تك — منصة إدارة محلات الذهب والمجوهرات في مصر" },
+        { property: "og:description", content: "جوهرة تك منصة تشغيل متكاملة لإدارة محلات الذهب والمجوهرات في مصر. إدارة المخزون، الأسعار اليومية، الكاشير، والتقارير." },
+        { name: "twitter:description", content: "جوهرة تك منصة تشغيل متكاملة لإدارة محلات الذهب والمجوهرات في مصر. إدارة المخزون، الأسعار اليومية، الكاشير، والتقارير." },
+        { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5cd12b5c0bbbcbd5a8d91da5f8e6c0ab/id-preview-2479e1d5--12f3c76c-5c08-40a5-972c-f5f5d87c76e8.lovable.app-1786388874060.png" },
+        { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5cd12b5c0bbbcbd5a8d91da5f8e6c0ab/id-preview-2479e1d5--12f3c76c-5c08-40a5-972c-f5f5d87c76e8.lovable.app-1786388874060.png" },
+      ],
+      links: [
+        {
+          rel: "stylesheet",
+          href: appCss,
+        },
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        {
+          rel: "preconnect",
+          href: "https://fonts.gstatic.com",
+          crossOrigin: "anonymous",
+        },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap",
+        },
+        { rel: "icon", href: "/favicon.png", type: "image/png" },
+      ],
+    }),
+    shellComponent: RootShell,
+    component: RootComponent,
+    notFoundComponent: NotFoundComponent,
+    errorComponent: ErrorComponent,
+  },
+);
+
+function RootShell({ children }: { children: ReactNode }) {
+  return (
+    <html lang="ar" dir="rtl">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+/**
+ * Root component: only owns global providers.
+ *
+ * AppShell (sidebar, topbar, command palette) is intentionally NOT here.
+ * It lives in routes/_authenticated.tsx so that public pages (login, etc.)
+ * can render without it.
+ */
+function RootComponent() {
+  const { queryClient } = Route.useRouteContext();
+
+  return (
+    <AppProviders queryClient={queryClient}>
+      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <Outlet />
+    </AppProviders>
+  );
+}
