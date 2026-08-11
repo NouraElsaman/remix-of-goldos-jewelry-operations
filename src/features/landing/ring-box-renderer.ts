@@ -7,6 +7,8 @@
  */
 import type * as THREE_NS from "three";
 
+import logoAr from "@/assets/branding/logo-ar.png";
+
 export type RingBoxRenderer = {
   setProgress: (value: number) => void;
   dispose: () => void;
@@ -279,7 +281,7 @@ export async function createRingBoxRenderer(host: HTMLElement): Promise<RingBoxR
 
   // Brand mark, printed flat on the lid surface.
   const loader = new THREE.TextureLoader();
-  const logoTex = loader.load("/logo-ar.png", () => {
+  const logoTex = loader.load(logoAr, () => {
     invalidate();
   });
   logoTex.colorSpace = THREE.SRGBColorSpace;
