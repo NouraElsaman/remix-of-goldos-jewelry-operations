@@ -9,8 +9,9 @@ import { AssemblyStory } from "@/features/landing/assembly-story";
 import { GoldBars } from "@/features/landing/gold-bars";
 import { AmbientDepth } from "@/features/landing/ambient-depth";
 import { useI18n } from "@/lib/i18n";
-import scorpiusWordmark from "@/assets/scorpius-wordmark.png.asset.json";
-import heroJewelry from "@/assets/hero-jewelry.png.asset.json";
+import logoAr from "@/assets/branding/logo-ar.png";
+import scorpiusWordmark from "@/assets/scorpius-wordmark.png";
+import heroJewelry from "@/assets/hero-jewelry.png";
 
 
 export const Route = createFileRoute("/")({
@@ -113,7 +114,7 @@ function LandingPage() {
             aria-label="جوهرة تك"
           >
             <img
-              src="/logo-ar.png"
+              src={logoAr}
               alt="جوهرة تك"
               width={612}
               height={408}
@@ -167,7 +168,7 @@ function LandingPage() {
             uncluttered side. */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
           <img
-            src={heroJewelry.url}
+            src={heroJewelry}
             alt=""
             aria-hidden
             fetchPriority="high"
@@ -305,7 +306,7 @@ function LandingPage() {
                 />
 
                 <img
-                  src="/logo-ar.png"
+                  src={logoAr}
                   alt="جوهرة تك"
                   width={612}
                   height={408}
@@ -392,7 +393,7 @@ function LandingPage() {
             <div className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-surface/70 p-10 text-center shadow-soft backdrop-blur-xl transition-[box-shadow,border-color] duration-500 hover:border-gold/35 hover:shadow-floating sm:p-16">
               <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent" />
               <img
-                src="/logo-ar.png"
+                src={logoAr}
                 alt="جوهرة تك"
                 width={612}
                 height={408}
@@ -428,7 +429,7 @@ function LandingPage() {
         <div className="mx-auto flex max-w-[86rem] flex-col items-center justify-between gap-8 px-6 text-xs text-muted-foreground sm:flex-row lg:px-12">
           <div className="flex flex-col items-center gap-5 sm:flex-row">
             <img
-              src="/logo-ar.png"
+              src={logoAr}
               alt="جوهرة تك"
               width={612}
               height={408}
@@ -447,7 +448,7 @@ function LandingPage() {
             <p className="flex items-center gap-2 text-[11px] text-muted-foreground/70">
               <span>{isAr ? "صُنع بواسطة" : "Crafted by"}</span>
               <img
-                src={scorpiusWordmark.url}
+                src={scorpiusWordmark}
                 alt="Scorpius"
                 className="h-2.5 w-auto object-contain opacity-70"
               />
