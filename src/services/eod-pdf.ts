@@ -15,7 +15,7 @@ export function getEODPdfAttachmentFilename(metrics: EODReportMetrics): string {
 /**
  * Generates an executive PDF document buffer for the EOD Report.
  */
-export function generateEODPdfBuffer(metrics: EODReportMetrics): Buffer {
+export function generateEODPdfDoc(metrics: EODReportMetrics): jsPDF {
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -146,5 +146,19 @@ export function generateEODPdfBuffer(metrics: EODReportMetrics): Buffer {
     isRTL: true,
   });
 
-  return Buffer.from(doc.output("arraybuffer"));
+  return doc;
 }
+
+/**
+ * Returns base64 encoded string of the generated PDF document.
+ * Works seamlessly in both Client (Browser) and Server (Node.js) environments.
+ */
+export function generateEODPdfBase64(metrics: EODReportMetrics): string {
+  const doc = generateEODPdfDoc(metrics);
+  const dataUri = doc.output("datauristring");
+  if (dataUri && dataUri.includes(",")) {
+    return dataUri.split(",")[1];
+  }
+  return doc.output("base64");
+}
+

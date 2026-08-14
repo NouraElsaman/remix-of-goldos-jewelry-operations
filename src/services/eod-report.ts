@@ -1,7 +1,7 @@
 import { supabase } from "@/services/supabase/supabase-provider";
 import { services } from "@/services";
 import { sendEmailViaResend } from "@/services/send-email-fn";
-import { generateEODPdfBuffer, getEODPdfAttachmentFilename } from "@/services/eod-pdf";
+import { generateEODPdfBase64, getEODPdfAttachmentFilename } from "@/services/eod-pdf";
 
 export interface EODReportMetrics {
   date: string;
@@ -353,12 +353,12 @@ export async function sendEODReportEmail(metrics: EODReportMetrics): Promise<{ s
     // Generate PDF attachment named after the day and date
     let attachments: Array<{ filename: string; content: string }> | undefined;
     try {
-      const pdfBuffer = generateEODPdfBuffer(metrics);
+      const pdfBase64 = generateEODPdfBase64(metrics);
       const pdfFilename = getEODPdfAttachmentFilename(metrics);
       attachments = [
         {
           filename: pdfFilename,
-          content: pdfBuffer.toString("base64"),
+          content: pdfBase64,
         },
       ];
     } catch (pdfErr) {
