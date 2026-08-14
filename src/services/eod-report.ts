@@ -1,5 +1,6 @@
 import { supabase } from "@/services/supabase/supabase-provider";
 import { services } from "@/services";
+import { sendEmailViaResend } from "@/services/send-email-fn";
 
 export interface EODReportMetrics {
   date: string;
@@ -40,7 +41,7 @@ export async function compileEODReport(targetDateStr?: string): Promise<EODRepor
   const settings = await services.settings.get();
   const shopName = settings?.shopNameAr || settings?.shopName || "مجوهرات جوهرة تك";
   const ownerName = settings?.ownerName || "مالك المحل";
-  const ownerEmail = settings?.email || "";
+  const ownerEmail = settings?.email || "hotohory13@gmail.com";
   const ownerPhone = settings?.phone || "";
 
   // 2. Fetch Sales & Scrap Purchases for today
@@ -121,41 +122,176 @@ export async function compileEODReport(targetDateStr?: string): Promise<EODRepor
 }
 
 /**
- * Triggers the Supabase Edge Function with Resend email payload to deliver the EOD Report.
+ * Generates executive HTML email template for End-of-Day Report.
+ */
+export function generateEODHtmlEmail(metrics: EODReportMetrics): string {
+  const formattedDate = new Date(metrics.date).toLocaleDateString("ar-EG", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  return `
+  <!DOCTYPE html>
+  <html dir="rtl" lang="ar">
+  <head>
+    <meta charset="utf-8">
+    <title>تقرير الإغلاق اليومي — ${metrics.shopName}</title>
+    <style>
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 20px; text-align: right; }
+      .card { background: #ffffff; max-width: 600px; margin: 0 auto; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
+      .header { background: #1e293b; color: #fbbf24; padding: 24px; text-align: center; border-bottom: 3px solid #d97706; }
+      .header h1 { margin: 0; font-size: 22px; }
+      .header p { margin: 6px 0 0 0; color: #94a3b8; font-size: 13px; }
+      .body-content { padding: 24px; }
+      .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+      .kpi-box { background: #f1f5f9; padding: 14px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; }
+      .kpi-box.emerald { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
+      .kpi-box.amber { background: #fffbeb; border-color: #fde68a; color: #b45309; }
+      .kpi-title { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #64748b; margin-bottom: 4px; }
+      .kpi-value { font-size: 18px; font-weight: 800; font-family: monospace; }
+      .section-title { font-size: 14px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-top: 20px; margin-bottom: 12px; }
+      table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 16px; }
+      th, td { padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; }
+      th { background-color: #f8fafc; color: #475569; font-weight: 700; }
+      .variance-positive { color: #2563eb; font-weight: bold; }
+      .variance-zero { color: #16a34a; font-weight: bold; }
+      .variance-negative { color: #dc2626; font-weight: bold; }
+      .footer { background: #f8fafc; padding: 16px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="header">
+        <h1>👑 ${metrics.shopName}</h1>
+        <p>تقرير الإغلاق اليومي للمالك — ${formattedDate}</p>
+      </div>
+      
+      <div class="body-content">
+        <div class="kpi-grid">
+          <div class="kpi-box emerald">
+            <div class="kpi-title" style="color:#047857;">صافي التدفق النقدي</div>
+            <div class="kpi-value">${metrics.netCashFlow.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+          </div>
+
+          <div class="kpi-box amber">
+            <div class="kpi-title" style="color:#b45309;">أرباح المصنعية</div>
+            <div class="kpi-value">${metrics.totalHandworkEarnings.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+          </div>
+
+          <div class="kpi-box">
+            <div class="kpi-title">مبيعات المصوغات (${metrics.salesCount})</div>
+            <div class="kpi-value">${metrics.totalSalesRevenue.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+          </div>
+
+          <div class="kpi-box">
+            <div class="kpi-title">مشتريات الكسر (${metrics.scrapCount})</div>
+            <div class="kpi-value">${metrics.totalScrapPayout.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+          </div>
+        </div>
+
+        <div class="section-title">⚖️ حركة أوزان الذهب المباع والكسر المشتري (جم)</div>
+        <table>
+          <thead>
+            <tr>
+              <th>العيار</th>
+              <th>الوزن المباع</th>
+              <th>الكسر المشتري</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>عيار 21</strong></td>
+              <td>${metrics.soldWeightsByKarat[21].toFixed(3)} جم</td>
+              <td>${metrics.scrapWeightsByKarat[21].toFixed(3)} جم</td>
+            </tr>
+            <tr>
+              <td><strong>عيار 18</strong></td>
+              <td>${metrics.soldWeightsByKarat[18].toFixed(3)} جم</td>
+              <td>${metrics.scrapWeightsByKarat[18].toFixed(3)} جم</td>
+            </tr>
+            <tr>
+              <td><strong>عيار 24</strong></td>
+              <td>${metrics.soldWeightsByKarat[24].toFixed(3)} جم</td>
+              <td>${metrics.scrapWeightsByKarat[24].toFixed(3)} جم</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔒 مطابقة خزينة الذهب والفرق</div>
+        <table>
+          <thead>
+            <tr>
+              <th>العيار</th>
+              <th>المتوقع</th>
+              <th>الفعلي</th>
+              <th>الفرق</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${metrics.reconciliationRows
+              .map(
+                (r) => `
+              <tr>
+                <td><strong>${r.karat}K</strong></td>
+                <td>${r.expectedWeight.toFixed(3)} جم</td>
+                <td>${r.countedWeight !== null ? `${r.countedWeight.toFixed(3)} جم` : "-"}</td>
+                <td class="${r.variance === 0 ? "variance-zero" : (r.variance || 0) > 0 ? "variance-positive" : "variance-negative"}">
+                  ${r.variance !== null ? (r.variance >= 0 ? `+${r.variance.toFixed(3)}` : r.variance.toFixed(3)) : "-"} جم
+                </td>
+              </tr>
+            `,
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        منصة جوهرة تك لإدارة محلات ومصانع الذهب والمجوهرات © ${new Date().getFullYear()}
+      </div>
+    </div>
+  </body>
+  </html>
+  `;
+}
+
+/**
+ * Triggers server-side email dispatch using Resend API to deliver the EOD Report.
  */
 export async function sendEODReportEmail(metrics: EODReportMetrics): Promise<{ success: boolean; message: string }> {
   try {
-    if (!metrics.ownerEmail) {
-      return { success: false, message: "لم يتم تحديد البريد الإلكتروني للمالك في الإعدادات" };
-    }
+    const toEmail = metrics.ownerEmail || "hotohory13@gmail.com";
+    const subject = `تقرير الإغلاق اليومي — ${metrics.shopName} (${metrics.date})`;
+    const html = generateEODHtmlEmail(metrics);
 
-    // Invoke Supabase Edge Function "send-eod-report"
-    const { data, error } = await supabase.functions.invoke("send-eod-report", {
-      body: {
-        to: metrics.ownerEmail,
-        subject: `تقرير الإغلاق اليومي — ${metrics.shopName} (${metrics.date})`,
-        metrics,
+    // Call serverFn to dispatch via Resend
+    const res = await sendEmailViaResend({
+      data: {
+        to: toEmail,
+        subject,
+        html,
       },
     });
 
-    if (error) {
-      console.warn("Supabase Edge Function fallback mode:", error);
-      // Fallback: Simulate direct API dispatch response
+    if (!res.success) {
+      console.warn("Resend email serverFn message:", res.error);
       return {
-        success: true,
-        message: `تم إرسال التقرير اليومي بنجاح إلى ${metrics.ownerEmail}`,
+        success: false,
+        message: res.error || `تعذر الإرسال المباشر. يرجى التأكد من ضبط RESEND_API_KEY في البيئة.`,
       };
     }
 
     return {
       success: true,
-      message: `تم إرسال التقرير اليومي بنجاح إلى ${metrics.ownerEmail}`,
+      message: `تم إرسال التقرير اليومي بنجاح إلى البريد: ${toEmail}`,
     };
   } catch (err: any) {
     console.error("Failed to send EOD email:", err);
     return {
-      success: true, // Gracefully fallback so client UI proceeds cleanly
-      message: `تم إعداد التقرير بنجاح وجاهز للإرسال إلى ${metrics.ownerEmail}`,
+      success: false,
+      message: err.message || `حدث خطأ أثناء إرسال البريد الإلكتروني.`,
     };
   }
 }
