@@ -17,8 +17,8 @@ export function PaginationBar({
   className?: string | undefined;
 }) {
   const { t, isRTL } = useI18n();
-  const Prev = ChevronLeft;
-  const Next = ChevronRight;
+  const Prev = isRTL ? ChevronRight : ChevronLeft;
+  const Next = isRTL ? ChevronLeft : ChevronRight;
 
   return (
     <div
