@@ -1,196 +1,540 @@
-# Remix of GoldOS: Jewelry Operations
+# 💎 جوهرة تك | JawharaTech
 
-You are acting as the Principal Product Manager, Lead UX Architect, Lead Software Architect, and Technical Lead for this project.
+> A modern, Arabic-first jewelry operations platform built for managing the daily workflow of jewelry businesses.
 
-Do NOT generate any code or UI yet.
+**JawharaTech** is a premium internal operations platform designed specifically for jewelry shops.
 
-We are currently in the Planning Phase of the SDLC.
+It is **not an e-commerce platform** and is not intended for selling jewelry online.
 
-Your job is to fully understand the product and create a complete implementation plan before any development begins.
+Instead, JawharaTech helps jewelry businesses manage their daily operations through a modern workspace for sales, inventory, gold pricing, invoices, reporting, and shop configuration.
 
-# Product
+The product combines a premium Arabic-first user experience with a structured backend powered by Supabase.
 
-The product name is GoldOS.
+---
 
-GoldOS is a premium Jewelry Operations Platform designed for jewelry shops.
+## ✨ Overview
 
-This is NOT an e-commerce website.
+Running a jewelry shop involves much more than simply selling products.
 
-This is NOT an online jewelry store.
+Daily operations require accurate handling of:
 
-It is an internal business application used to operate, monitor, and analyze the daily activities of a jewelry shop.
+- Jewelry inventory
+- Gold karats and weights
+- Daily gold prices
+- Manufacturing costs
+- Sales transactions
+- Customer information
+- Invoices and receipts
+- Shop settings
+- Operational reporting
 
-The MVP focuses on one jewelry shop only.
+JawharaTech brings these workflows into one unified system designed specifically around jewelry business operations.
 
-# Main Modules
+The interface is designed to feel modern, calm, premium, and easy to use — avoiding the complexity and visual overload commonly associated with traditional ERP systems.
 
-- Dashboard
+---
 
-- Cashier (POS)
+# 🎯 Core Features
 
-- Inventory
+## 📊 Dashboard
 
-- Gold Prices
+The dashboard provides a central overview of the shop's operations.
 
-- Daily Weight Reconciliation
+It is designed to surface important business information at a glance, including operational metrics and current gold-related information.
 
-- Reports
+Key areas include:
 
-- Analytics
+- Business overview
+- Daily operational insights
+- Gold price information
+- Sales-related metrics
+- Inventory summaries
+- Quick access to core workflows
 
-- User Management
+---
 
-- Settings
+## 🧾 Cashier / POS
 
-# Target Users
+The Cashier module allows shop staff to create jewelry sales transactions.
 
-- Shop Owner
+### Current capabilities
 
-- Cashier
+- Select jewelry items from inventory
+- Search inventory without loading the full catalog directly into the page
+- Scrollable inventory selection for large inventories
+- Search by:
+  - Item ID / SKU
+  - Item name
+  - Gold karat
+  - Weight
+- Manual item entry
+- Customer information
+- Gold price handling
+- Manufacturing cost handling
+- Sale calculations
+- Invoice generation
+- Receipt display
 
-- Inventory Manager
+The inventory selector is designed to scale to shops containing thousands of items.
 
-# Product Vision
+---
 
-Create the most elegant and modern jewelry operations platform.
+## 💍 Inventory Management
 
-The experience should feel premium, luxurious, calm, intuitive, and highly professional.
+JawharaTech provides inventory management specifically designed around jewelry products.
 
-The product should feel closer to Apple, Linear, and Stripe than to traditional ERP systems.
+Each item can include information such as:
 
-# Design Requirements
+- Item name
+- Item code / SKU
+- Manufacturer / company
+- Gold karat
+- Weight
+- Product type
+- Inventory status
 
-The application will be:
+The system supports structured jewelry inventory instead of treating products like generic retail items.
 
-- Arabic-first
+---
 
-- RTL by default
+## 📈 Gold Prices
 
-- Support English with instant language switching
+The system supports managing and displaying current gold prices used throughout operational workflows.
 
-- Responsive
+Gold prices can be associated with different karats and used in calculations within the application.
 
-- Desktop-first
+---
 
-The design language should include:
+## ⚙️ Settings
 
-- Warm white backgrounds
+The Settings module allows configuration of shop-related information.
 
-- Champagne gold accents
+This includes areas such as:
 
-- Soft shadows
+- Shop information
+- Invoice configuration
+- Pricing and gold-related settings
+- Security-related settings
 
-- Premium typography
+The application is designed so business configuration can influence relevant operational screens without hardcoding shop-specific values into the UI.
 
+---
+
+# 🌍 Arabic-First Experience
+
+JawharaTech is designed primarily for Arabic-speaking jewelry businesses.
+
+The application supports:
+
+- RTL layout
+- Arabic-first user experience
+- Proper directional handling
+- Mixed Arabic and numeric content
+- Correct display of:
+  - Currency
+  - Weights
+  - Karats
+  - SKU codes
+  - Product identifiers
+
+Special care is required when mixing RTL Arabic content with LTR technical or numeric values to prevent layout and alignment issues.
+
+---
+
+# 🎨 Design Philosophy
+
+JawharaTech follows a premium and minimal design language inspired by modern product experiences rather than traditional ERP systems.
+
+The design focuses on:
+
+- Warm white surfaces
+- Champagne and gold accents
 - Spacious layouts
+- Soft shadows
+- Clear information hierarchy
+- Premium typography
+- Minimal visual noise
+- Responsive layouts
+- Smooth and purposeful interactions
 
-- Minimal interface
+The goal is to make a complex operational system feel simple and approachable.
 
-- Elegant motion
+---
 
-- Excellent usability
+# 🏗️ Technology Stack
 
-# Business Overview
+The project is built with modern web technologies.
 
-The system helps jewelry businesses:
+### Frontend
 
-- Record sales
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
 
-- Manage inventory
+### Backend & Data
 
-- Store product information
+- Supabase
+- PostgreSQL
+- Supabase Authentication
 
-- Track daily gold prices
+### Development Platform
 
-- Perform daily weight reconciliation
+- Lovable
 
-- Generate reports
+The project can be developed through Lovable or locally using a standard Node.js development environment.
 
-- Analyze business performance
+---
 
-Future AI capabilities will be added later and should NOT be included in the MVP planning.
+# 🔐 Environment Configuration
 
-# Your Task
+The application uses environment variables to configure the active backend provider and Supabase connection.
 
-Before generating any code, produce a complete planning document.
+Example:
 
-The document should contain:
+```env
+VITE_SERVICE_PROVIDER=supabase
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_publishable_key
+```
 
-1. Product Summary
+> ⚠️ Never commit real credentials, `.env`, or `.env.local` files to the repository.
 
-2. Business Goals
+The application should use the configured Supabase provider rather than silently falling back to mock data when the production data connection is expected.
 
-3. User Personas
+---
 
-4. Functional Requirements
+# 🚀 Getting Started
 
-5. Non-Functional Requirements
+## Prerequisites
 
-6. User Workflows
+Make sure you have:
 
-7. Information Architecture
+- Node.js
+- npm
 
-8. Navigation Structure
+installed on your machine.
 
-9. Page Hierarchy
+---
 
-10. Dashboard Information Architecture
+## Clone the Repository
 
-11. Cashier Workflow
+```bash
+git clone https://github.com/NouraElsaman/remix-of-goldos-jewelry-operations.git
+```
 
-12. Inventory Workflow
+Navigate to the project:
 
-13. Daily Weight Reconciliation Workflow
+```bash
+cd remix-of-goldos-jewelry-operations
+```
 
-14. Reports Workflow
+Install dependencies:
 
-15. Analytics Workflow
+```bash
+npm install
+```
 
-16. Data Model (high level only)
+Create your local environment configuration:
 
-17. Suggested Folder Structure
+```bash
+cp .env.example .env.local
+```
 
-18. Suggested Tech Stack
+Then configure the required environment variables.
 
-19. Reusable UI Components
+---
 
-20. Design System Recommendations
+## Start the Development Server
 
-21. State Management Strategy
-
-22. Future Expansion Opportunities (excluding implementation)
-
-23. Development Roadmap
-
-24. Risks and UX Considerations
-
-Do not generate designs.
-
-Do not generate code.
-
-Do not implement pages.
-
-Think like a senior product team preparing the project before development begins.
-
-Challenge assumptions if necessary and recommend improvements to make the MVP simpler, more practical, and more valuable for jewelry businesses.
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/542d6810-85ff-44ea-9406-a019d21c07d9).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+```bash
 npm run dev
 ```
+
+The application will start in development mode.
+
+---
+
+## Production Build
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+---
+
+# 📁 Project Architecture
+
+The project follows a modular architecture that separates application concerns.
+
+High-level areas include:
+
+```text
+src/
+│
+├── components/
+│   ├── ui/
+│   ├── shared/
+│   └── layout/
+│
+├── features/
+│   ├── dashboard/
+│   ├── cashier/
+│   ├── inventory/
+│   ├── settings/
+│   └── landing/
+│
+├── services/
+│
+├── providers/
+│
+├── routes/
+│
+├── hooks/
+│
+├── lib/
+│
+└── types/
+```
+
+The architecture is intended to keep feature logic, UI components, backend access, and shared functionality separated as the product grows.
+
+---
+
+# 🗄️ Backend Architecture
+
+JawharaTech uses Supabase as the primary backend and data platform.
+
+The backend layer is responsible for handling areas such as:
+
+- Authentication
+- Session management
+- Inventory data
+- Gold price data
+- Sales data
+- Invoice-related operations
+- Shop configuration
+
+The application should preserve a clear separation between UI components and data/service access.
+
+---
+
+# 🔄 Core Application Workflows
+
+## Cashier Workflow
+
+```text
+Open Cashier
+      ↓
+Search Inventory
+      ↓
+Select Existing Item
+      │
+      ├── Search by SKU
+      ├── Search by Name
+      ├── Search by Karat
+      └── Search by Weight
+      │
+      ↓
+Or Enter Item Manually
+      ↓
+Add Customer Information
+      ↓
+Calculate Sale
+      ↓
+Create Invoice
+      ↓
+Store Transaction
+      ↓
+Display Receipt
+```
+
+---
+
+## Inventory Workflow
+
+```text
+Add Item
+    ↓
+Enter Item Details
+    ↓
+Assign Code / SKU
+    ↓
+Select Karat
+    ↓
+Enter Weight
+    ↓
+Add Manufacturer Information
+    ↓
+Save to Inventory
+```
+
+---
+
+# 📱 Responsive Design
+
+JawharaTech is designed with a desktop-first approach while maintaining responsive behavior.
+
+The interface should adapt across:
+
+- Desktop
+- Laptop
+- Tablet
+- Mobile
+
+Responsive changes must preserve:
+
+- RTL behavior
+- Information hierarchy
+- Form usability
+- Table readability
+- Cashier workflow efficiency
+
+---
+
+# 🧪 Development Principles
+
+When extending the application:
+
+### Preserve Existing Architecture
+
+Avoid unnecessary rewrites of working systems.
+
+### Protect Core Workflows
+
+Changes to one module should not unintentionally break:
+
+- Authentication
+- Supabase integration
+- Existing services
+- Inventory logic
+- Cashier calculations
+- RTL behavior
+
+### Avoid Unnecessary Global UI Changes
+
+A fix to one page should remain scoped to that page whenever possible.
+
+### Protect the Landing Page
+
+The landing page contains its own visual and animation logic.
+
+Changes to dashboard, cashier, inventory, settings, or other authenticated application pages should **not modify or interfere with the landing page** unless explicitly required.
+
+This includes:
+
+- Three.js implementation
+- Ring box scene
+- Scroll animations
+- Landing layout
+- Landing-specific styles
+- Landing assets
+
+---
+
+# 🛣️ Product Roadmap
+
+JawharaTech is being developed iteratively.
+
+### Current Foundation
+
+- [x] Premium application interface
+- [x] Arabic-first RTL experience
+- [x] Dashboard
+- [x] Cashier workflow
+- [x] Searchable inventory selection
+- [x] Manual cashier entry
+- [x] Inventory management
+- [x] Gold pricing
+- [x] Settings
+- [x] Supabase backend integration
+- [x] Authentication and protected application access
+- [x] Invoice and receipt workflow
+- [x] Responsive UI improvements
+
+### Next Areas
+
+- [ ] Daily weight reconciliation improvements
+- [ ] Advanced reports
+- [ ] Business analytics
+- [ ] User roles and permissions
+- [ ] Advanced inventory operations
+- [ ] Enhanced audit history
+- [ ] Multi-shop support
+- [ ] AI-powered business capabilities
+
+> AI functionality is planned as a future expansion and is not part of the current core MVP.
+
+---
+
+# 🔮 Future Vision
+
+JawharaTech is designed to grow beyond a single jewelry shop.
+
+Future versions may support:
+
+- Multiple branches
+- Multiple jewelry shops
+- Advanced analytics
+- Role-based access control
+- Audit trails
+- Business intelligence
+- AI-assisted operational insights
+- Demand and inventory analysis
+- Smart reporting
+
+The current architecture should evolve carefully without sacrificing the simplicity of the core jewelry-shop workflow.
+
+---
+
+# 🛡️ Security Notes
+
+Sensitive configuration must never be committed to GitHub.
+
+Do not commit:
+
+```text
+.env
+.env.local
+API keys
+Supabase secrets
+Service credentials
+```
+
+Use environment variables and deployment-platform secrets instead.
+
+---
+
+# 🤝 Development
+
+This project is actively evolving.
+
+When contributing or extending the system:
+
+1. Understand the existing feature before modifying it.
+2. Keep changes scoped to the requested module.
+3. Avoid unnecessary refactoring.
+4. Preserve existing backend and authentication behavior.
+5. Test RTL and mixed Arabic/LTR content.
+6. Test large inventory scenarios.
+7. Avoid loading large datasets directly into the UI unnecessarily.
+8. Protect the landing page from unrelated application changes.
+9. Verify TypeScript and production builds before merging changes.
+
+---
+
+# 💎 JawharaTech
+
+**JawharaTech** is building a modern operational experience for jewelry businesses.
+
+Elegant enough for a premium jewelry brand.
+
+Structured enough for daily business operations.
+
+Simple enough to use every day.
+
+---
+
+Built with ❤️ using modern web technologies.
