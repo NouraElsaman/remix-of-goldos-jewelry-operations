@@ -125,7 +125,56 @@ export const supabaseServices: ServiceRegistry = {
         trayId: data.tray_id || null,
         status: data.status as any,
       };
-    }
+    },
+
+    updateItem: async (id, input) => {
+      const dbFields: any = {};
+      if (input.sku !== undefined) dbFields.sku = input.sku;
+      if (input.name !== undefined) dbFields.name = input.name;
+      if ((input as any).company !== undefined) dbFields.company = (input as any).company;
+      if (input.category !== undefined) dbFields.category = input.category;
+      if (input.karat !== undefined) dbFields.karat = input.karat;
+      if (input.grossWeight !== undefined) dbFields.gross_weight = input.grossWeight;
+      if (input.stoneWeight !== undefined) dbFields.stone_weight = input.stoneWeight;
+      if (input.netWeight !== undefined) dbFields.net_weight = input.netWeight;
+      if (input.manufacturingCost !== undefined) dbFields.manufacturing_cost = input.manufacturingCost;
+      if (input.trayId !== undefined) dbFields.tray_id = input.trayId;
+      if (input.status !== undefined) dbFields.status = input.status;
+
+      const { data, error } = await supabase
+        .from("inventory")
+        .update(dbFields)
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return {
+        id: data.id,
+        sku: data.sku,
+        barcode: data.barcode || "",
+        name: data.name,
+        company: data.company || null,
+        category: data.category,
+        karat: data.karat as any,
+        grossWeight: Number(data.gross_weight),
+        stoneWeight: Number(data.stone_weight),
+        netWeight: Number(data.net_weight),
+        manufacturingCost: Number(data.manufacturing_cost),
+        trayId: data.tray_id || null,
+        status: data.status as any,
+      };
+    },
+
+    deleteItem: async (id) => {
+      const { error } = await supabase
+        .from("inventory")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+    },
   },
   reconciliation: {
     currentDay: async () => {
