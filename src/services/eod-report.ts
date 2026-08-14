@@ -133,124 +133,142 @@ export function generateEODHtmlEmail(metrics: EODReportMetrics): string {
   });
 
   return `
-  <!DOCTYPE html>
-  <html dir="rtl" lang="ar">
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml" dir="rtl" lang="ar">
   <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>تقرير الإغلاق اليومي — ${metrics.shopName}</title>
-    <style>
-      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 20px; text-align: right; }
-      .card { background: #ffffff; max-width: 600px; margin: 0 auto; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
-      .header { background: #1e293b; color: #fbbf24; padding: 24px; text-align: center; border-bottom: 3px solid #d97706; }
-      .header h1 { margin: 0; font-size: 22px; }
-      .header p { margin: 6px 0 0 0; color: #94a3b8; font-size: 13px; }
-      .body-content { padding: 24px; }
-      .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-      .kpi-box { background: #f1f5f9; padding: 14px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; }
-      .kpi-box.emerald { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
-      .kpi-box.amber { background: #fffbeb; border-color: #fde68a; color: #b45309; }
-      .kpi-title { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #64748b; margin-bottom: 4px; }
-      .kpi-value { font-size: 18px; font-weight: 800; font-family: monospace; }
-      .section-title { font-size: 14px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-top: 20px; margin-bottom: 12px; }
-      table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 16px; }
-      th, td { padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; }
-      th { background-color: #f8fafc; color: #475569; font-weight: 700; }
-      .variance-positive { color: #2563eb; font-weight: bold; }
-      .variance-zero { color: #16a34a; font-weight: bold; }
-      .variance-negative { color: #dc2626; font-weight: bold; }
-      .footer { background: #f8fafc; padding: 16px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; }
-    </style>
   </head>
-  <body>
-    <div class="card">
-      <div class="header">
-        <h1>👑 ${metrics.shopName}</h1>
-        <p>تقرير الإغلاق اليومي للمالك — ${formattedDate}</p>
-      </div>
+  <body dir="rtl" style="margin: 0; padding: 20px; background-color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: rtl !important; text-align: right !important;">
+    <div dir="rtl" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; direction: rtl !important; text-align: right !important;">
       
-      <div class="body-content">
-        <div class="kpi-grid">
-          <div class="kpi-box emerald">
-            <div class="kpi-title" style="color:#047857;">صافي التدفق النقدي</div>
-            <div class="kpi-value">${metrics.netCashFlow.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
-          </div>
+      <!-- Header -->
+      <table dir="rtl" align="right" width="100%" cellpadding="0" cellspacing="0" style="background-color: #1e293b; border-bottom: 3px solid #d97706; direction: rtl !important; width: 100%;">
+        <tr>
+          <td align="center" dir="rtl" style="padding: 24px; text-align: center !important; color: #fbbf24;">
+            <h1 style="margin: 0; font-size: 22px; color: #fbbf24;">👑 ${metrics.shopName}</h1>
+            <p style="margin: 6px 0 0 0; color: #94a3b8; font-size: 13px;">تقرير الإغلاق اليومي للمالك — ${formattedDate}</p>
+          </td>
+        </tr>
+      </table>
 
-          <div class="kpi-box amber">
-            <div class="kpi-title" style="color:#b45309;">أرباح المصنعية</div>
-            <div class="kpi-value">${metrics.totalHandworkEarnings.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
-          </div>
-
-          <div class="kpi-box">
-            <div class="kpi-title">مبيعات المصوغات (${metrics.salesCount})</div>
-            <div class="kpi-value">${metrics.totalSalesRevenue.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
-          </div>
-
-          <div class="kpi-box">
-            <div class="kpi-title">مشتريات الكسر (${metrics.scrapCount})</div>
-            <div class="kpi-value">${metrics.totalScrapPayout.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
-          </div>
-        </div>
-
-        <div class="section-title">⚖️ حركة أوزان الذهب المباع والكسر المشتري (جم)</div>
-        <table>
-          <thead>
-            <tr>
-              <th>العيار</th>
-              <th>الوزن المباع</th>
-              <th>الكسر المشتري</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>عيار 21</strong></td>
-              <td>${metrics.soldWeightsByKarat[21].toFixed(3)} جم</td>
-              <td>${metrics.scrapWeightsByKarat[21].toFixed(3)} جم</td>
-            </tr>
-            <tr>
-              <td><strong>عيار 18</strong></td>
-              <td>${metrics.soldWeightsByKarat[18].toFixed(3)} جم</td>
-              <td>${metrics.scrapWeightsByKarat[18].toFixed(3)} جم</td>
-            </tr>
-            <tr>
-              <td><strong>عيار 24</strong></td>
-              <td>${metrics.soldWeightsByKarat[24].toFixed(3)} جم</td>
-              <td>${metrics.scrapWeightsByKarat[24].toFixed(3)} جم</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="section-title">🔒 مطابقة خزينة الذهب والفرق</div>
-        <table>
-          <thead>
-            <tr>
-              <th>العيار</th>
-              <th>المتوقع</th>
-              <th>الفعلي</th>
-              <th>الفرق</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${metrics.reconciliationRows
-              .map(
-                (r) => `
+      <!-- Main Body -->
+      <table dir="rtl" align="right" width="100%" cellpadding="0" cellspacing="0" style="padding: 20px; direction: rtl !important; text-align: right !important; width: 100%;">
+        <tr>
+          <td dir="rtl" style="direction: rtl !important; text-align: right !important;">
+            
+            <!-- KPI Table (2x2 Grid) -->
+            <table dir="rtl" align="right" width="100%" cellpadding="6" cellspacing="0" style="margin-bottom: 20px; direction: rtl !important; width: 100%;">
               <tr>
-                <td><strong>${r.karat}K</strong></td>
-                <td>${r.expectedWeight.toFixed(3)} جم</td>
-                <td>${r.countedWeight !== null ? `${r.countedWeight.toFixed(3)} جم` : "-"}</td>
-                <td class="${r.variance === 0 ? "variance-zero" : (r.variance || 0) > 0 ? "variance-positive" : "variance-negative"}">
-                  ${r.variance !== null ? (r.variance >= 0 ? `+${r.variance.toFixed(3)}` : r.variance.toFixed(3)) : "-"} جم
+                <td width="50%" dir="rtl" align="right" style="padding: 6px;">
+                  <div dir="rtl" style="background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 12px; text-align: center !important;">
+                    <div style="font-size: 11px; font-weight: 600; color: #047857; margin-bottom: 4px;">صافي التدفق النقدي</div>
+                    <div style="font-size: 18px; font-weight: 800; font-family: monospace; color: #047857;" dir="ltr">${metrics.netCashFlow.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+                  </div>
+                </td>
+                <td width="50%" dir="rtl" align="right" style="padding: 6px;">
+                  <div dir="rtl" style="background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 12px; text-align: center !important;">
+                    <div style="font-size: 11px; font-weight: 600; color: #b45309; margin-bottom: 4px;">أرباح المصنعية</div>
+                    <div style="font-size: 18px; font-weight: 800; font-family: monospace; color: #b45309;" dir="ltr">${metrics.totalHandworkEarnings.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+                  </div>
                 </td>
               </tr>
-            `,
-              )
-              .join("")}
-          </tbody>
-        </table>
-      </div>
+              <tr>
+                <td width="50%" dir="rtl" align="right" style="padding: 6px;">
+                  <div dir="rtl" style="background-color: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center !important;">
+                    <div style="font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 4px;">مبيعات المصوغات (${metrics.salesCount})</div>
+                    <div style="font-size: 18px; font-weight: 800; font-family: monospace; color: #0f172a;" dir="ltr">${metrics.totalSalesRevenue.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+                  </div>
+                </td>
+                <td width="50%" dir="rtl" align="right" style="padding: 6px;">
+                  <div dir="rtl" style="background-color: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center !important;">
+                    <div style="font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 4px;">مشتريات الكسر (${metrics.scrapCount})</div>
+                    <div style="font-size: 18px; font-weight: 800; font-family: monospace; color: #0f172a;" dir="ltr">${metrics.totalScrapPayout.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+                  </div>
+                </td>
+              </tr>
+            </table>
 
-      <div class="footer">
-        منصة جوهرة تك لإدارة محلات ومصانع الذهب والمجوهرات © ${new Date().getFullYear()}
-      </div>
+            <!-- Section 1 Title -->
+            <h3 dir="rtl" style="font-size: 14px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0; text-align: right !important; direction: rtl !important;">
+              ⚖️ حركة أوزان الذهب المباع والكسر المشتري (جم)
+            </h3>
+
+            <!-- Section 1 Table -->
+            <table dir="rtl" align="right" width="100%" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 13px; margin-bottom: 20px; direction: rtl !important; text-align: right !important;">
+              <thead>
+                <tr style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">العيار</th>
+                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">الوزن المباع</th>
+                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">الكسر المشتري</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid #e2e8f0;">
+                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important;"><strong>عيار 21</strong></td>
+                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.soldWeightsByKarat[21].toFixed(3)} جم</td>
+                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.scrapWeightsByKarat[21].toFixed(3)} جم</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;">
+                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important;"><strong>عيار 18</strong></td>
+                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.soldWeightsByKarat[18].toFixed(3)} جم</td>
+                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.scrapWeightsByKarat[18].toFixed(3)} جم</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;">
+                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important;"><strong>عيار 24</strong></td>
+                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.soldWeightsByKarat[24].toFixed(3)} جم</td>
+                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.scrapWeightsByKarat[24].toFixed(3)} جم</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Section 2 Title -->
+            <h3 dir="rtl" style="font-size: 14px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0; text-align: right !important; direction: rtl !important;">
+              🔒 مطابقة خزينة الذهب والفرق
+            </h3>
+
+            <!-- Section 2 Table -->
+            <table dir="rtl" align="right" width="100%" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 13px; margin-bottom: 20px; direction: rtl !important; text-align: right !important;">
+              <thead>
+                <tr style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">العيار</th>
+                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">المتوقع</th>
+                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">الفعلي</th>
+                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">الفرق</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${metrics.reconciliationRows
+                  .map(
+                    (r) => `
+                  <tr style="border-bottom: 1px solid #e2e8f0;">
+                    <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important;"><strong>${r.karat}K</strong></td>
+                    <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${r.expectedWeight.toFixed(3)} جم</td>
+                    <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${r.countedWeight !== null ? `${r.countedWeight.toFixed(3)} جم` : "-"}</td>
+                    <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace; font-weight: bold; color: ${r.variance === 0 ? "#16a34a" : (r.variance || 0) > 0 ? "#2563eb" : "#dc2626"};">
+                      ${r.variance !== null ? (r.variance >= 0 ? `+${r.variance.toFixed(3)}` : r.variance.toFixed(3)) : "-"} جم
+                    </td>
+                  </tr>
+                `,
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+
+          </td>
+        </tr>
+      </table>
+
+      <!-- Footer -->
+      <table dir="rtl" align="right" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; direction: rtl !important; width: 100%;">
+        <tr>
+          <td align="center" dir="rtl" style="padding: 16px; text-align: center !important; font-size: 11px; color: #64748b;">
+            منصة جوهرة تك لإدارة محلات ومصانع الذهب والمجوهرات © ${new Date().getFullYear()}
+          </td>
+        </tr>
+      </table>
+
     </div>
   </body>
   </html>
