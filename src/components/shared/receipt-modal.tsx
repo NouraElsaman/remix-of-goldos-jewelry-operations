@@ -19,13 +19,39 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
     queryFn: () => services.settings.get(),
   });
 
+  const logoUrl = settings?.logoUrl ?? "";
   const storeName =
     (locale === "ar" ? settings?.shopNameAr : settings?.shopName) ??
     settings?.shopNameAr ??
     "";
-  const storeContact = [settings?.city, settings?.governorate, settings?.phone]
+  
+  const fullAddressStr = [
+    settings?.address,
+    settings?.city,
+    settings?.governorate,
+  ]
+    .filter(Boolean)
+    .join("، ");
+
+  const storePhone = settings?.phone ?? "";
+  const commercialRegister = settings?.commercialRegister ?? "";
+  const taxId = settings?.taxId ?? "";
+
+  const taxAndRegisterStr = [
+    commercialRegister
+      ? locale === "ar"
+        ? `س.ت: ${commercialRegister}`
+        : `C.R: ${commercialRegister}`
+      : "",
+    taxId
+      ? locale === "ar"
+        ? `ب.ض: ${taxId}`
+        : `Tax ID: ${taxId}`
+      : "",
+  ]
     .filter(Boolean)
     .join(" · ");
+
   const receiptHeader = settings?.receiptHeader ?? "";
   const receiptFooter = settings?.receiptFooter ?? "";
   const returnPolicy = settings?.returnPolicy ?? "";
@@ -79,17 +105,39 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
 
         {/* Printable Receipt Frame */}
         <div id="receipt-print-area" dir="rtl" className="text-center font-sans py-4 print:py-8">
-          {/* Shop Logo/Name */}
+          {/* Shop Logo */}
+          {logoUrl ? (
+            <div className="mb-3 flex justify-center">
+              <img
+                src={logoUrl}
+                alt={storeName}
+                className="h-16 w-auto max-w-[140px] object-contain print:h-16"
+              />
+            </div>
+          ) : null}
+
+          {/* Shop Name */}
           {storeName ? (
-            <h1 className="text-xl font-extrabold tracking-wide mb-1">
+            <h1 className="text-xl font-extrabold tracking-wide mb-1 text-foreground">
               {storeName}
             </h1>
           ) : null}
-          {storeContact ? (
-            <p className="text-xs text-muted-foreground mb-1" dir="rtl">
-              {storeContact}
+
+          {/* Full Detailed Address & Phone */}
+          {fullAddressStr || storePhone ? (
+            <p className="text-xs text-muted-foreground mb-1 leading-relaxed" dir="rtl">
+              {[fullAddressStr, storePhone].filter(Boolean).join(" · ")}
             </p>
           ) : null}
+
+          {/* Commercial Register & Tax ID */}
+          {taxAndRegisterStr ? (
+            <p className="text-[11px] font-mono text-muted-foreground/90 mb-1 font-semibold" dir="rtl">
+              {taxAndRegisterStr}
+            </p>
+          ) : null}
+
+          {/* Additional Receipt Header */}
           {receiptHeader ? (
             <p className="text-[11px] leading-relaxed text-muted-foreground mb-3 whitespace-pre-line">
               {receiptHeader}
