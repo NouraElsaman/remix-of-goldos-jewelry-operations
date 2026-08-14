@@ -6,9 +6,9 @@
 
 It is **not an e-commerce platform** and is not intended for selling jewelry online.
 
-Instead, JawharaTech helps jewelry businesses manage their daily operations through a modern workspace for sales, inventory, gold pricing, invoices, reporting, and shop configuration.
+Instead, JawharaTech helps jewelry businesses manage their daily operations through a modern workspace for sales, inventory, gold pricing, invoices, safe weight reconciliation, automated EOD owner reporting, and shop configuration.
 
-The product combines a premium Arabic-first user experience with a structured backend powered by Supabase.
+The product combines a premium Arabic-first user experience with a structured backend powered by Supabase and automated server-side email & PDF generation via Resend API.
 
 ---
 
@@ -18,15 +18,16 @@ Running a jewelry shop involves much more than simply selling products.
 
 Daily operations require accurate handling of:
 
-- Jewelry inventory
-- Gold karats and weights
+- Jewelry inventory with item editing and deletion
+- Gold karats (18K, 21K, 24K) and weights
 - Daily gold prices
-- Manufacturing costs
-- Sales transactions
+- Manufacturing costs (المصنعية)
+- Sales & scrap buying transactions (شراء الكسر)
 - Customer information
-- Invoices and receipts
-- Shop settings
-- Operational reporting
+- Customized invoices and receipts with Tax ID, Commercial Register & Shop Logo
+- Safe weight reconciliation (مطابقة أوزان الخزينة)
+- Automated End-of-Day (EOD) reporting to owner via Email & WhatsApp with PDF attachments
+- Shop settings and configuration
 
 JawharaTech brings these workflows into one unified system designed specifically around jewelry business operations.
 
@@ -45,17 +46,17 @@ It is designed to surface important business information at a glance, including 
 Key areas include:
 
 - Business overview
-- Daily operational insights
+- Daily operational insights & net cash flow
 - Gold price information
-- Sales-related metrics
+- Sales & scrap buying metrics
 - Inventory summaries
-- Quick access to core workflows
+- Quick access to core workflows and EOD reports
 
 ---
 
 ## 🧾 Cashier / POS
 
-The Cashier module allows shop staff to create jewelry sales transactions.
+The Cashier module allows shop staff to create jewelry sales and scrap purchase transactions.
 
 ### Current capabilities
 
@@ -70,12 +71,10 @@ The Cashier module allows shop staff to create jewelry sales transactions.
 - Manual item entry
 - Customer information
 - Gold price handling
-- Manufacturing cost handling
-- Sale calculations
-- Invoice generation
-- Receipt display
-
-The inventory selector is designed to scale to shops containing thousands of items.
+- Manufacturing cost handling (المصنعية)
+- Sale & purchase calculations
+- Invoice generation with tax credit, business record (السجل التجاري), exact address, and store logo
+- Dual-copy receipt printing (2 copies optimized per print)
 
 ---
 
@@ -88,12 +87,42 @@ Each item can include information such as:
 - Item name
 - Item code / SKU
 - Manufacturer / company
-- Gold karat
+- Gold karat (18K, 21K, 24K)
 - Weight
 - Product type
 - Inventory status
 
-The system supports structured jewelry inventory instead of treating products like generic retail items.
+### Item Actions
+
+- **Edit Item (تعديل):** Update item details, weight, karat, and company directly from the inventory table.
+- **Delete Item (حذف):** Remove items safely from the active inventory catalog.
+
+---
+
+## 🔒 Safe Weight Reconciliation (مطابقة الخزينة)
+
+Track daily gold inventory weights across all karats (18K, 21K, 24K):
+
+- **Opening Weight (الافتتاحي):** Starting stock weight for the day
+- **Received Weight (المستلم):** New inventory added during the day
+- **Sold Weight (المباع):** Weight of sold jewelry
+- **Expected Weight (المتوقع):** Calculated expected weight in safe
+- **Counted Weight (الفعلي):** Physical weight counted at end of day
+- **Variance (الفرق):** Real-time difference detection (+ / - grams)
+
+---
+
+## 📧 Automated End-of-Day (EOD) Owner Reporting & PDF Attachments
+
+When the day is closed, JawharaTech automatically generates and delivers a comprehensive End-of-Day Report to the store owner:
+
+- **Instant Resend Email Dispatch:** Delivers immediately to the owner's email (`hotohory13@gmail.com`).
+- **100% RTL Email Template:** Designed with bulletproof HTML tables containing:
+  - 4 Executive KPI Cards (Net Cash Flow, Sales, Scrap Purchases, Labor Earnings)
+  - Daily Gold Weight Movements (Sold & Scrap Bought by Karat)
+  - Safe Weight Reconciliation & Variance Table
+- **Dynamic PDF Attachment:** Automatically generates and attaches a high-resolution Arabic PDF document named after the Day Name and Date (e.g. `تقرير_الإغلاق_الجمعة_2026-08-14.pdf`).
+- **WhatsApp Summary Generator:** Creates a pre-formatted Arabic summary text ready for 1-click WhatsApp dispatch to the owner's phone.
 
 ---
 
@@ -111,12 +140,13 @@ The Settings module allows configuration of shop-related information.
 
 This includes areas such as:
 
-- Shop information
-- Invoice configuration
+- Shop information (Arabic & English name, address, phone)
+- Tax Registration Number (الرقم الضريبي) & Commercial Register (السجل التجاري)
+- Shop Logo upload for official invoices and receipts
+- Owner details & email configuration for automated EOD reports
+- Resend API key setup
 - Pricing and gold-related settings
 - Security-related settings
-
-The application is designed so business configuration can influence relevant operational screens without hardcoding shop-specific values into the UI.
 
 ---
 
@@ -131,13 +161,11 @@ The application supports:
 - Proper directional handling
 - Mixed Arabic and numeric content
 - Correct display of:
-  - Currency
-  - Weights
-  - Karats
+  - Currency (ج.م)
+  - Weights (جم)
+  - Karats (18K, 21K, 24K)
   - SKU codes
   - Product identifiers
-
-Special care is required when mixing RTL Arabic content with LTR technical or numeric values to prevent layout and alignment issues.
 
 ---
 
@@ -152,12 +180,10 @@ The design focuses on:
 - Spacious layouts
 - Soft shadows
 - Clear information hierarchy
-- Premium typography
+- Premium typography (Inter & Amiri fonts)
 - Minimal visual noise
 - Responsive layouts
 - Smooth and purposeful interactions
-
-The goal is to make a complex operational system feel simple and approachable.
 
 ---
 
@@ -167,40 +193,34 @@ The project is built with modern web technologies.
 
 ### Frontend
 
-- React
+- React 19
 - TypeScript
-- Vite
+- Vite / TanStack Start
 - Tailwind CSS
 
-### Backend & Data
+### Backend & Serverless Services
 
-- Supabase
-- PostgreSQL
-- Supabase Authentication
-
-### Development Platform
-
-- Lovable
-
-The project can be developed through Lovable or locally using a standard Node.js development environment.
+- Supabase (PostgreSQL, Authentication, Realtime Storage)
+- Resend API (Server-side automated email dispatch)
+- jsPDF & jspdf-autotable (Arabic PDF document generation)
+- TanStack Server Functions (`createServerFn`)
 
 ---
 
 # 🔐 Environment Configuration
 
-The application uses environment variables to configure the active backend provider and Supabase connection.
+The application uses environment variables to configure Supabase and Resend API.
 
-Example:
+Example `.env.local`:
 
 ```env
 VITE_SERVICE_PROVIDER=supabase
 VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_ANON_KEY=your_supabase_publishable_key
+RESEND_API_KEY=your_resend_api_key
 ```
 
 > ⚠️ Never commit real credentials, `.env`, or `.env.local` files to the repository.
-
-The application should use the configured Supabase provider rather than silently falling back to mock data when the production data connection is expected.
 
 ---
 
@@ -208,19 +228,14 @@ The application should use the configured Supabase provider rather than silently
 
 ## Prerequisites
 
-Make sure you have:
-
-- Node.js
-- npm
-
-installed on your machine.
+Make sure you have Node.js and npm installed.
 
 ---
 
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/NouraElsaman/remix-of-goldos-jewelry-operations.git
+git clone https://github.com/hotohory13/remix-of-goldos-jewelry-operations.git
 ```
 
 Navigate to the project:
@@ -251,7 +266,7 @@ Then configure the required environment variables.
 npm run dev
 ```
 
-The application will start in development mode.
+The application will start in development mode at `http://localhost:8080`.
 
 ---
 
@@ -265,263 +280,25 @@ npm run build
 
 ---
 
-# 📁 Project Architecture
-
-The project follows a modular architecture that separates application concerns.
-
-High-level areas include:
-
-```text
-src/
-│
-├── components/
-│   ├── ui/
-│   ├── shared/
-│   └── layout/
-│
-├── features/
-│   ├── dashboard/
-│   ├── cashier/
-│   ├── inventory/
-│   ├── settings/
-│   └── landing/
-│
-├── services/
-│
-├── providers/
-│
-├── routes/
-│
-├── hooks/
-│
-├── lib/
-│
-└── types/
-```
-
-The architecture is intended to keep feature logic, UI components, backend access, and shared functionality separated as the product grows.
-
----
-
-# 🗄️ Backend Architecture
-
-JawharaTech uses Supabase as the primary backend and data platform.
-
-The backend layer is responsible for handling areas such as:
-
-- Authentication
-- Session management
-- Inventory data
-- Gold price data
-- Sales data
-- Invoice-related operations
-- Shop configuration
-
-The application should preserve a clear separation between UI components and data/service access.
-
----
-
-# 🔄 Core Application Workflows
-
-## Cashier Workflow
-
-```text
-Open Cashier
-      ↓
-Search Inventory
-      ↓
-Select Existing Item
-      │
-      ├── Search by SKU
-      ├── Search by Name
-      ├── Search by Karat
-      └── Search by Weight
-      │
-      ↓
-Or Enter Item Manually
-      ↓
-Add Customer Information
-      ↓
-Calculate Sale
-      ↓
-Create Invoice
-      ↓
-Store Transaction
-      ↓
-Display Receipt
-```
-
----
-
-## Inventory Workflow
-
-```text
-Add Item
-    ↓
-Enter Item Details
-    ↓
-Assign Code / SKU
-    ↓
-Select Karat
-    ↓
-Enter Weight
-    ↓
-Add Manufacturer Information
-    ↓
-Save to Inventory
-```
-
----
-
-# 📱 Responsive Design
-
-JawharaTech is designed with a desktop-first approach while maintaining responsive behavior.
-
-The interface should adapt across:
-
-- Desktop
-- Laptop
-- Tablet
-- Mobile
-
-Responsive changes must preserve:
-
-- RTL behavior
-- Information hierarchy
-- Form usability
-- Table readability
-- Cashier workflow efficiency
-
----
-
-# 🧪 Development Principles
-
-When extending the application:
-
-### Preserve Existing Architecture
-
-Avoid unnecessary rewrites of working systems.
-
-### Protect Core Workflows
-
-Changes to one module should not unintentionally break:
-
-- Authentication
-- Supabase integration
-- Existing services
-- Inventory logic
-- Cashier calculations
-- RTL behavior
-
-### Avoid Unnecessary Global UI Changes
-
-A fix to one page should remain scoped to that page whenever possible.
-
-### Protect the Landing Page
-
-The landing page contains its own visual and animation logic.
-
-Changes to dashboard, cashier, inventory, settings, or other authenticated application pages should **not modify or interfere with the landing page** unless explicitly required.
-
-This includes:
-
-- Three.js implementation
-- Ring box scene
-- Scroll animations
-- Landing layout
-- Landing-specific styles
-- Landing assets
-
----
-
 # 🛣️ Product Roadmap
-
-JawharaTech is being developed iteratively.
 
 ### Current Foundation
 
 - [x] Premium application interface
 - [x] Arabic-first RTL experience
-- [x] Dashboard
-- [x] Cashier workflow
+- [x] Dashboard with operational insights
+- [x] Cashier / POS workflow with sale & purchase handling
 - [x] Searchable inventory selection
-- [x] Manual cashier entry
-- [x] Inventory management
-- [x] Gold pricing
-- [x] Settings
+- [x] Inventory item editing & deletion (تعديل وحذف المنتجات)
+- [x] Customized Invoices with Tax ID, Commercial Register & Logo
+- [x] Dual-copy receipt printing (طباعة نسختين)
+- [x] Daily Safe Weight Reconciliation (مطابقة أوزان الخزينة)
+- [x] Automated EOD Owner Report via Resend Email & WhatsApp
+- [x] Dynamic Arabic PDF report attachment named after Day & Date
+- [x] Gold pricing management
+- [x] Shop Settings (Tax, Register, Logo, Owner Email)
 - [x] Supabase backend integration
 - [x] Authentication and protected application access
-- [x] Invoice and receipt workflow
-- [x] Responsive UI improvements
-
-### Next Areas
-
-- [ ] Daily weight reconciliation improvements
-- [ ] Advanced reports
-- [ ] Business analytics
-- [ ] User roles and permissions
-- [ ] Advanced inventory operations
-- [ ] Enhanced audit history
-- [ ] Multi-shop support
-- [ ] AI-powered business capabilities
-
-> AI functionality is planned as a future expansion and is not part of the current core MVP.
-
----
-
-# 🔮 Future Vision
-
-JawharaTech is designed to grow beyond a single jewelry shop.
-
-Future versions may support:
-
-- Multiple branches
-- Multiple jewelry shops
-- Advanced analytics
-- Role-based access control
-- Audit trails
-- Business intelligence
-- AI-assisted operational insights
-- Demand and inventory analysis
-- Smart reporting
-
-The current architecture should evolve carefully without sacrificing the simplicity of the core jewelry-shop workflow.
-
----
-
-# 🛡️ Security Notes
-
-Sensitive configuration must never be committed to GitHub.
-
-Do not commit:
-
-```text
-.env
-.env.local
-API keys
-Supabase secrets
-Service credentials
-```
-
-Use environment variables and deployment-platform secrets instead.
-
----
-
-# 🤝 Development
-
-This project is actively evolving.
-
-When contributing or extending the system:
-
-1. Understand the existing feature before modifying it.
-2. Keep changes scoped to the requested module.
-3. Avoid unnecessary refactoring.
-4. Preserve existing backend and authentication behavior.
-5. Test RTL and mixed Arabic/LTR content.
-6. Test large inventory scenarios.
-7. Avoid loading large datasets directly into the UI unnecessarily.
-8. Protect the landing page from unrelated application changes.
-9. Verify TypeScript and production builds before merging changes.
 
 ---
 
@@ -530,9 +307,7 @@ When contributing or extending the system:
 **JawharaTech** is building a modern operational experience for jewelry businesses.
 
 Elegant enough for a premium jewelry brand.
-
 Structured enough for daily business operations.
-
 Simple enough to use every day.
 
 ---
