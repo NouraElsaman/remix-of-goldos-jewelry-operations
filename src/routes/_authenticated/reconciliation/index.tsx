@@ -239,14 +239,14 @@ function ReconciliationPage() {
         cell: (row) =>
           row.counted !== null
             ? formatWeight(row.counted, locale)
-            : t("common.placeholderNote"),
+            : "—",
         numeric: true,
       },
       {
         id: "variance",
         header: locale === "ar" ? "الفرق (جم)" : "Variance (g)",
         cell: (row) => {
-          if (row.variance === null) return t("common.placeholderNote");
+          if (row.variance === null) return "—";
           const sign = row.variance > 0 ? "+" : "";
           return (
             <span
