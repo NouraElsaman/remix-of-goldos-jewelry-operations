@@ -88,6 +88,21 @@ export const mockServices: ServiceRegistry = {
       mockInventory.push(newItem);
       return delay(newItem);
     },
+    updateItem: async (id, input) => {
+      const index = mockInventory.findIndex((i) => i.id === id);
+      if (index !== -1) {
+        mockInventory[index] = { ...mockInventory[index], ...input };
+        return delay(mockInventory[index]);
+      }
+      throw new Error("Item not found");
+    },
+    deleteItem: async (id) => {
+      const index = mockInventory.findIndex((i) => i.id === id);
+      if (index !== -1) {
+        mockInventory.splice(index, 1);
+      }
+      return delay(undefined);
+    },
   },
   sales: {
     listInvoices: async (params) => delay(paginate(mockInvoices, params)),

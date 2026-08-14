@@ -130,7 +130,7 @@ function NumericField<T extends FieldValues>({
     <ControlledField
       {...props}
       render={({ id, value, onChange, onBlur, invalid }) => (
-        <div className="relative">
+        <div className="relative" dir="ltr">
           <Input
             id={id}
             type="number"
@@ -150,10 +150,10 @@ function NumericField<T extends FieldValues>({
             }
             data-numeric
             dir="ltr"
-            className={cn("h-11 rounded-xl pe-14", invalidRing)}
+            className={cn("h-11 rounded-xl pl-4 pr-16 text-left font-mono", invalidRing)}
           />
           {suffix ? (
-            <span className="pointer-events-none absolute inset-y-0 end-3 flex items-center text-xs font-medium text-muted-foreground">
+            <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-xs font-semibold text-muted-foreground select-none">
               {suffix}
             </span>
           ) : null}
@@ -180,9 +180,9 @@ export function QrField<T extends FieldValues>(props: BaseFieldProps<T>) {
     <ControlledField
       {...props}
       render={({ id, value, onChange, onBlur, invalid }) => (
-        <div className="relative">
+        <div className="relative" dir="ltr">
           <QrCode
-            className="pointer-events-none absolute inset-y-0 start-3 my-auto size-4 text-muted-foreground"
+            className="pointer-events-none absolute inset-y-0 left-3.5 my-auto size-4 text-muted-foreground"
             aria-hidden
           />
           <Input
@@ -194,7 +194,7 @@ export function QrField<T extends FieldValues>(props: BaseFieldProps<T>) {
             aria-invalid={invalid}
             onBlur={onBlur}
             onChange={(event) => onChange(event.target.value)}
-            className={cn("h-11 rounded-xl ps-10 font-mono", invalidRing)}
+            className={cn("h-11 rounded-xl pl-10 pr-4 font-mono text-left", invalidRing)}
           />
         </div>
       )}

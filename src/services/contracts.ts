@@ -172,6 +172,8 @@ export interface InventoryService {
   list(params?: ListParams): Promise<Paginated<InventoryItem>>;
   byId(id: ID): Promise<InventoryItem | null>;
   createItem(input: Omit<InventoryItem, "id" | "barcode" | "status">): Promise<InventoryItem>;
+  updateItem(id: ID, input: Partial<Omit<InventoryItem, "id" | "barcode">>): Promise<InventoryItem>;
+  deleteItem(id: ID): Promise<void>;
 }
 
 export interface SalesService {

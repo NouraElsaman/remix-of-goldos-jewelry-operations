@@ -36,3 +36,4 @@ export * from "./empty-state";
 export * from "./error-state";
 export * from "./placeholder-block";
 export * from "./receipt-modal";
+export * from "./eod-owner-report-modal";
