@@ -2,16 +2,17 @@ import { getCurrentRole } from "@/lib/auth";
 import { canAccessRoute } from "@/lib/rbac";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Download, FileText, Loader2 } from "lucide-react";
+import { Download, FileText, Loader2, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { PageHeader, SectionCard } from "@/components/shared";
+import { PageHeader, SectionCard, EODOwnerReportModal } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { PageTransition, StaggerGroup, StaggerItem } from "@/lib/motion";
 import { queryKeys, services } from "@/services";
 import { supabase } from "@/services/supabase/supabase-provider";
+import { compileEODReport, type EODReportMetrics } from "@/services/eod-report";
 
 export const Route = createFileRoute("/_authenticated/reports/")({
   beforeLoad: () => {
@@ -46,18 +47,26 @@ function ReportsPage() {
   });
 
   const [isExporting, setIsExporting] = useState<string | null>(null);
+  const [eodMetrics, setEodMetrics] = useState<EODReportMetrics | null>(null);
+  const [isCompilingEOD, setIsCompilingEOD] = useState(false);
+
+  const handleOpenEODReport = async () => {
+    setIsCompilingEOD(true);
+    try {
+      const metrics = await compileEODReport();
+      setEodMetrics(metrics);
+    } catch (err) {
+      console.error(err);
+      toast.error(locale === "ar" ? "فشل إعداد تقرير المالك" : "Failed to compile owner report");
+    } finally {
+      setIsCompilingEOD(false);
+    }
+  };
 
   const downloadCsv = (headers: string[], rows: (string | number)[][], filename: string) => {
-    // Add UTF-8 BOM so Excel opens Arabic correctly
     const csvContent =
       "\uFEFF" +
-      [
-        headers.join(","),
-        ...rows.map((row) =>
-          row.map((val) => `"${String(val ?? "").replace(/"/g, '""')}"`).join(",")
-        ),
-      ].join("\n");
-
+      [headers.join(","), ...rows.map((e) => e.map((val) => `"${val}"`).join(","))].join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -75,56 +84,40 @@ function ReportsPage() {
         const { data: invoices, error } = await supabase
           .from("invoices")
           .select("*")
+          .eq("transaction_type", "sale")
           .order("created_at", { ascending: false });
 
         if (error) throw error;
 
         const headers = [
-          locale === "ar" ? "التاريخ" : "Date",
-          locale === "ar" ? "رقم الفاتورة" : "Invoice Number",
-          locale === "ar" ? "النوع" : "Type",
+          locale === "ar" ? "التاريخ والوقت" : "Date & Time",
+          locale === "ar" ? "رقم الفاتورة" : "Invoice #",
           locale === "ar" ? "اسم العميل" : "Customer Name",
           locale === "ar" ? "الهاتف" : "Phone",
-          locale === "ar" ? "الوزن الإجمالي (جم)" : "Gross Weight (g)",
-          locale === "ar" ? "نسبة الخصم (%)" : "Deduction %",
-          locale === "ar" ? "الوزن الصافي (جم)" : "Net Weight (g)",
           locale === "ar" ? "العيار" : "Karat",
-          locale === "ar" ? "المصنعية (ج.م)" : "Labor Value (EGP)",
-          locale === "ar" ? "الضريبة (ج.م)" : "VAT Tax (EGP)",
-          locale === "ar" ? "الإجمالي النهائي (ج.م)" : "Final Total (EGP)",
-          locale === "ar" ? "طريقة الدفع" : "Payment Method",
+          locale === "ar" ? "الوزن (جم)" : "Weight (g)",
+          locale === "ar" ? "قيمة الذهب (ج.م)" : "Gold Value (EGP)",
+          locale === "ar" ? "المصنعية (ج.م)" : "Handwork (EGP)",
+          locale === "ar" ? "الإجمالي النهائي (ج.م)" : "Total (EGP)",
         ];
 
         const rows = (invoices || []).map((row) => [
           new Date(row.created_at).toLocaleString(locale === "ar" ? "ar-EG" : "en-US"),
           row.invoice_number,
-          row.transaction_type === "sale" 
-            ? (locale === "ar" ? "بيع" : "Sale") 
-            : (locale === "ar" ? "شراء" : "Purchase"),
           row.customer_name || "—",
           row.customer_phone || "—",
-          row.total_weight,
-          row.deduction_pct,
-          row.net_weight,
-          row.karat || "—",
-          row.handwork_value,
-          row.tax_value,
-          row.final_total,
-          row.payment_method === "cash" 
-            ? (locale === "ar" ? "نقدي" : "Cash") 
-            : (row.payment_method === "card" ? (locale === "ar" ? "بطاقة" : "Card") : (locale === "ar" ? "تحويل" : "Transfer")),
+          row.karat ? `${row.karat}K` : "—",
+          row.total_weight || 0,
+          row.gold_value || 0,
+          row.handwork_value || 0,
+          row.final_total || 0,
         ]);
 
-        downloadCsv(headers, rows, `sales_report_${new Date().toISOString().slice(0, 10)}.csv`);
-      } else if (reportId === "stock-value") {
-        // 1. Fetch today's gold prices for rates
-        const { data: prices, error: pricesError } = await supabase
-          .from("gold_prices")
-          .select("*");
-
+        downloadCsv(headers, rows, `daily_sales_report_${new Date().toISOString().slice(0, 10)}.csv`);
+      } else if (reportId === "inventory-valuation") {
+        const { data: prices, error: pricesError } = await supabase.from("gold_prices").select("*");
         if (pricesError) throw pricesError;
 
-        // 2. Fetch purchase invoices for scrap stash weights
         const { data: purchases, error: purchasesError } = await supabase
           .from("invoices")
           .select("total_weight, net_weight, karat")
@@ -132,15 +125,12 @@ function ReportsPage() {
 
         if (purchasesError) throw purchasesError;
 
-        // 3. Fetch finished retail items currently in stock
         const { data: retailItems, error: retailError } = await supabase
           .from("inventory")
           .select("gross_weight, net_weight, karat")
           .eq("status", "in_stock");
 
         if (retailError) throw retailError;
-
-        const rate24KBuy = prices?.find((p) => p.karat === 24)?.rate_buy || 6684;
 
         const headers = [
           locale === "ar" ? "العيار" : "Karat",
@@ -160,7 +150,6 @@ function ReportsPage() {
           const netRetail = retailKaratItems.reduce((sum, item) => sum + Number(item.net_weight || 0), 0);
           const totalNetWeight = netScrap + netRetail;
 
-          // Pricing logic matching dashboard
           const rate24K = prices?.find((p) => p.karat === 24)?.rate || 6684;
           const rateForKarat = rate24K * (k / 24);
           const estimatedValue = totalNetWeight * rateForKarat;
@@ -186,14 +175,14 @@ function ReportsPage() {
         if (error) throw error;
 
         const headers = [
-          locale === "ar" ? "التاريخ" : "Date",
-          locale === "ar" ? "رقم الفاتورة" : "Invoice Number",
-          locale === "ar" ? "وزن المبيعة (جم)" : "Weight (g)",
+          locale === "ar" ? "التاريخ والوقت" : "Date & Time",
+          locale === "ar" ? "رقم الفاتورة" : "Invoice #",
+          locale === "ar" ? "الوزن (جم)" : "Weight (g)",
           locale === "ar" ? "العيار" : "Karat",
-          locale === "ar" ? "قيمة المصنعية للجرام" : "Labor/g (EGP)",
-          locale === "ar" ? "إجمالي قيمة المصنعية" : "Total Labor Value (EGP)",
-          locale === "ar" ? "ضريبة القيمة المضافة (14% على المصنعية)" : "VAT (14% on labor)",
-          locale === "ar" ? "الإجمالي النهائي للمبيعة" : "Invoice Total (EGP)",
+          locale === "ar" ? "المصنعية للجرام (ج.م)" : "Handwork/g (EGP)",
+          locale === "ar" ? "إجمالي المصنعية (ج.م)" : "Total Handwork (EGP)",
+          locale === "ar" ? "الضريبة المحتسبة (ج.م)" : "VAT (EGP)",
+          locale === "ar" ? "الإجمالي الكلي (ج.م)" : "Grand Total (EGP)",
         ];
 
         const rows = (invoices || []).map((row) => {
@@ -232,6 +221,21 @@ function ReportsPage() {
       <PageHeader
         title={t("reports.title")}
         description={t("reports.subtitle")}
+        actions={
+          <Button
+            variant="outline"
+            onClick={handleOpenEODReport}
+            disabled={isCompilingEOD}
+            className="h-10 gap-2 rounded-xl font-semibold border-gold/30 text-gold-deep hover:bg-gold-soft"
+          >
+            {isCompilingEOD ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <ShieldCheck className="size-4 text-gold" />
+            )}
+            {locale === "ar" ? "تقرير الإغلاق اليومي للمالك" : "Owner Daily EOD Summary"}
+          </Button>
+        }
       />
 
       <StaggerGroup className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -268,6 +272,14 @@ function ReportsPage() {
           </StaggerItem>
         ))}
       </StaggerGroup>
+
+      {/* ────────────────── EOD OWNER REPORT MODAL ────────────────── */}
+      {eodMetrics && (
+        <EODOwnerReportModal
+          metrics={eodMetrics}
+          onClose={() => setEodMetrics(null)}
+        />
+      )}
     </PageTransition>
   );
 }
