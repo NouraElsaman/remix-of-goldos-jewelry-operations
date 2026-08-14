@@ -122,7 +122,7 @@ export async function compileEODReport(targetDateStr?: string): Promise<EODRepor
 }
 
 /**
- * Generates executive HTML email template for End-of-Day Report.
+ * Generates executive HTML email template matching the website modal 100% in full RTL.
  */
 export function generateEODHtmlEmail(metrics: EODReportMetrics): string {
   const formattedDate = new Date(metrics.date).toLocaleDateString("ar-EG", {
@@ -140,95 +140,160 @@ export function generateEODHtmlEmail(metrics: EODReportMetrics): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>تقرير الإغلاق اليومي — ${metrics.shopName}</title>
   </head>
-  <body dir="rtl" style="margin: 0; padding: 20px; background-color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: rtl !important; text-align: right !important;">
-    <div dir="rtl" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; direction: rtl !important; text-align: right !important;">
+  <body dir="rtl" style="margin: 0; padding: 16px; background-color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: rtl !important; text-align: right !important;">
+    <div dir="rtl" style="max-width: 620px; margin: 0 auto; background-color: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; overflow: hidden; direction: rtl !important; text-align: right !important;">
       
-      <!-- Header -->
+      <!-- Store Brand Header -->
       <table dir="rtl" align="right" width="100%" cellpadding="0" cellspacing="0" style="background-color: #1e293b; border-bottom: 3px solid #d97706; direction: rtl !important; width: 100%;">
         <tr>
           <td align="center" dir="rtl" style="padding: 24px; text-align: center !important; color: #fbbf24;">
-            <h1 style="margin: 0; font-size: 22px; color: #fbbf24;">👑 ${metrics.shopName}</h1>
-            <p style="margin: 6px 0 0 0; color: #94a3b8; font-size: 13px;">تقرير الإغلاق اليومي للمالك — ${formattedDate}</p>
+            <h1 style="margin: 0; font-size: 22px; color: #fbbf24; font-weight: 800;">👑 ${metrics.shopName}</h1>
+            <p style="margin: 6px 0 0 0; color: #94a3b8; font-size: 13px;">تقرير الإغلاق اليومي ومطابقة الخزينة</p>
+            <p style="margin: 6px 0 0 0; color: #cbd5e1; font-size: 12px;">📅 ${formattedDate} | 👤 المالك: ${metrics.ownerName}</p>
           </td>
         </tr>
       </table>
 
-      <!-- Main Body -->
+      <!-- Main Body Container -->
       <table dir="rtl" align="right" width="100%" cellpadding="0" cellspacing="0" style="padding: 20px; direction: rtl !important; text-align: right !important; width: 100%;">
         <tr>
           <td dir="rtl" style="direction: rtl !important; text-align: right !important;">
             
-            <!-- Section 1 Title -->
-            <h3 dir="rtl" style="font-size: 14px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0; text-align: right !important; direction: rtl !important;">
-              ⚖️ حركة أوزان الذهب المباع والكسر المشتري (جم)
-            </h3>
-
-            <!-- Section 1 Table -->
-            <table dir="rtl" align="right" width="100%" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 13px; margin-bottom: 20px; direction: rtl !important; text-align: right !important;">
-              <thead>
-                <tr style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">العيار</th>
-                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">الوزن المباع</th>
-                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">الكسر المشتري</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important;"><strong>عيار 21</strong></td>
-                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.soldWeightsByKarat[21].toFixed(3)} جم</td>
-                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.scrapWeightsByKarat[21].toFixed(3)} جم</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important;"><strong>عيار 18</strong></td>
-                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.soldWeightsByKarat[18].toFixed(3)} جم</td>
-                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.scrapWeightsByKarat[18].toFixed(3)} جم</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important;"><strong>عيار 24</strong></td>
-                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.soldWeightsByKarat[24].toFixed(3)} جم</td>
-                  <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${metrics.scrapWeightsByKarat[24].toFixed(3)} جم</td>
-                </tr>
-              </tbody>
+            <!-- SECTION 1: 4 EXECUTIVE KPI CARDS (RTL Row) -->
+            <table dir="rtl" align="right" width="100%" cellpadding="4" cellspacing="0" style="margin-bottom: 24px; direction: rtl !important; width: 100%;">
+              <tr>
+                <td width="25%" dir="rtl" align="right" style="padding: 4px;">
+                  <div dir="rtl" style="background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 14px; padding: 12px 8px; text-align: center !important;">
+                    <div style="font-size: 11px; font-weight: 700; color: #047857; margin-bottom: 4px;">صافي التدفق النقدي</div>
+                    <div style="font-size: 15px; font-weight: 800; font-family: monospace; color: #059669;" dir="ltr">${metrics.netCashFlow.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+                  </div>
+                </td>
+                <td width="25%" dir="rtl" align="right" style="padding: 4px;">
+                  <div dir="rtl" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 8px; text-align: center !important;">
+                    <div style="font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">المبيعات (${metrics.salesCount})</div>
+                    <div style="font-size: 15px; font-weight: 800; font-family: monospace; color: #0f172a;" dir="ltr">${metrics.totalSalesRevenue.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+                  </div>
+                </td>
+                <td width="25%" dir="rtl" align="right" style="padding: 4px;">
+                  <div dir="rtl" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 8px; text-align: center !important;">
+                    <div style="font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">مشتريات الكسر (${metrics.scrapCount})</div>
+                    <div style="font-size: 15px; font-weight: 800; font-family: monospace; color: #0f172a;" dir="ltr">${metrics.totalScrapPayout.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+                  </div>
+                </td>
+                <td width="25%" dir="rtl" align="right" style="padding: 4px;">
+                  <div dir="rtl" style="background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 14px; padding: 12px 8px; text-align: center !important;">
+                    <div style="font-size: 11px; font-weight: 700; color: #b45309; margin-bottom: 4px;">أرباح المصنعية</div>
+                    <div style="font-size: 15px; font-weight: 800; font-family: monospace; color: #d97706;" dir="ltr">${metrics.totalHandworkEarnings.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
+                  </div>
+                </td>
+              </tr>
             </table>
 
-            <!-- Section 2 Title -->
-            <h3 dir="rtl" style="font-size: 14px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0; text-align: right !important; direction: rtl !important;">
-              🔒 مطابقة خزينة الذهب والفرق
-            </h3>
+            <!-- SECTION 2: GOLD WEIGHT MOVEMENTS BOX -->
+            <div dir="rtl" style="border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; margin-bottom: 24px; background-color: #ffffff; direction: rtl !important; text-align: right !important;">
+              <h3 dir="rtl" style="font-size: 14px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; text-align: right !important;">
+                📦 حركة أوزان الذهب اليومية (جرام)
+              </h3>
+              
+              <table dir="rtl" align="right" width="100%" cellpadding="0" cellspacing="0" style="direction: rtl !important; text-align: right !important; width: 100%;">
+                <tr>
+                  <td width="50%" dir="rtl" align="right" valign="top" style="padding-left: 10px;">
+                    <div dir="rtl" style="font-size: 12px; font-weight: 700; color: #64748b; margin-bottom: 8px;">المباع حسب العيار:</div>
+                    <table dir="rtl" align="right" width="100%" cellpadding="4" cellspacing="0" style="font-size: 12px; font-family: monospace;">
+                      <tr>
+                        <td dir="rtl" align="right" style="color: #334155;">عيار 21:</td>
+                        <td dir="rtl" align="left" style="font-weight: 800; color: #0f172a;">${metrics.soldWeightsByKarat[21].toFixed(3)} جم</td>
+                      </tr>
+                      <tr>
+                        <td dir="rtl" align="right" style="color: #334155;">عيار 18:</td>
+                        <td dir="rtl" align="left" style="font-weight: 800; color: #0f172a;">${metrics.soldWeightsByKarat[18].toFixed(3)} جم</td>
+                      </tr>
+                      <tr>
+                        <td dir="rtl" align="right" style="color: #334155;">عيار 24:</td>
+                        <td dir="rtl" align="left" style="font-weight: 800; color: #0f172a;">${metrics.soldWeightsByKarat[24].toFixed(3)} جم</td>
+                      </tr>
+                    </table>
+                  </td>
 
-            <!-- Section 2 Table -->
-            <table dir="rtl" align="right" width="100%" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 13px; margin-bottom: 20px; direction: rtl !important; text-align: right !important;">
-              <thead>
-                <tr style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">العيار</th>
-                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">المتوقع</th>
-                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">الفعلي</th>
-                  <th dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; color: #475569; font-weight: 700;">الفرق</th>
+                  <td width="50%" dir="rtl" align="right" valign="top" style="padding-right: 10px;">
+                    <div dir="rtl" style="font-size: 12px; font-weight: 700; color: #64748b; margin-bottom: 8px;">الكسر المشتري حسب العيار:</div>
+                    <table dir="rtl" align="right" width="100%" cellpadding="4" cellspacing="0" style="font-size: 12px; font-family: monospace;">
+                      <tr>
+                        <td dir="rtl" align="right" style="color: #334155;">عيار 21:</td>
+                        <td dir="rtl" align="left" style="font-weight: 800; color: #0f172a;">${metrics.scrapWeightsByKarat[21].toFixed(3)} جم</td>
+                      </tr>
+                      <tr>
+                        <td dir="rtl" align="right" style="color: #334155;">عيار 18:</td>
+                        <td dir="rtl" align="left" style="font-weight: 800; color: #0f172a;">${metrics.scrapWeightsByKarat[18].toFixed(3)} جم</td>
+                      </tr>
+                      <tr>
+                        <td dir="rtl" align="right" style="color: #334155;">عيار 24:</td>
+                        <td dir="rtl" align="left" style="font-weight: 800; color: #0f172a;">${metrics.scrapWeightsByKarat[24].toFixed(3)} جم</td>
+                      </tr>
+                    </table>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                ${metrics.reconciliationRows
-                  .map(
-                    (r) => `
-                  <tr style="border-bottom: 1px solid #e2e8f0;">
-                    <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important;"><strong>${r.karat}K</strong></td>
-                    <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${r.expectedWeight.toFixed(3)} جم</td>
-                    <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace;">${r.countedWeight !== null ? `${r.countedWeight.toFixed(3)} جم` : "-"}</td>
-                    <td dir="rtl" align="right" style="padding: 10px; text-align: right !important; direction: rtl !important; font-family: monospace; font-weight: bold; color: ${r.variance === 0 ? "#16a34a" : (r.variance || 0) > 0 ? "#2563eb" : "#dc2626"};">
-                      ${r.variance !== null ? (r.variance >= 0 ? `+${r.variance.toFixed(3)}` : r.variance.toFixed(3)) : "-"} جم
-                    </td>
+              </table>
+            </div>
+
+            <!-- SECTION 3: SAFE WEIGHT RECONCILIATION & VARIANCE TABLE -->
+            <div dir="rtl" style="border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; background-color: #ffffff; direction: rtl !important; text-align: right !important;">
+              <h3 dir="rtl" style="font-size: 14px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; text-align: right !important;">
+                ⚖️ مطابقة خزينة الذهب والفرق
+              </h3>
+
+              <table dir="rtl" align="right" width="100%" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 12px; direction: rtl !important; text-align: right !important;">
+                <thead>
+                  <tr style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0; color: #64748b;">
+                    <th dir="rtl" align="right" style="padding: 8px; text-align: right !important;">العيار</th>
+                    <th dir="rtl" align="right" style="padding: 8px; text-align: right !important;">الافتتاحي</th>
+                    <th dir="rtl" align="right" style="padding: 8px; text-align: right !important;">المستلم</th>
+                    <th dir="rtl" align="right" style="padding: 8px; text-align: right !important;">المباع</th>
+                    <th dir="rtl" align="right" style="padding: 8px; text-align: right !important;">المتوقع</th>
+                    <th dir="rtl" align="right" style="padding: 8px; text-align: right !important;">الفعلي</th>
+                    <th dir="rtl" align="right" style="padding: 8px; text-align: right !important;">الفرق</th>
                   </tr>
-                `,
-                  )
-                  .join("")}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  ${metrics.reconciliationRows
+                    .map(
+                      (r) => `
+                    <tr style="border-bottom: 1px solid #f1f5f9; font-family: monospace;">
+                      <td dir="rtl" align="right" style="padding: 8px; font-weight: 800; font-family: sans-serif; text-align: right !important;">${r.karat}K</td>
+                      <td dir="rtl" align="right" style="padding: 8px; text-align: right !important;">${r.openingWeight.toFixed(3)} جم</td>
+                      <td dir="rtl" align="right" style="padding: 8px; text-align: right !important;">${r.receivedWeight.toFixed(3)} جم</td>
+                      <td dir="rtl" align="right" style="padding: 8px; text-align: right !important;">${r.soldWeight.toFixed(3)} جم</td>
+                      <td dir="rtl" align="right" style="padding: 8px; font-weight: 700; text-align: right !important;">${r.expectedWeight.toFixed(3)} جم</td>
+                      <td dir="rtl" align="right" style="padding: 8px; text-align: right !important;">${r.countedWeight !== null ? `${r.countedWeight.toFixed(3)} جم` : "-"}</td>
+                      <td dir="rtl" align="right" style="padding: 8px; font-weight: 800; color: ${r.variance === 0 ? "#059669" : (r.variance || 0) > 0 ? "#2563eb" : "#dc2626"}; text-align: right !important;">
+                        ${r.variance !== null ? (r.variance >= 0 ? `+${r.variance.toFixed(3)}` : r.variance.toFixed(3)) : "-"} جم
+                      </td>
+                    </tr>
+                  `,
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+
+              <!-- Total Variance Footer Bar -->
+              <table dir="rtl" align="right" width="100%" cellpadding="8" cellspacing="0" style="margin-top: 12px; border-top: 1px dashed #cbd5e1; direction: rtl !important;">
+                <tr>
+                  <td dir="rtl" align="right" style="font-size: 12px; font-weight: 700; color: #475569;">
+                    إجمالي فرق الوزن لليوم:
+                  </td>
+                  <td dir="rtl" align="left" style="font-size: 13px; font-weight: 800; font-family: monospace; color: ${metrics.totalVariance === 0 ? "#059669" : "#dc2626"};">
+                    ${metrics.totalVariance >= 0 ? `+${metrics.totalVariance.toFixed(3)}` : metrics.totalVariance.toFixed(3)} جم
+                  </td>
+                </tr>
+              </table>
+
+            </div>
 
           </td>
         </tr>
       </table>
 
-      <!-- Footer -->
+      <!-- Footer Notice -->
       <table dir="rtl" align="right" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; direction: rtl !important; width: 100%;">
         <tr>
           <td align="center" dir="rtl" style="padding: 16px; text-align: center !important; font-size: 11px; color: #64748b;">
