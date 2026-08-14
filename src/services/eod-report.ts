@@ -1,6 +1,7 @@
 import { supabase } from "@/services/supabase/supabase-provider";
 import { services } from "@/services";
 import { sendEmailViaResend } from "@/services/send-email-fn";
+import { generateEODPdfBuffer, getEODPdfAttachmentFilename } from "@/services/eod-pdf";
 
 export interface EODReportMetrics {
   date: string;
@@ -349,12 +350,28 @@ export async function sendEODReportEmail(metrics: EODReportMetrics): Promise<{ s
     const subject = `تقرير الإغلاق اليومي — ${metrics.shopName} (${metrics.date})`;
     const html = generateEODHtmlEmail(metrics);
 
+    // Generate PDF attachment named after the day and date
+    let attachments: Array<{ filename: string; content: string }> | undefined;
+    try {
+      const pdfBuffer = generateEODPdfBuffer(metrics);
+      const pdfFilename = getEODPdfAttachmentFilename(metrics);
+      attachments = [
+        {
+          filename: pdfFilename,
+          content: pdfBuffer.toString("base64"),
+        },
+      ];
+    } catch (pdfErr) {
+      console.error("Failed to generate PDF attachment:", pdfErr);
+    }
+
     // Call serverFn to dispatch via Resend
     const res = await sendEmailViaResend({
       data: {
         to: toEmail,
         subject,
         html,
+        attachments,
       },
     });
 

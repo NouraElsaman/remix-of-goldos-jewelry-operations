@@ -5,6 +5,10 @@ interface SendEmailPayload {
   subject: string;
   html: string;
   apiKey?: string;
+  attachments?: Array<{
+    filename: string;
+    content: string; // base64 string
+  }>;
 }
 
 /**
@@ -38,6 +42,7 @@ export const sendEmailViaResend = createServerFn({ method: "POST" })
           to: [data.to],
           subject: data.subject,
           html: data.html,
+          attachments: data.attachments,
         }),
       });
 
