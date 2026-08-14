@@ -198,7 +198,7 @@ const defaultSettings = {
   shopName: "Al Asala Jewelry",
   shopNameAr: "مجوهرات الأصالة",
   ownerName: "Ahmed Mostafa",
-  email: "contact@alasala.eg",
+  email: "hotohory13@gmail.com",
   phone: "01012345678",
   commercialRegister: "123456789",
   taxId: "123456789",
