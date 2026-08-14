@@ -158,38 +158,6 @@ export function generateEODHtmlEmail(metrics: EODReportMetrics): string {
         <tr>
           <td dir="rtl" style="direction: rtl !important; text-align: right !important;">
             
-            <!-- KPI Table (2x2 Grid) -->
-            <table dir="rtl" align="right" width="100%" cellpadding="6" cellspacing="0" style="margin-bottom: 20px; direction: rtl !important; width: 100%;">
-              <tr>
-                <td width="50%" dir="rtl" align="right" style="padding: 6px;">
-                  <div dir="rtl" style="background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 12px; text-align: center !important;">
-                    <div style="font-size: 11px; font-weight: 600; color: #047857; margin-bottom: 4px;">صافي التدفق النقدي</div>
-                    <div style="font-size: 18px; font-weight: 800; font-family: monospace; color: #047857;" dir="ltr">${metrics.netCashFlow.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
-                  </div>
-                </td>
-                <td width="50%" dir="rtl" align="right" style="padding: 6px;">
-                  <div dir="rtl" style="background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 12px; text-align: center !important;">
-                    <div style="font-size: 11px; font-weight: 600; color: #b45309; margin-bottom: 4px;">أرباح المصنعية</div>
-                    <div style="font-size: 18px; font-weight: 800; font-family: monospace; color: #b45309;" dir="ltr">${metrics.totalHandworkEarnings.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td width="50%" dir="rtl" align="right" style="padding: 6px;">
-                  <div dir="rtl" style="background-color: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center !important;">
-                    <div style="font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 4px;">مبيعات المصوغات (${metrics.salesCount})</div>
-                    <div style="font-size: 18px; font-weight: 800; font-family: monospace; color: #0f172a;" dir="ltr">${metrics.totalSalesRevenue.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
-                  </div>
-                </td>
-                <td width="50%" dir="rtl" align="right" style="padding: 6px;">
-                  <div dir="rtl" style="background-color: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center !important;">
-                    <div style="font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 4px;">مشتريات الكسر (${metrics.scrapCount})</div>
-                    <div style="font-size: 18px; font-weight: 800; font-family: monospace; color: #0f172a;" dir="ltr">${metrics.totalScrapPayout.toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م</div>
-                  </div>
-                </td>
-              </tr>
-            </table>
-
             <!-- Section 1 Title -->
             <h3 dir="rtl" style="font-size: 14px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin: 20px 0 12px 0; text-align: right !important; direction: rtl !important;">
               ⚖️ حركة أوزان الذهب المباع والكسر المشتري (جم)
