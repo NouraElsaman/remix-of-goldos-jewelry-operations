@@ -37,7 +37,7 @@ export function TrendBadge({
       )}
     >
       <Icon className="size-3" aria-hidden />
-      {value}
+      <span dir="ltr">{value}</span>
     </span>
   );
 }

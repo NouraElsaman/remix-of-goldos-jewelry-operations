@@ -34,7 +34,7 @@ export function PriceChangeIndicator({
       )}
     >
       <Icon className="size-4" aria-hidden />
-      {changePct}
+      <span dir="ltr">{changePct}</span>
     </span>
   );
 }

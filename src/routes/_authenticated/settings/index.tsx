@@ -15,6 +15,10 @@ import {
   TextareaField,
   PasswordField,
   CurrencyField,
+  NumberField,
+  EmailField,
+  PhoneField,
+  CodeField,
   requiredString,
 } from "@/components/forms";
 import { Button } from "@/components/ui/button";
@@ -194,17 +198,17 @@ function SettingsPage() {
         onValueChange={(val) => navigate({ search: { tab: val as any } })}
         className="gap-4"
       >
-        <TabsList className="rounded-xl">
+        <TabsList className="w-full max-w-full flex-nowrap justify-start overflow-x-auto rounded-xl scrollbar-slim">
           <TabsTrigger value="store" className="rounded-lg">
             معلومات المحل
           </TabsTrigger>
-          <TabsTrigger value="receipt" className="rounded-lg">
+          <TabsTrigger value="receipt" className="rounded-lg whitespace-nowrap">
             الفاتورة
           </TabsTrigger>
-          <TabsTrigger value="pricing" className="rounded-lg">
+          <TabsTrigger value="pricing" className="rounded-lg whitespace-nowrap">
             التسعير والضرائب
           </TabsTrigger>
-          <TabsTrigger value="security" className="rounded-lg">
+          <TabsTrigger value="security" className="rounded-lg whitespace-nowrap">
             الأمان
           </TabsTrigger>
         </TabsList>
@@ -232,9 +236,9 @@ function SettingsPage() {
                 }
                 updateMutation.mutate({ ...data, logoUrl });
               })}
-              className="grid gap-6 md:grid-cols-2 max-w-4xl"
+              className="grid max-w-4xl gap-6 md:grid-cols-2"
             >
-              <div className="md:col-span-2 flex items-center gap-6">
+              <div className="flex flex-wrap items-center gap-6 md:col-span-2">
                 <div
                   className="flex size-24 shrink-0 items-center justify-center rounded-2xl border border-dashed border-border bg-surface-muted/50 overflow-hidden cursor-pointer hover:bg-surface-muted transition-colors"
                   onClick={() => fileInputRef.current?.click()}
@@ -279,31 +283,33 @@ function SettingsPage() {
                 name="ownerName"
                 label="اسم المالك"
               />
-              <TextField
+              <EmailField
                 control={storeForm.control}
                 name="email"
                 label="البريد الإلكتروني"
+                placeholder="name@example.com"
               />
-              <TextField
+              <PhoneField
                 control={storeForm.control}
                 name="phone"
                 label="رقم الهاتف"
+                placeholder="01xxxxxxxxx"
               />
 
               <div className="opacity-70 pointer-events-none">
-                <TextField
+                <CodeField
                   control={storeForm.control}
                   name="currency"
                   label="العملة"
                 />
               </div>
 
-              <TextField
+              <CodeField
                 control={storeForm.control}
                 name="commercialRegister"
                 label="السجل التجاري"
               />
-              <TextField
+              <CodeField
                 control={storeForm.control}
                 name="taxId"
                 label="البطاقة الضريبية"
@@ -336,7 +342,7 @@ function SettingsPage() {
                     updateMutation.isPending ||
                     isUploading
                   }
-                  className="h-11 w-32 rounded-xl"
+                  className="h-11 w-full rounded-xl sm:w-32"
                 >
                   {updateMutation.isPending || isUploading
                     ? "جاري الحفظ..."
@@ -403,13 +409,13 @@ function SettingsPage() {
               )}
               className="grid gap-6 max-w-xl"
             >
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <CurrencyField
                   control={pricingForm.control}
                   name="defaultManufacturingCost"
                   label="المصنعية الافتراضية (للجرام)"
                 />
-                <TextField
+                <NumberField
                   control={pricingForm.control}
                   name="vatRate"
                   label="نسبة ضريبة القيمة المضافة (%)"

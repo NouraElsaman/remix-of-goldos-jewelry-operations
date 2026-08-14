@@ -98,6 +98,9 @@ export const httpServices: ServiceRegistry = {
       }),
 
     byId: (id) => apiRequest<InventoryItem | null>(`/inventory/${id}`),
+
+    createItem: (input) =>
+      apiRequest<InventoryItem>("/inventory", { method: "POST", body: input }),
   },
 
   // ── Sales ─────────────────────────────────────────────────────────────────
@@ -117,6 +120,21 @@ export const httpServices: ServiceRegistry = {
   reconciliation: {
     currentDay: () =>
       apiRequest<ReconciliationRow[]>("/reconciliation/current-day"),
+
+    submitCounted: (karat, counted) =>
+      apiRequest<void>("/reconciliation/counted", {
+        method: "POST",
+        body: { karat, counted },
+      }),
+
+    reopenToday: () =>
+      apiRequest<void>("/reconciliation/reopen", { method: "POST" }),
+
+    updateOpeningWeights: (inputs) =>
+      apiRequest<void>("/reconciliation/opening-weights", {
+        method: "POST",
+        body: inputs,
+      }),
   },
 
   // ── Reports ───────────────────────────────────────────────────────────────

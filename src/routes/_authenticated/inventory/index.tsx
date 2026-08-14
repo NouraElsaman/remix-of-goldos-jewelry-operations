@@ -135,8 +135,6 @@ function InventoryPage() {
       return;
     }
 
-    const net = gross - stone;
-
     createItemMutation.mutate({
       sku: skuInput,
       name: nameInput,

@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
-import type { ServiceRegistry } from "../contracts";
+import type { ActivityEventType, ServiceRegistry, ShopSettings } from "../contracts";
 import { mockServices } from "../mock/mock-provider";
-import type { GoldPrice, Invoice, Karat } from "@/types/domain";
+import type { GoldPrice, InventoryItem, Invoice, Karat } from "@/types/domain";
 import type { Paginated } from "../types";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
@@ -472,7 +472,7 @@ export const supabaseServices: ServiceRegistry = {
       for (let i = 6; i >= 0; i--) {
         const d = new Date();
         d.setDate(d.getDate() - i);
-        const dayLabel = days[d.getDay()];
+        const dayLabel = days[d.getDay()] ?? "";
         
         // Find sales on this date
         const dateStr = d.toISOString().slice(0, 10); // YYYY-MM-DD
@@ -494,14 +494,14 @@ export const supabaseServices: ServiceRegistry = {
       (allSalesInvoices || []).forEach((row) => {
         const karat = Math.round(Number(row.karat));
         if (karat in soldKaratWeightMap) {
-          soldKaratWeightMap[karat] += Number(row.total_weight || 0);
+          soldKaratWeightMap[karat] = (soldKaratWeightMap[karat] ?? 0) + Number(row.total_weight || 0);
         }
       });
 
       const weightByKarat = [
-        { label: "24K", value: Number(soldKaratWeightMap[24].toFixed(3)) },
-        { label: "21K", value: Number(soldKaratWeightMap[21].toFixed(3)) },
-        { label: "18K", value: Number(soldKaratWeightMap[18].toFixed(3)) },
+        { label: "24K", value: Number((soldKaratWeightMap[24] ?? 0).toFixed(3)) },
+        { label: "21K", value: Number((soldKaratWeightMap[21] ?? 0).toFixed(3)) },
+        { label: "18K", value: Number((soldKaratWeightMap[18] ?? 0).toFixed(3)) },
       ].filter(item => item.value > 0);
 
       // 6. Aggregate inventory weight by karat
@@ -510,14 +510,14 @@ export const supabaseServices: ServiceRegistry = {
       (inStockItems || []).forEach((row) => {
         const karat = Math.round(Number(row.karat));
         if (karat in invKaratWeightMap) {
-          invKaratWeightMap[karat] += Number(row.net_weight || 0);
+          invKaratWeightMap[karat] = (invKaratWeightMap[karat] ?? 0) + Number(row.net_weight || 0);
         }
       });
 
       const inventoryWeightByKarat = [
-        { label: "24K", value: Number(invKaratWeightMap[24].toFixed(3)) },
-        { label: "21K", value: Number(invKaratWeightMap[21].toFixed(3)) },
-        { label: "18K", value: Number(invKaratWeightMap[18].toFixed(3)) },
+        { label: "24K", value: Number((invKaratWeightMap[24] ?? 0).toFixed(3)) },
+        { label: "21K", value: Number((invKaratWeightMap[21] ?? 0).toFixed(3)) },
+        { label: "18K", value: Number((invKaratWeightMap[18] ?? 0).toFixed(3)) },
       ].filter(item => item.value > 0);
 
       return {
@@ -714,7 +714,7 @@ export const supabaseServices: ServiceRegistry = {
 
       const recentActivity = (recentInvoices || []).map((inv) => ({
         id: inv.id,
-        type: inv.transaction_type === "sale" ? "sale" : "purchase",
+        type: (inv.transaction_type === "sale" ? "sale" : "purchase") as ActivityEventType,
         title: inv.transaction_type === "sale" ? "عملية بيع جديدة" : "عملية شراء ذهب كسر",
         subtitle: `رقم الفاتورة: ${inv.invoice_number} · ${Number(inv.final_total).toLocaleString()} ج.م`,
         at: inv.created_at,
@@ -832,7 +832,7 @@ export const supabaseServices: ServiceRegistry = {
         const currentRate = Number(row.rate_sell);
         let changePct = 0;
         if (olderData && olderData.length > 0) {
-          const prevRate = Number(olderData[0].rate_sell);
+          const prevRate = Number(olderData[0]?.rate_sell ?? 0);
           if (prevRate > 0) {
             changePct = ((currentRate - prevRate) / prevRate) * 100;
           }
@@ -963,7 +963,7 @@ export const supabaseServices: ServiceRegistry = {
 
     createInvoice: async (input) => {
       const type = input.transactionType || "sale";
-      const invoiceNumber = input.number || generateInvoiceNumber(type);
+      const invoiceNumber = generateInvoiceNumber(type);
 
       const dbRow = {
         invoice_number: invoiceNumber,

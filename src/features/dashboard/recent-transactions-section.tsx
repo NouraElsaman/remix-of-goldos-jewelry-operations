@@ -23,6 +23,7 @@ const paymentLabels: Record<PaymentMethod, TranslationKey> = {
   cash: "payment.cash",
   card: "payment.card",
   transfer: "payment.transfer",
+  split: "payment.split",
 };
 
 /**

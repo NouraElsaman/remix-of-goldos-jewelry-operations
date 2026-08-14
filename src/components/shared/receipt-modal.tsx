@@ -1,7 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import { Printer, CheckCircle } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
-import type { Invoice } from "@/types/domain";
+import { services } from "@/services";
 
 export interface ReceiptModalProps {
   invoice: any; // Accept any to handle both parsed model and database row casings
@@ -10,6 +12,28 @@ export interface ReceiptModalProps {
 
 export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
   const { locale } = useI18n();
+
+  // Store identity, invoice header and footer all come from Settings.
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: () => services.settings.get(),
+  });
+
+  const storeName =
+    (locale === "ar" ? settings?.shopNameAr : settings?.shopName) ??
+    settings?.shopNameAr ??
+    "";
+  const storeContact = [settings?.city, settings?.governorate, settings?.phone]
+    .filter(Boolean)
+    .join(" · ");
+  const receiptHeader = settings?.receiptHeader ?? "";
+  const receiptFooter = settings?.receiptFooter ?? "";
+  const returnPolicy = settings?.returnPolicy ?? "";
+
+  const money = (val: unknown) =>
+    `${Number(val || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ج.م`;
+  const grams = (val: unknown) =>
+    `${Number(val || 0).toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 })}`;
 
   // Normalize properties supporting both frontend types and database row names
   const num = invoice.number || invoice.invoice_number || "";
@@ -30,6 +54,7 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
   const deductVal = invoice.deductionPct !== undefined ? invoice.deductionPct : (invoice.deduction_pct || 0);
   const idImg = invoice.idImageUrl || invoice.id_image_url || "";
   const itemSku = invoice.itemSku || invoice.item_sku || "";
+  const itemName = invoice.itemName || invoice.item_name || "";
   const company = invoice.itemCompany || invoice.item_company || invoice.company || "";
 
   const triggerPrint = () => {
@@ -53,18 +78,28 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
         </div>
 
         {/* Printable Receipt Frame */}
-        <div id="receipt-print-area" className="text-center font-sans py-4 print:py-8">
+        <div id="receipt-print-area" dir="rtl" className="text-center font-sans py-4 print:py-8">
           {/* Shop Logo/Name */}
-          <h1 className="text-xl font-extrabold tracking-wide mb-1">
-            {locale === "ar" ? "مجوهرات الأصالة" : "Al Asala Jewelry"}
-          </h1>
-          <p className="text-xs text-muted-foreground mb-4">
-            {locale === "ar" ? "المنصورة، مصر · ت: 01012345678" : "Mansoura, Egypt · Tel: 01012345678"}
-          </p>
+          {storeName ? (
+            <h1 className="text-xl font-extrabold tracking-wide mb-1">
+              {storeName}
+            </h1>
+          ) : null}
+          {storeContact ? (
+            <p className="text-xs text-muted-foreground mb-1" dir="rtl">
+              {storeContact}
+            </p>
+          ) : null}
+          {receiptHeader ? (
+            <p className="text-[11px] leading-relaxed text-muted-foreground mb-3 whitespace-pre-line">
+              {receiptHeader}
+            </p>
+          ) : null}
 
           <div className="border-y border-dashed border-border/80 my-4 py-3 text-start text-xs space-y-1.5 leading-relaxed">
-            <div>
-              <strong>{locale === "ar" ? "رقم الفاتورة:" : "Invoice #:"}</strong> {num}
+            <div className="flex items-start justify-between gap-3">
+              <strong>{locale === "ar" ? "رقم الفاتورة:" : "Invoice #:"}</strong>
+              <span className="font-mono" dir="ltr">{num}</span>
             </div>
             <div>
               <strong>{locale === "ar" ? "نوع العملية:" : "Type:"}</strong>{" "}
@@ -79,60 +114,74 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
               </div>
             )}
             {phone && (
-              <div>
-                <strong>{locale === "ar" ? "الهاتف:" : "Phone:"}</strong> {phone}
+              <div className="flex items-start justify-between gap-3">
+                <strong>{locale === "ar" ? "الهاتف:" : "Phone:"}</strong>
+                <span className="font-mono" dir="ltr">{phone}</span>
               </div>
             )}
           </div>
 
-          {/* Items details table */}
-          <table className="w-full text-xs text-start my-4">
-            <thead>
-              <tr className="border-b font-bold">
-                <th className="py-2">{locale === "ar" ? "الصنف" : "Item"}</th>
-                <th className="py-2 text-end">{locale === "ar" ? "الوزن" : "Weight"}</th>
-                <th className="py-2 text-end">{locale === "ar" ? "الصافي" : "Total"}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="py-2.5">
-                  <div className="font-semibold text-foreground">
-                    {type === "sale" ? (
-                      locale === "ar" ? `ذهب عيار ${karat}` : `Gold ${karat}K`
-                    ) : (
-                      locale === "ar" ? `شراء ذهب كسر عيار ${karat}` : `Buy scrap ${karat}K`
-                    )}
-                  </div>
-                  {itemSku && (
-                    <div className="text-[10px] text-muted-foreground font-mono mt-0.5">
-                      {locale === "ar" ? `كود القطعة: ${itemSku}` : `SKU: ${itemSku}`}
-                    </div>
-                  )}
-                  {company && (
-                    <div className="text-[10px] text-muted-foreground font-semibold mt-0.5">
-                      {locale === "ar" ? `الشركة المصنعة: ${company}` : `Company: ${company}`}
-                    </div>
-                  )}
-                </td>
-                <td className="py-2.5 text-end font-mono">{weight} جم</td>
-                <td className="py-2.5 text-end font-mono">{Number(totalVal).toLocaleString()} ج.م</td>
-              </tr>
-            </tbody>
-          </table>
+          {/* Item details — label/value rows keep Arabic RTL and codes LTR */}
+          <div className="my-4 rounded-xl border border-border/70 p-3 text-start text-xs">
+            <div className="mb-2 border-b border-dashed border-border/70 pb-2 font-bold text-foreground">
+              {type === "sale"
+                ? locale === "ar"
+                  ? `ذهب عيار ${karat}`
+                  : `Gold ${karat}K`
+                : locale === "ar"
+                  ? `شراء ذهب كسر عيار ${karat}`
+                  : `Buy scrap ${karat}K`}
+            </div>
+            <dl className="space-y-1.5">
+              {itemName ? (
+                <div className="flex items-start justify-between gap-3">
+                  <dt className="text-muted-foreground">
+                    {locale === "ar" ? "اسم القطعة" : "Item name"}
+                  </dt>
+                  <dd className="max-w-[60%] text-end font-semibold">{itemName}</dd>
+                </div>
+              ) : null}
+              {itemSku ? (
+                <div className="flex items-start justify-between gap-3">
+                  <dt className="text-muted-foreground">
+                    {locale === "ar" ? "كود القطعة" : "SKU"}
+                  </dt>
+                  <dd className="font-mono" dir="ltr">{itemSku}</dd>
+                </div>
+              ) : null}
+              {company ? (
+                <div className="flex items-start justify-between gap-3">
+                  <dt className="text-muted-foreground">
+                    {locale === "ar" ? "الشركة المصنعة" : "Manufacturer"}
+                  </dt>
+                  <dd className="max-w-[60%] text-end font-semibold">{company}</dd>
+                </div>
+              ) : null}
+              <div className="flex items-start justify-between gap-3">
+                <dt className="text-muted-foreground">
+                  {locale === "ar" ? "الوزن (جرام)" : "Weight (g)"}
+                </dt>
+                <dd className="font-mono" dir="ltr">{grams(weight)}</dd>
+              </div>
+              <div className="flex items-start justify-between gap-3 border-t border-dashed border-border/70 pt-1.5 font-bold text-foreground">
+                <dt>{locale === "ar" ? "الصافي" : "Net value"}</dt>
+                <dd className="font-mono" dir="ltr">{money(totalVal)}</dd>
+              </div>
+            </dl>
+          </div>
 
           {/* Receipt Totals */}
-          <div className="border-t border-dashed border-border/80 pt-3 text-xs space-y-1.5 text-end font-mono">
+          <div className="border-t border-dashed border-border/80 pt-3 text-xs space-y-1.5 text-start">
             {type === "sale" && (
               <>
                 <div className="flex justify-between">
                   <span>{locale === "ar" ? "المجموع الفرعي:" : "Subtotal:"}</span>
-                  <span>{Number(subtotalVal).toLocaleString()} ج.م</span>
+                  <span className="font-mono" dir="ltr">{money(subtotalVal)}</span>
                 </div>
                 {Number(taxVal) > 0 && (
                   <div className="flex justify-between">
                     <span>{locale === "ar" ? "ضريبة القيمة المضافة:" : "VAT:"}</span>
-                    <span>{Number(taxVal).toLocaleString()} ج.م</span>
+                    <span className="font-mono" dir="ltr">{money(taxVal)}</span>
                   </div>
                 )}
               </>
@@ -140,12 +189,12 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
             {Number(deductVal) > 0 && (
               <div className="flex justify-between">
                 <span>{locale === "ar" ? "نسبة الخصم:" : "Deduction %:"}</span>
-                <span>{deductVal}%</span>
+                <span className="font-mono" dir="ltr">{deductVal}%</span>
               </div>
             )}
             <div className="flex justify-between text-sm font-extrabold border-t pt-1.5 text-foreground">
               <span>{locale === "ar" ? "الإجمالي النهائي:" : "Grand Total:"}</span>
-              <span>{Number(totalVal).toLocaleString()} ج.م</span>
+              <span className="font-mono" dir="ltr">{money(totalVal)}</span>
             </div>
           </div>
 
@@ -167,21 +216,14 @@ export function ReceiptModal({ invoice, onClose }: ReceiptModalProps) {
             </div>
           )}
 
-          {/* Footer info */}
-          <div className="mt-8 text-[10px] text-muted-foreground leading-relaxed border-t pt-4">
-            {locale === "ar" ? (
-              <>
-                شكراً لتعاملكم معنا!
-                <br />
-                فاتورة رسمية صادرة عن نظام جوهرة تك
-              </>
-            ) : (
-              <>
-                Thank you for your business!
-                <br />
-                Official Invoice generated via Jawhara Tech
-              </>
-            )}
+          {/* Footer info — driven by Invoice Settings */}
+          <div className="mt-8 space-y-1.5 border-t pt-4 text-[10px] leading-relaxed text-muted-foreground">
+            {receiptFooter ? (
+              <p className="whitespace-pre-line">{receiptFooter}</p>
+            ) : null}
+            {returnPolicy ? (
+              <p className="whitespace-pre-line">{returnPolicy}</p>
+            ) : null}
           </div>
         </div>
 

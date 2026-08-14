@@ -20,7 +20,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { appConfig } from "@/config/app";
 import { formatMoney } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import { LOCALES, localeMeta } from "@/lib/i18n";
@@ -86,6 +85,12 @@ export function Topbar({
     queryKey: queryKeys.auth.currentUser(),
     queryFn: () => services.auth.currentUser(),
   });
+  const { data: shopSettings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: () => services.settings.get(),
+  });
+  const storeName =
+    (locale === "ar" ? shopSettings?.shopNameAr : shopSettings?.shopName) ?? "";
 
   const headline = prices?.find((price) => price.karat === 22) ?? prices?.[0];
   const role = getCurrentRole();
@@ -120,23 +125,24 @@ export function Topbar({
       <SidebarTrigger className="size-9 rounded-xl" />
       <Separator orientation="vertical" className="hidden h-6 sm:block" />
 
-      <div className="hidden min-w-0 sm:block">
-        <p className="truncate text-sm font-semibold tracking-tight text-foreground">
-          {locale === "ar" ? appConfig.shopNameAr : appConfig.shopName}
-        </p>
-      </div>
+      {storeName ? (
+        <div className="hidden min-w-0 sm:block">
+          <p className="truncate text-sm font-semibold tracking-tight text-foreground">
+            {storeName}
+          </p>
+        </div>
+      ) : null}
 
       {headline ? (
-        <span className="ms-1 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold-soft px-3 py-1.5 text-xs font-medium text-gold-foreground">
+        <span className="ms-1 inline-flex shrink-0 items-center gap-2 rounded-full border border-gold/40 bg-gold-soft px-2.5 py-1.5 text-xs font-medium text-gold-foreground">
           <Coins className="size-3.5 text-gold-deep" aria-hidden />
-          <span className="hidden xs:inline">{t("topbar.goldChip")}</span>
-          <span data-numeric>
+          <span data-numeric dir="ltr">
             {headline.karat}K · {formatMoney(headline.rate, locale)}
           </span>
         </span>
       ) : null}
 
-      <div className="ms-auto flex items-center gap-1.5">
+      <div className="ms-auto flex min-w-0 items-center gap-1 sm:gap-1.5">
         <Button
           variant="outline"
           onClick={onOpenCommandPalette}

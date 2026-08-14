@@ -2,8 +2,21 @@ import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
-const Tabs = TabsPrimitive.Root;
+/**
+ * Radix Tabs defaults its root `dir` to "ltr", which flips every descendant
+ * (tables, forms) back to LTR inside the Arabic app shell. Inherit the app
+ * locale direction instead unless a caller passes an explicit `dir`.
+ */
+const Tabs = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
+>(({ dir, ...props }, ref) => {
+  const { dir: localeDir } = useI18n();
+  return <TabsPrimitive.Root ref={ref} dir={dir ?? localeDir} {...props} />;
+});
+Tabs.displayName = TabsPrimitive.Root.displayName;
 
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,

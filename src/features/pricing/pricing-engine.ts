@@ -21,8 +21,10 @@ import type { ComputedItemPrice, PricingConfig } from "@/services/contracts";
 
 export const KARAT_PURITY: Record<Karat, number> = {
   24: 1.0,
+  22: 22 / 24,
   21: 21 / 24,
   18: 18 / 24,
+  14: 14 / 24,
 } as const;
 
 /** All karats this shop supports, in display order. */

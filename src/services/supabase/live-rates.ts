@@ -28,9 +28,9 @@ export const fetchLiveEgyptianGoldRates = createServerFn({
     const rates: LiveGoldRates = {};
     let match;
     while ((match = rowRegex.exec(html)) !== null) {
-      const karat = parseInt(match[1]);
-      const sell = parseFloat(match[2].replace(/,/g, ""));
-      const buy = parseFloat(match[3].replace(/,/g, ""));
+      const karat = parseInt(match[1] ?? "0");
+      const sell = parseFloat((match[2] ?? "0").replace(/,/g, ""));
+      const buy = parseFloat((match[3] ?? "0").replace(/,/g, ""));
       
       // Capture the first occurrence (which is the latest pricing)
       if (!rates[karat]) {

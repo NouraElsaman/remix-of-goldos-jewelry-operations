@@ -55,6 +55,7 @@ export function SetPricesForm({
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<SetPricesFormValues>({
     resolver: zodResolver(setPricesSchema),
@@ -71,9 +72,16 @@ export function SetPricesForm({
       const liveRates = await fetchLiveEgyptianGoldRates();
       
       // Update form values dynamically
-      if (liveRates[24]) setValue("rates.24", liveRates[24].sell, { shouldDirty: true, shouldValidate: true });
-      if (liveRates[21]) setValue("rates.21", liveRates[21].sell, { shouldDirty: true, shouldValidate: true });
-      if (liveRates[18]) setValue("rates.18", liveRates[18].sell, { shouldDirty: true, shouldValidate: true });
+      const currentRates = getValues("rates");
+      setValue(
+        "rates",
+        {
+          24: liveRates[24]?.sell ?? currentRates?.[24] ?? 0,
+          21: liveRates[21]?.sell ?? currentRates?.[21] ?? 0,
+          18: liveRates[18]?.sell ?? currentRates?.[18] ?? 0,
+        },
+        { shouldDirty: true, shouldValidate: true },
+      );
 
       toast.success(
         t("common.save") === "حفظ" 
@@ -98,7 +106,7 @@ export function SetPricesForm({
         <div className="grid gap-4.5 sm:grid-cols-2 lg:grid-cols-3">
           {SUPPORTED_KARATS.map((karat) => {
             const key = karat as Karat;
-            const error = errors.rates?.[key];
+            const error = errors.rates?.[key as 24 | 21 | 18];
 
             return (
               <div key={karat} className="flex flex-col gap-2">

@@ -92,13 +92,13 @@ export type ShopSettings = {
   governorate: string;
   city: string;
   address: string;
-  logoUrl?: string | null;
+  logoUrl?: string | null | undefined;
   currency: string;
 
   // Receipt Settings
   receiptHeader: string;
   receiptFooter: string;
-  returnPolicy: string;
+  returnPolicy?: string | undefined;
 
   // Pricing & Taxes
   vatRate: number;

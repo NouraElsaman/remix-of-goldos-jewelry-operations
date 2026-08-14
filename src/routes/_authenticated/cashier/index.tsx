@@ -1,18 +1,20 @@
 import { getCurrentRole } from "@/lib/auth";
 import { canAccessRoute } from "@/lib/rbac";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { ScanLine, ShoppingCart, Camera, Printer, CheckCircle, ArrowRight, ArrowLeft } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { ScanLine, ShoppingCart, Camera, Printer, CheckCircle, ArrowRight, ArrowLeft, ChevronsUpDown } from "lucide-react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { PageHeader, SectionCard, ReceiptModal } from "@/components/shared";
+import { PageHeader, SectionCard, ReceiptModal, SearchInput } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useI18n } from "@/lib/i18n";
 import { PageTransition } from "@/lib/motion";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { queryKeys, services } from "@/services";
 import { supabase } from "@/services/supabase/supabase-provider";
 
@@ -55,6 +57,8 @@ function CashierPage() {
   const [saleItemType, setSaleItemType] = useState<string>("ring");
   const [isSalePriceManuallyEdited, setIsSalePriceManuallyEdited] = useState<boolean>(false);
   const [selectedItemId, setSelectedItemId] = useState<string>("");
+  const [productQuery, setProductQuery] = useState<string>("");
+  const [itemPickerOpen, setItemPickerOpen] = useState<boolean>(false);
 
   // ── Walk-in Purchase States ───────────────────────────────────────────────
   const [purchaseWeight, setPurchaseWeight] = useState<string>("");
@@ -141,6 +145,30 @@ function CashierPage() {
       }
     }
   };
+
+  // Client-side product search over the already loaded in-stock items.
+  const debouncedProductQuery = useDebouncedValue(productQuery, 200);
+  const filteredItems = useMemo(() => {
+    const q = debouncedProductQuery.trim().toLowerCase();
+    if (!q) return availableItems.slice(0, 100);
+    return availableItems
+      .filter((item) =>
+        [
+          item.sku,
+          item.name,
+          String(item.karat),
+          `${item.karat}k`,
+          String(item.netWeight),
+          String(item.grossWeight),
+          item.trayId ?? "",
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(q),
+      )
+      .slice(0, 100);
+  }, [availableItems, debouncedProductQuery]);
+  const selectedItem = availableItems.find((i) => i.id === selectedItemId);
 
   // Auto-fill gold price when sale karat changes or database price loads
   useEffect(() => {
@@ -350,16 +378,16 @@ function CashierPage() {
 
       <Tabs
         defaultValue="sale"
-        className="grid gap-6 lg:grid-cols-[1.6fr_1fr]"
+        className="grid min-w-0 gap-6 lg:grid-cols-[1.6fr_1fr]"
         onValueChange={(val) => setActiveTab(val as any)}
       >
         {/* Left Side: Calculations Form */}
-        <div className="space-y-6">
-          <TabsList className="w-full justify-start rounded-xl p-1 bg-surface-muted border border-border/50">
-            <TabsTrigger value="sale" className="rounded-lg px-6 py-2">
+        <div className="min-w-0 space-y-6">
+          <TabsList className="w-full max-w-full flex-nowrap justify-start overflow-x-auto rounded-xl p-1 bg-surface-muted border border-border/50 scrollbar-slim">
+            <TabsTrigger value="sale" className="whitespace-nowrap rounded-lg px-4 py-2 sm:px-6">
               {locale === "ar" ? "عملية بيع مجوهرات" : "Sell Jewelry"}
             </TabsTrigger>
-            <TabsTrigger value="purchase" className="rounded-lg px-6 py-2">
+            <TabsTrigger value="purchase" className="whitespace-nowrap rounded-lg px-4 py-2 sm:px-6">
               {locale === "ar" ? "شراء ذهب كسر (شراء من عميل)" : "Buy Old Gold (Walk-in)"}
             </TabsTrigger>
           </TabsList>
@@ -369,25 +397,99 @@ function CashierPage() {
             <SectionCard title={locale === "ar" ? "حساب قيمة المبيعة" : "Sale Calculator"}>
               <form onSubmit={handleFinalizeSale} className="space-y-5">
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2 col-span-full">
-                    <Label htmlFor="sale-select-item">
-                      {locale === "ar" ? "اختر قطعة من المخزون (تعبئة تلقائية)" : "Select finished item from inventory (Auto-fill)"}
+                  <div className="col-span-full space-y-2">
+                    <Label htmlFor="sale-product-search">
+                      {locale === "ar" ? "اختر قطعة من المخزون (بحث بالاسم أو الكود)" : "Select item from inventory (search by name or code)"}
                     </Label>
-                    <select
-                      id="sale-select-item"
-                      value={selectedItemId}
-                      onChange={(e) => handleSelectItem(e.target.value)}
-                      className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
-                    >
-                      <option value="">
-                        {locale === "ar" ? "--- بيع حر (إدخال يدوي) ---" : "--- Custom Sell (Manual entry) ---"}
-                      </option>
-                      {availableItems.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.sku} - {item.name} ({item.karat}K, {item.netWeight} جم)
-                        </option>
-                      ))}
-                    </select>
+                    <Popover open={itemPickerOpen} onOpenChange={setItemPickerOpen}>
+                      <PopoverTrigger asChild>
+                        <button
+                          id="sale-product-search"
+                          type="button"
+                          className="flex h-10 w-full items-center justify-between gap-3 rounded-xl border border-input bg-background px-3 text-sm shadow-sm transition-colors hover:bg-surface-muted focus:outline-none focus:ring-1 focus:ring-ring"
+                        >
+                          <span className="min-w-0 flex-1 truncate text-start">
+                            {selectedItem ? (
+                              <>
+                                <span className="font-semibold text-foreground">{selectedItem.name}</span>{" "}
+                                <span className="font-mono text-xs text-muted-foreground" dir="ltr">
+                                  ({selectedItem.sku} · {selectedItem.karat}K · {selectedItem.netWeight} g)
+                                </span>
+                              </>
+                            ) : (
+                              <span className="text-muted-foreground">
+                                {locale === "ar" ? "بيع حر (إدخال يدوي) — اضغط للاختيار من المخزون" : "Custom sell (manual entry) — click to pick from inventory"}
+                              </span>
+                            )}
+                          </span>
+                          <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        align="start"
+                        className="w-[--radix-popover-trigger-width] p-0"
+                      >
+                        <div className="border-b border-border p-2">
+                          <SearchInput
+                            value={productQuery}
+                            onValueChange={setProductQuery}
+                            placeholder={locale === "ar" ? "ابحث بالاسم أو الكود أو العيار أو الوزن…" : "Search by name, SKU, karat or weight…"}
+                          />
+                        </div>
+                        <div className="max-h-64 overflow-y-auto bg-background scrollbar-slim">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              handleSelectItem("");
+                              setItemPickerOpen(false);
+                            }}
+                            className={`flex w-full items-center justify-between gap-3 border-b border-border/60 px-3 py-2.5 text-start text-xs font-semibold transition-colors hover:bg-surface-muted ${
+                              selectedItemId === "" ? "bg-gold-soft/30 text-gold-deep" : ""
+                            }`}
+                          >
+                            {locale === "ar" ? "بيع حر (إدخال يدوي)" : "Custom sell (manual entry)"}
+                          </button>
+                          {filteredItems.length === 0 ? (
+                            <p className="px-3 py-6 text-center text-xs text-muted-foreground">
+                              {locale === "ar" ? "لا توجد قطع مطابقة للبحث" : "No matching items"}
+                            </p>
+                          ) : (
+                            filteredItems.map((item) => (
+                              <button
+                                key={item.id}
+                                type="button"
+                                onClick={() => {
+                                  handleSelectItem(item.id);
+                                  setItemPickerOpen(false);
+                                }}
+                                className={`grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border/50 px-3 py-2.5 text-start transition-colors last:border-0 hover:bg-surface-muted ${
+                                  selectedItemId === item.id ? "bg-gold-soft/30" : ""
+                                }`}
+                              >
+                                <span className="min-w-0">
+                                  <span className="block truncate text-xs font-semibold text-foreground">
+                                    {item.name}
+                                  </span>
+                                  <span className="mt-0.5 block truncate font-mono text-[10px] text-muted-foreground" dir="ltr">
+                                    {item.sku}
+                                  </span>
+                                </span>
+                                <span className="shrink-0 font-mono text-[11px] text-muted-foreground" dir="ltr">
+                                  {item.karat}K · {item.netWeight} g
+                                </span>
+                              </button>
+                            ))
+                          )}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                    {selectedItem ? (
+                      <p className="text-[11px] text-muted-foreground">
+                        {locale === "ar" ? "القطعة المختارة: " : "Selected: "}
+                        <span className="font-semibold text-foreground">{selectedItem.name}</span>{" "}
+                        <span className="font-mono" dir="ltr">({selectedItem.sku})</span>
+                      </p>
+                    ) : null}
                   </div>
 
                   <div className="space-y-2">

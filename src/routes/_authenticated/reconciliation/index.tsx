@@ -88,6 +88,8 @@ function ReconciliationPage() {
   });
 
   const [isOpeningModalOpen, setIsOpeningModalOpen] = useState(false);
+  const [opening14, setOpening14] = useState("");
+  const [opening22, setOpening22] = useState("");
   const [opening18, setOpening18] = useState("");
   const [opening21, setOpening21] = useState("");
   const [opening24, setOpening24] = useState("");

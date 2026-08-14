@@ -62,12 +62,12 @@ function DashboardPage() {
         { event: "INSERT", schema: "public", table: "invoices" },
         (payload) => {
           const newInvoice = payload.new;
-          const typeLabel = newInvoice.transaction_type === "sale" ? "بيع جديدة" : "شراء ذهب كسر";
+          const typeLabel = newInvoice["transaction_type"] === "sale" ? "بيع جديدة" : "شراء ذهب كسر";
           
           toast.info(
             locale === "ar"
-              ? `🔔 تم تسجيل عملية ${typeLabel} بمبلغ ${Number(newInvoice.final_total).toLocaleString()} ج.م`
-              : `🔔 New ${newInvoice.transaction_type} of ${Number(newInvoice.final_total).toLocaleString()} EGP registered`,
+              ? `🔔 تم تسجيل عملية ${typeLabel} بمبلغ ${Number(newInvoice["final_total"]).toLocaleString()} ج.م`
+              : `🔔 New ${newInvoice["transaction_type"]} of ${Number(newInvoice["final_total"]).toLocaleString()} EGP registered`,
             {
               duration: 5000,
             }
@@ -139,13 +139,13 @@ function DashboardPage() {
         isLoading={analyticsLoading}
         t={t}
         locale={locale}
-        revenueChangePct={dashboard?.revenueChangePct}
+        revenueChangePct={dashboard?.revenueChangePct ?? null}
       />
 
       {/* ── Section 4: Activity + Alerts (side-by-side on large screens) ──── */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-3">
         {/* Activity timeline — 2/3 width */}
-        <div className="lg:col-span-2">
+        <div className="min-w-0 lg:col-span-2">
           <ActivitySection
             events={activity}
             isLoading={dashLoading}
@@ -173,7 +173,7 @@ function DashboardPage() {
       />
 
       {/* ── Section 6: Quick Actions + System Health ─────────────────────── */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-2">
         <QuickActionsSection t={t} title={t("dashboard.quickActions")} />
         <SystemHealthSection t={t} title={t("dashboard.systemHealth")} />
       </div>

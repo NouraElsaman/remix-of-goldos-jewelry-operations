@@ -69,12 +69,12 @@ export function AlertsSection({
                         alert.actionLabel?.includes("مطابقة") ||
                         alert.actionLabel?.includes("Reconcil")
                       ) {
-                        void navigate({ to: "/reconciliation/" });
+                        void navigate({ to: "/reconciliation" });
                       } else if (
                         alert.actionLabel?.includes("مخزون") ||
                         alert.actionLabel?.includes("Inventory")
                       ) {
-                        void navigate({ to: "/inventory/" });
+                        void navigate({ to: "/inventory" });
                       }
                     }
                   : undefined

@@ -68,6 +68,59 @@ export function PasswordField<T extends FieldValues>(props: BaseFieldProps<T>) {
   );
 }
 
+/**
+ * Latin-script fields (email, phone, codes) keep an LTR direction even inside
+ * the RTL Arabic shell so the caret and punctuation read correctly.
+ */
+function LtrInputField<T extends FieldValues>({
+  type,
+  inputMode,
+  mono,
+  ...props
+}: BaseFieldProps<T> & {
+  type?: string | undefined;
+  inputMode?: "email" | "tel" | "text" | undefined;
+  mono?: boolean | undefined;
+}) {
+  return (
+    <ControlledField
+      {...props}
+      render={({ id, value, onChange, onBlur, invalid }) => (
+        <Input
+          id={id}
+          {...(type ? { type } : {})}
+          {...(inputMode ? { inputMode } : {})}
+          dir="ltr"
+          value={(value as string | undefined) ?? ""}
+          placeholder={props.placeholder}
+          disabled={props.disabled}
+          aria-invalid={invalid}
+          onBlur={onBlur}
+          onChange={(event) => onChange(event.target.value)}
+          className={cn(
+            "h-11 rounded-xl text-start",
+            mono && "font-mono",
+            invalidRing,
+          )}
+        />
+      )}
+    />
+  );
+}
+
+export function EmailField<T extends FieldValues>(props: BaseFieldProps<T>) {
+  return <LtrInputField {...props} type="email" inputMode="email" />;
+}
+
+export function PhoneField<T extends FieldValues>(props: BaseFieldProps<T>) {
+  return <LtrInputField {...props} type="tel" inputMode="tel" />;
+}
+
+/** Codes, SKUs, tax/registry numbers: LTR + monospaced. */
+export function CodeField<T extends FieldValues>(props: BaseFieldProps<T>) {
+  return <LtrInputField {...props} inputMode="text" mono />;
+}
+
 function NumericField<T extends FieldValues>({
   step,
   suffix,
@@ -96,6 +149,7 @@ function NumericField<T extends FieldValues>({
               )
             }
             data-numeric
+            dir="ltr"
             className={cn("h-11 rounded-xl pe-14", invalidRing)}
           />
           {suffix ? (

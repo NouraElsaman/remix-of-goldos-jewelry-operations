@@ -18,7 +18,7 @@ export function PageTransition({
       animate="visible"
       exit="exit"
       variants={pageTransition}
-      className={cn("flex flex-col gap-8", className)}
+      className={cn("flex min-w-0 flex-col gap-8", className)}
     >
       {children}
     </motion.div>
