@@ -165,6 +165,11 @@ function UsersPage() {
     inventory_manager: locale === "ar" ? "مسؤول المخزون" : "Stock Manager",
   };
 
+  const isMainOwnerRow = (row: AppUser) =>
+    row.id === "usr_owner" ||
+    row.id === "usr_1" ||
+    row.email.toLowerCase() === "nourahelaly56@gmail.com";
+
   const columns = useMemo<DataTableColumn<AppUser>[]>(
     () => [
       {
@@ -183,9 +188,9 @@ function UsersPage() {
         cell: (row) => (
           <select
             value={row.role}
-            disabled={row.id === "usr_1"}
+            disabled={isMainOwnerRow(row)}
             onChange={(e) => changeUserRole(row.id, e.target.value as any)}
-            className="rounded-lg border border-input bg-background px-2 py-1 text-xs shadow-sm focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+            className="rounded-lg border border-input bg-background px-2 py-1 text-xs shadow-sm focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <option value="owner">{locale === "ar" ? "المالك (Owner)" : "Owner"}</option>
             <option value="cashier">{locale === "ar" ? "الكاشير (Cashier)" : "Cashier"}</option>
@@ -199,8 +204,8 @@ function UsersPage() {
         cell: (row) => (
           <button
             onClick={() => toggleUserStatus(row.id)}
-            disabled={row.id === "usr_1"}
-            className="flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
+            disabled={isMainOwnerRow(row)}
+            className="flex items-center gap-1.5 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <StatusBadge tone={row.active ? "success" : "neutral"}>
               {row.active ? (locale === "ar" ? "نشط" : "Active") : (locale === "ar" ? "معطل" : "Disabled")}
@@ -214,9 +219,9 @@ function UsersPage() {
         cell: (row) => (
           <Button
             variant="ghost"
-            disabled={row.id === "usr_1"}
+            disabled={isMainOwnerRow(row)}
             onClick={() => deleteUser(row.id)}
-            className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 rounded-lg"
+            className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <Trash2 className="size-4" />
           </Button>

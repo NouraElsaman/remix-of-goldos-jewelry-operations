@@ -9,23 +9,13 @@ export const DEFAULT_USERS: AppUser[] = [
     active: true,
     password: "12345",
   },
-  {
-    id: "usr_cashier",
-    name: "نورة حمدان (كاشير)",
-    email: "cashier@alasala.sa",
-    role: "cashier",
-    active: true,
-    password: "12345",
-  },
-  {
-    id: "usr_stock",
-    name: "طارق صالح (مسؤول مخزون)",
-    email: "stock@alasala.sa",
-    role: "inventory_manager",
-    active: true,
-    password: "12345",
-  },
 ];
+
+const MOCK_EMAILS_TO_REMOVE = new Set([
+  "owner@alasala.sa",
+  "cashier@alasala.sa",
+  "stock@alasala.sa",
+]);
 
 /**
  * Retrieves the registered users list from local storage, fallback to default users.
@@ -41,16 +31,19 @@ export function getRegisteredUsers(): AppUser[] {
 
   try {
     const parsed: AppUser[] = JSON.parse(saved);
+    // Filter out old mock accounts
+    const filtered = parsed.filter(
+      (u) => !MOCK_EMAILS_TO_REMOVE.has(u.email.toLowerCase()),
+    );
+
     // Ensure the main owner account exists
-    const hasOwner = parsed.some(
+    const hasOwner = filtered.some(
       (u) => u.email.toLowerCase() === "nourahelaly56@gmail.com",
     );
-    if (!hasOwner) {
-      const merged = [DEFAULT_USERS[0]!, ...parsed];
-      localStorage.setItem("goldos_users_list", JSON.stringify(merged));
-      return merged;
-    }
-    return parsed;
+    const finalUsers = hasOwner ? filtered : [DEFAULT_USERS[0]!, ...filtered];
+
+    localStorage.setItem("goldos_users_list", JSON.stringify(finalUsers));
+    return finalUsers;
   } catch (e) {
     localStorage.setItem("goldos_users_list", JSON.stringify(DEFAULT_USERS));
     return DEFAULT_USERS;
