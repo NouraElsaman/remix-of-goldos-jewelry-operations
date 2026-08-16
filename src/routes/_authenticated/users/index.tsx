@@ -2,7 +2,7 @@ import { getCurrentRole } from "@/lib/auth";
 import { canAccessRoute } from "@/lib/rbac";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { UserPlus, ShieldCheck, Lock, Trash2, CheckCircle2, XCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import {
@@ -21,7 +21,12 @@ import type { AppUser } from "@/types/domain";
 import { PermissionMatrix } from "@/lib/rbac";
 import { Card } from "@/components/ui/card";
 
-import { getRegisteredUsers } from "@/lib/auth";
+import {
+  getRegisteredUsers,
+  fetchRegisteredUsersAsync,
+  registerNewUser,
+  deleteUserFromSupabase,
+} from "@/lib/auth";
 
 export const Route = createFileRoute("/_authenticated/users/")({
   beforeLoad: () => {
@@ -57,6 +62,12 @@ function UsersPage() {
     return getRegisteredUsers();
   });
 
+  useEffect(() => {
+    void fetchRegisteredUsersAsync().then((synced) => {
+      setUsers(synced);
+    });
+  }, []);
+
   const saveUsers = (nextUsers: AppUser[]) => {
     setUsers(nextUsers);
     localStorage.setItem("goldos_users_list", JSON.stringify(nextUsers));
@@ -69,7 +80,7 @@ function UsersPage() {
   const [newUserPassword, setNewUserPassword] = useState("");
   const [newUserConfirmPassword, setNewUserConfirmPassword] = useState("");
 
-  const handleAddUser = (e: React.FormEvent) => {
+  const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newUserName.trim() || !newUserEmail.trim() || !newUserPassword) {
       toast.error(locale === "ar" ? "يرجى تعبئة جميع الحقول المطلوبة" : "Please fill in all required fields");
@@ -112,7 +123,9 @@ function UsersPage() {
       password: newUserPassword,
     };
 
-    saveUsers([...users, newUser]);
+    setUsers((prev) => [...prev.filter((u) => u.id !== newUser.id), newUser]);
+    await registerNewUser(newUser);
+
     toast.success(
       locale === "ar"
         ? "تم إضافة الموظف وإنشاء بيانات الدخول بنجاح!"
@@ -129,7 +142,9 @@ function UsersPage() {
   const toggleUserStatus = (userId: string) => {
     const next = users.map((u) => {
       if (u.id === userId) {
-        return { ...u, active: !u.active };
+        const updated = { ...u, active: !u.active };
+        void registerNewUser(updated);
+        return updated;
       }
       return u;
     });
@@ -140,7 +155,9 @@ function UsersPage() {
   const changeUserRole = (userId: string, role: "owner" | "cashier" | "inventory_manager") => {
     const next = users.map((u) => {
       if (u.id === userId) {
-        return { ...u, role };
+        const updated = { ...u, role };
+        void registerNewUser(updated);
+        return updated;
       }
       return u;
     });
@@ -156,6 +173,7 @@ function UsersPage() {
     }
     const next = users.filter((u) => u.id !== userId);
     saveUsers(next);
+    void deleteUserFromSupabase(userId);
     toast.success(locale === "ar" ? "تم حذف الموظف بنجاح" : "Staff deleted successfully");
   };
 
