@@ -33,3 +33,10 @@ dist-ssr
 .env*
 .env.local
 .vercel
+*.pdf
+scratch/
+*.cjs
+test_*.js
+add_*.js
+
+

@@ -21,6 +21,8 @@ import type { AppUser } from "@/types/domain";
 import { PermissionMatrix } from "@/lib/rbac";
 import { Card } from "@/components/ui/card";
 
+import { getRegisteredUsers } from "@/lib/auth";
+
 export const Route = createFileRoute("/_authenticated/users/")({
   beforeLoad: () => {
     const role = getCurrentRole();
@@ -50,39 +52,9 @@ export const Route = createFileRoute("/_authenticated/users/")({
 function UsersPage() {
   const { t, locale } = useI18n();
 
-  // Load from localStorage or seed initial default users
+  // Load from localStorage via auth helper or seed initial default users
   const [users, setUsers] = useState<AppUser[]>(() => {
-    const saved = localStorage.getItem("goldos_users_list");
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        // ignore
-      }
-    }
-    return [
-      {
-        id: "usr_1",
-        name: "فيصل الأصالة (Faisal)",
-        email: "owner@alasala.sa",
-        role: "owner",
-        active: true,
-      },
-      {
-        id: "usr_2",
-        name: "نورة حمدان (Noura)",
-        email: "cashier@alasala.sa",
-        role: "cashier",
-        active: true,
-      },
-      {
-        id: "usr_3",
-        name: "طارق صالح (Tariq)",
-        email: "stock@alasala.sa",
-        role: "inventory_manager",
-        active: true,
-      },
-    ];
+    return getRegisteredUsers();
   });
 
   const saveUsers = (nextUsers: AppUser[]) => {
@@ -94,28 +66,64 @@ function UsersPage() {
   const [newUserName, setNewUserName] = useState("");
   const [newUserEmail, setNewUserEmail] = useState("");
   const [newUserRole, setNewUserRole] = useState<"owner" | "cashier" | "inventory_manager">("cashier");
+  const [newUserPassword, setNewUserPassword] = useState("");
+  const [newUserConfirmPassword, setNewUserConfirmPassword] = useState("");
 
   const handleAddUser = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newUserName || !newUserEmail) {
-      toast.error(locale === "ar" ? "يرجى تعبئة جميع الحقول" : "Please fill in all fields");
+    if (!newUserName.trim() || !newUserEmail.trim() || !newUserPassword) {
+      toast.error(locale === "ar" ? "يرجى تعبئة جميع الحقول المطلوبة" : "Please fill in all required fields");
+      return;
+    }
+
+    if (users.some((u) => u.email.toLowerCase() === newUserEmail.trim().toLowerCase())) {
+      toast.error(
+        locale === "ar"
+          ? "هذا البريد الإلكتروني مُسجّل بالفعل لموظف آخر"
+          : "This email is already registered for another employee",
+      );
+      return;
+    }
+
+    if (newUserPassword.length < 4) {
+      toast.error(
+        locale === "ar"
+          ? "يجب أن تكون كلمة المرور 4 خانات على الأقل"
+          : "Password must be at least 4 characters long",
+      );
+      return;
+    }
+
+    if (newUserPassword !== newUserConfirmPassword) {
+      toast.error(
+        locale === "ar"
+          ? "كلمتا المرور غير متطابقتين، يرجى التأكد وإعادة المحاولة"
+          : "Passwords do not match, please verify and try again",
+      );
       return;
     }
 
     const newUser: AppUser = {
       id: `usr_${Date.now()}`,
-      name: newUserName,
-      email: newUserEmail,
+      name: newUserName.trim(),
+      email: newUserEmail.trim(),
       role: newUserRole,
       active: true,
+      password: newUserPassword,
     };
 
     saveUsers([...users, newUser]);
-    toast.success(locale === "ar" ? "تم إضافة المستخدم بنجاح!" : "User added successfully!");
+    toast.success(
+      locale === "ar"
+        ? "تم إضافة الموظف وإنشاء بيانات الدخول بنجاح!"
+        : "Employee account created successfully!",
+    );
     setIsModalOpen(false);
     setNewUserName("");
     setNewUserEmail("");
     setNewUserRole("cashier");
+    setNewUserPassword("");
+    setNewUserConfirmPassword("");
   };
 
   const toggleUserStatus = (userId: string) => {
@@ -141,7 +149,8 @@ function UsersPage() {
   };
 
   const deleteUser = (userId: string) => {
-    if (userId === "usr_1") {
+    const target = users.find((u) => u.id === userId);
+    if (userId === "usr_owner" || target?.email === "nourahelaly56@gmail.com") {
       toast.error(locale === "ar" ? "لا يمكن حذف حساب المالك الرئيسي" : "Cannot delete the main owner account");
       return;
     }
@@ -389,6 +398,32 @@ function UsersPage() {
                   <option value="inventory_manager">{locale === "ar" ? "مسؤول المخزون (Stock Manager)" : "Stock Manager"}</option>
                   <option value="owner">{locale === "ar" ? "المالك (Owner)" : "Owner"}</option>
                 </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="u-pass">{locale === "ar" ? "كلمة المرور" : "Password"}</Label>
+                <Input
+                  id="u-pass"
+                  type="password"
+                  required
+                  value={newUserPassword}
+                  onChange={(e) => setNewUserPassword(e.target.value)}
+                  placeholder="••••••••"
+                  dir="ltr"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="u-confirm-pass">{locale === "ar" ? "تأكيد كلمة المرور" : "Confirm Password"}</Label>
+                <Input
+                  id="u-confirm-pass"
+                  type="password"
+                  required
+                  value={newUserConfirmPassword}
+                  onChange={(e) => setNewUserConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  dir="ltr"
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-4">
