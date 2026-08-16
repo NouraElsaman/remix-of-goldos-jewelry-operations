@@ -2,7 +2,7 @@ import { getCurrentRole } from "@/lib/auth";
 import { canAccessRoute } from "@/lib/rbac";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { UserPlus, ShieldCheck, Lock, Trash2, CheckCircle2, XCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import {
@@ -21,7 +21,12 @@ import type { AppUser } from "@/types/domain";
 import { PermissionMatrix } from "@/lib/rbac";
 import { Card } from "@/components/ui/card";
 
-import { getRegisteredUsers } from "@/lib/auth";
+import {
+  getRegisteredUsers,
+  fetchRegisteredUsersAsync,
+  registerNewUser,
+  deleteUserFromSupabase,
+} from "@/lib/auth";
 
 export const Route = createFileRoute("/_authenticated/users/")({
   beforeLoad: () => {
@@ -57,6 +62,12 @@ function UsersPage() {
     return getRegisteredUsers();
   });
 
+  useEffect(() => {
+    void fetchRegisteredUsersAsync().then((synced) => {
+      setUsers(synced);
+    });
+  }, []);
+
   const saveUsers = (nextUsers: AppUser[]) => {
     setUsers(nextUsers);
     localStorage.setItem("goldos_users_list", JSON.stringify(nextUsers));
@@ -69,7 +80,7 @@ function UsersPage() {
   const [newUserPassword, setNewUserPassword] = useState("");
   const [newUserConfirmPassword, setNewUserConfirmPassword] = useState("");
 
-  const handleAddUser = (e: React.FormEvent) => {
+  const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newUserName.trim() || !newUserEmail.trim() || !newUserPassword) {
       toast.error(locale === "ar" ? "يرجى تعبئة جميع الحقول المطلوبة" : "Please fill in all required fields");
@@ -112,7 +123,9 @@ function UsersPage() {
       password: newUserPassword,
     };
 
-    saveUsers([...users, newUser]);
+    setUsers((prev) => [...prev.filter((u) => u.id !== newUser.id), newUser]);
+    await registerNewUser(newUser);
+
     toast.success(
       locale === "ar"
         ? "تم إضافة الموظف وإنشاء بيانات الدخول بنجاح!"
@@ -129,7 +142,9 @@ function UsersPage() {
   const toggleUserStatus = (userId: string) => {
     const next = users.map((u) => {
       if (u.id === userId) {
-        return { ...u, active: !u.active };
+        const updated = { ...u, active: !u.active };
+        void registerNewUser(updated);
+        return updated;
       }
       return u;
     });
@@ -140,7 +155,9 @@ function UsersPage() {
   const changeUserRole = (userId: string, role: "owner" | "cashier" | "inventory_manager") => {
     const next = users.map((u) => {
       if (u.id === userId) {
-        return { ...u, role };
+        const updated = { ...u, role };
+        void registerNewUser(updated);
+        return updated;
       }
       return u;
     });
@@ -156,6 +173,7 @@ function UsersPage() {
     }
     const next = users.filter((u) => u.id !== userId);
     saveUsers(next);
+    void deleteUserFromSupabase(userId);
     toast.success(locale === "ar" ? "تم حذف الموظف بنجاح" : "Staff deleted successfully");
   };
 
@@ -164,6 +182,11 @@ function UsersPage() {
     cashier: locale === "ar" ? "كاشير" : "Cashier",
     inventory_manager: locale === "ar" ? "مسؤول المخزون" : "Stock Manager",
   };
+
+  const isMainOwnerRow = (row: AppUser) =>
+    row.id === "usr_owner" ||
+    row.id === "usr_1" ||
+    row.email.toLowerCase() === "nourahelaly56@gmail.com";
 
   const columns = useMemo<DataTableColumn<AppUser>[]>(
     () => [
@@ -183,9 +206,9 @@ function UsersPage() {
         cell: (row) => (
           <select
             value={row.role}
-            disabled={row.id === "usr_1"}
+            disabled={isMainOwnerRow(row)}
             onChange={(e) => changeUserRole(row.id, e.target.value as any)}
-            className="rounded-lg border border-input bg-background px-2 py-1 text-xs shadow-sm focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+            className="rounded-lg border border-input bg-background px-2 py-1 text-xs shadow-sm focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <option value="owner">{locale === "ar" ? "المالك (Owner)" : "Owner"}</option>
             <option value="cashier">{locale === "ar" ? "الكاشير (Cashier)" : "Cashier"}</option>
@@ -199,8 +222,8 @@ function UsersPage() {
         cell: (row) => (
           <button
             onClick={() => toggleUserStatus(row.id)}
-            disabled={row.id === "usr_1"}
-            className="flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
+            disabled={isMainOwnerRow(row)}
+            className="flex items-center gap-1.5 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <StatusBadge tone={row.active ? "success" : "neutral"}>
               {row.active ? (locale === "ar" ? "نشط" : "Active") : (locale === "ar" ? "معطل" : "Disabled")}
@@ -214,9 +237,9 @@ function UsersPage() {
         cell: (row) => (
           <Button
             variant="ghost"
-            disabled={row.id === "usr_1"}
+            disabled={isMainOwnerRow(row)}
             onClick={() => deleteUser(row.id)}
-            className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 rounded-lg"
+            className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <Trash2 className="size-4" />
           </Button>

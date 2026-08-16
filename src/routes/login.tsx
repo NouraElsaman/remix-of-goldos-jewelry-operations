@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useI18n } from "@/lib/i18n";
 import { PageTransition } from "@/lib/motion";
 
-import { authenticateUser, getDefaultRouteForRole } from "@/lib/auth";
+import { authenticateUserAsync, getDefaultRouteForRole } from "@/lib/auth";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -36,13 +36,13 @@ function LoginPage() {
 
   const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      const authResult = authenticateUser(email, password);
+    try {
+      const authResult = await authenticateUserAsync(email, password);
       if (authResult) {
         const { user, role } = authResult;
         localStorage.setItem("goldos_auth_token", `mock-jwt-token-${user.id}`);
@@ -51,15 +51,18 @@ function LoginPage() {
 
         const targetRoute = getDefaultRouteForRole(role);
         void navigate({ to: targetRoute as any });
-      } else {
-        setError(
-          locale === "ar"
-            ? "البريد الإلكتروني أو كلمة المرور غير صحيحة"
-            : "Invalid email or password",
-        );
-        setIsSubmitting(false);
+        return;
       }
-    }, 400);
+    } catch (err) {
+      // ignore
+    }
+
+    setError(
+      locale === "ar"
+        ? "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+        : "Invalid email or password",
+    );
+    setIsSubmitting(false);
   };
 
   return (
