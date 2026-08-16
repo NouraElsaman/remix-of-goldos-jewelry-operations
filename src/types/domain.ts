@@ -16,6 +16,7 @@ export type AppUser = {
   email: string;
   role: UserRole;
   active: boolean;
+  password?: string;
 };
 
 export type GoldPrice = {

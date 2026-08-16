@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { useI18n } from "@/lib/i18n";
 import { PageTransition } from "@/lib/motion";
 
+import { authenticateUser, getDefaultRouteForRole } from "@/lib/auth";
+
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
@@ -40,10 +42,15 @@ function LoginPage() {
     setIsSubmitting(true);
 
     setTimeout(() => {
-      // Allowed credentials check
-      if (email.trim() === "nourahelaly56@gmail.com" && password === "12345") {
-        localStorage.setItem("goldos_auth_token", "temp-mock-jwt-token");
-        void navigate({ to: "/select-role" });
+      const authResult = authenticateUser(email, password);
+      if (authResult) {
+        const { user, role } = authResult;
+        localStorage.setItem("goldos_auth_token", `mock-jwt-token-${user.id}`);
+        localStorage.setItem("goldos_user_role", role);
+        localStorage.setItem("goldos_current_user", JSON.stringify(user));
+
+        const targetRoute = getDefaultRouteForRole(role);
+        void navigate({ to: targetRoute as any });
       } else {
         setError(
           locale === "ar"
@@ -178,35 +185,6 @@ function LoginPage() {
               <ArrowIcon className="size-4" aria-hidden />
             </Button>
           </form>
-
-          {/* Quick Demo Helper Notice */}
-          <div className="mt-6 border-t border-border/60 pt-4 text-center">
-            <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
-              {locale === "ar" ? (
-                <>
-                  بيانات تجريبية: البريد{" "}
-                  <code className="font-mono text-foreground font-semibold">
-                    nourahelaly56@gmail.com
-                  </code>{" "}
-                  · كلمة المرور{" "}
-                  <code className="font-mono text-foreground font-semibold">
-                    12345
-                  </code>
-                </>
-              ) : (
-                <>
-                  Demo credentials:{" "}
-                  <code className="font-mono text-foreground font-semibold">
-                    nourahelaly56@gmail.com
-                  </code>{" "}
-                  · Password{" "}
-                  <code className="font-mono text-foreground font-semibold">
-                    12345
-                  </code>
-                </>
-              )}
-            </p>
-          </div>
         </div>
       </motion.main>
 
