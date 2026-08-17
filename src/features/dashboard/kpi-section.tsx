@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getCurrentRole } from "@/lib/rbac";
+import { fetchRegisteredUsersAsync, getRegisteredUsers } from "@/lib/auth";
 import type { LucideIcon } from "lucide-react";
 import {
   Coins,
@@ -48,6 +50,16 @@ export function KpiSection({
   t: (key: TranslationKey) => string;
   locale: Locale;
 }) {
+  const { data: registeredUsers } = useQuery({
+    queryKey: ["registeredUsersList"],
+    queryFn: () => fetchRegisteredUsersAsync(),
+    initialData: () => getRegisteredUsers(),
+  });
+
+  const activeUsersCount = useMemo(() => {
+    return (registeredUsers ?? []).filter((u) => u.active).length;
+  }, [registeredUsers]);
+
   const cards = useMemo<KpiCardDef[]>(
     () => [
       {
@@ -125,11 +137,11 @@ export function KpiSection({
       {
         id: "users",
         labelKey: "dashboard.activeUsers",
-        value: formatNumber(3, locale),
+        value: formatNumber(activeUsersCount, locale),
         icon: Users,
       },
     ],
-    [data, t, locale],
+    [data, t, locale, activeUsersCount],
   );
 
   const role = getCurrentRole();
