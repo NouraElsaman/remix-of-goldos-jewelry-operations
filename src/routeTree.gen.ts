@@ -17,6 +17,7 @@ import { Route as AuthenticatedAnalyticsIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedCashierIndexRouteImport } from './routes/_authenticated/cashier/index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthenticatedGoldPricesIndexRouteImport } from './routes/_authenticated/gold-prices/index'
+import { Route as AuthenticatedHedgingIndexRouteImport } from './routes/_authenticated/hedging/index'
 import { Route as AuthenticatedInventoryIndexRouteImport } from './routes/_authenticated/inventory/index'
 import { Route as AuthenticatedReconciliationIndexRouteImport } from './routes/_authenticated/reconciliation/index'
 import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated/reports/index'
@@ -66,6 +67,12 @@ const AuthenticatedGoldPricesIndexRoute =
     path: '/gold-prices/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedHedgingIndexRoute =
+  AuthenticatedHedgingIndexRouteImport.update({
+    id: '/hedging/',
+    path: '/hedging/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedInventoryIndexRoute =
   AuthenticatedInventoryIndexRouteImport.update({
     id: '/inventory/',
@@ -104,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/cashier/': typeof AuthenticatedCashierIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/gold-prices/': typeof AuthenticatedGoldPricesIndexRoute
+  '/hedging/': typeof AuthenticatedHedgingIndexRoute
   '/inventory/': typeof AuthenticatedInventoryIndexRoute
   '/reconciliation/': typeof AuthenticatedReconciliationIndexRoute
   '/reports/': typeof AuthenticatedReportsIndexRoute
@@ -118,6 +126,7 @@ export interface FileRoutesByTo {
   '/cashier': typeof AuthenticatedCashierIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/gold-prices': typeof AuthenticatedGoldPricesIndexRoute
+  '/hedging': typeof AuthenticatedHedgingIndexRoute
   '/inventory': typeof AuthenticatedInventoryIndexRoute
   '/reconciliation': typeof AuthenticatedReconciliationIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
@@ -134,6 +143,7 @@ export interface FileRoutesById {
   '/_authenticated/cashier/': typeof AuthenticatedCashierIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/gold-prices/': typeof AuthenticatedGoldPricesIndexRoute
+  '/_authenticated/hedging/': typeof AuthenticatedHedgingIndexRoute
   '/_authenticated/inventory/': typeof AuthenticatedInventoryIndexRoute
   '/_authenticated/reconciliation/': typeof AuthenticatedReconciliationIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/cashier/'
     | '/dashboard/'
     | '/gold-prices/'
+    | '/hedging/'
     | '/inventory/'
     | '/reconciliation/'
     | '/reports/'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/cashier'
     | '/dashboard'
     | '/gold-prices'
+    | '/hedging'
     | '/inventory'
     | '/reconciliation'
     | '/reports'
@@ -179,6 +191,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cashier/'
     | '/_authenticated/dashboard/'
     | '/_authenticated/gold-prices/'
+    | '/_authenticated/hedging/'
     | '/_authenticated/inventory/'
     | '/_authenticated/reconciliation/'
     | '/_authenticated/reports/'
@@ -251,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGoldPricesIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/hedging/': {
+      id: '/_authenticated/hedging/'
+      path: '/hedging'
+      fullPath: '/hedging/'
+      preLoaderRoute: typeof AuthenticatedHedgingIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/inventory/': {
       id: '/_authenticated/inventory/'
       path: '/inventory'
@@ -294,6 +314,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedCashierIndexRoute: typeof AuthenticatedCashierIndexRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
   AuthenticatedGoldPricesIndexRoute: typeof AuthenticatedGoldPricesIndexRoute
+  AuthenticatedHedgingIndexRoute: typeof AuthenticatedHedgingIndexRoute
   AuthenticatedInventoryIndexRoute: typeof AuthenticatedInventoryIndexRoute
   AuthenticatedReconciliationIndexRoute: typeof AuthenticatedReconciliationIndexRoute
   AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
@@ -306,6 +327,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCashierIndexRoute: AuthenticatedCashierIndexRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   AuthenticatedGoldPricesIndexRoute: AuthenticatedGoldPricesIndexRoute,
+  AuthenticatedHedgingIndexRoute: AuthenticatedHedgingIndexRoute,
   AuthenticatedInventoryIndexRoute: AuthenticatedInventoryIndexRoute,
   AuthenticatedReconciliationIndexRoute: AuthenticatedReconciliationIndexRoute,
   AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,

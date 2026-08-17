@@ -19,6 +19,44 @@ const MOCK_EMAILS_TO_REMOVE = new Set([
 ]);
 
 /**
+ * Reads the active logged in user session object from localStorage (or role fallback).
+ */
+export function getCurrentUser(): AppUser | null {
+  if (typeof window === "undefined") return DEFAULT_USERS[0]!;
+
+  const saved = localStorage.getItem("goldos_current_user");
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  const role = localStorage.getItem("goldos_user_role");
+  const users = getRegisteredUsers();
+  if (role) {
+    const match = users.find((u) => u.role === role);
+    if (match) return match;
+  }
+
+  return users[0] || DEFAULT_USERS[0]!;
+}
+
+/**
+ * Calculates initials from name (Arabic or English).
+ */
+export function getInitials(name?: string): string {
+  if (!name || !name.trim()) return "GO";
+  const clean = name.trim();
+  const parts = clean.split(/\s+/);
+  if (parts.length >= 2 && parts[0] && parts[1]) {
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+  return clean.slice(0, 2).toUpperCase();
+}
+
+/**
  * Syncs and retrieves registered users list from Supabase + local cache.
  */
 export async function fetchRegisteredUsersAsync(): Promise<AppUser[]> {

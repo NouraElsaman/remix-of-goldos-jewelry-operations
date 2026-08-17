@@ -26,6 +26,7 @@ import { LOCALES, localeMeta } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { queryKeys, services } from "@/services";
 import { getCurrentRole } from "@/lib/rbac";
+import { getInitials, getCurrentUser } from "@/lib/auth";
 import { useNavigate } from "@tanstack/react-router";
 import type { UserRole } from "@/types/domain";
 
@@ -85,6 +86,7 @@ export function Topbar({
     queryKey: queryKeys.auth.currentUser(),
     queryFn: () => services.auth.currentUser(),
   });
+  const currentUser = user || getCurrentUser();
   const { data: shopSettings } = useQuery({
     queryKey: ["settings"],
     queryFn: () => services.settings.get(),
@@ -236,17 +238,17 @@ export function Topbar({
               className="size-9 rounded-xl"
             >
               <Avatar className="size-8 border border-border">
-                <AvatarFallback className="bg-surface-muted text-xs font-medium">
-                  {(user?.name ?? "GO").slice(0, 2)}
+                <AvatarFallback className="bg-surface-muted text-xs font-semibold text-foreground">
+                  {getInitials(currentUser?.name)}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel className="space-y-0.5">
-              <p className="text-sm font-medium">{user?.name ?? "—"}</p>
+              <p className="text-sm font-medium">{currentUser?.name || "—"}</p>
               <p className="text-xs font-normal text-muted-foreground">
-                {user?.email ?? "—"}
+                {currentUser?.email || "—"}
               </p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
