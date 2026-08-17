@@ -6,6 +6,7 @@ export type RouteAccess =
   | "/inventory"
   | "/gold-prices"
   | "/reconciliation"
+  | "/hedging"
   | "/reports"
   | "/analytics"
   | "/users"
@@ -26,6 +27,7 @@ const ownerPermissions: RoutePermissions = {
   "/inventory": { canView: true, canEdit: true },
   "/gold-prices": { canView: true, canEdit: true },
   "/reconciliation": { canView: true, canEdit: true },
+  "/hedging": { canView: true, canEdit: true },
   "/reports": { canView: true, canEdit: true },
   "/analytics": { canView: true, canEdit: true },
   "/users": { canView: true, canEdit: true },
@@ -38,6 +40,7 @@ const cashierPermissions: RoutePermissions = {
   "/inventory": { canView: true, canEdit: false },
   "/gold-prices": { canView: true, canEdit: false },
   "/reconciliation": { canView: false, canEdit: false },
+  "/hedging": { canView: true, canEdit: true },
   "/reports": { canView: false, canEdit: false },
   "/analytics": { canView: false, canEdit: false },
   "/users": { canView: false, canEdit: false },
@@ -50,6 +53,7 @@ const inventoryManagerPermissions: RoutePermissions = {
   "/inventory": { canView: true, canEdit: true },
   "/gold-prices": { canView: true, canEdit: false },
   "/reconciliation": { canView: true, canEdit: true },
+  "/hedging": { canView: true, canEdit: true },
   "/reports": { canView: false, canEdit: false },
   "/analytics": { canView: false, canEdit: false },
   "/users": { canView: false, canEdit: false },

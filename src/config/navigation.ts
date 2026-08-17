@@ -4,6 +4,7 @@ import {
   BarChart3,
   Coins,
   FileText,
+  Handshake,
   LayoutDashboard,
   Package,
   Scale,
@@ -54,6 +55,7 @@ export const navigation: NavGroup[] = [
       },
       { to: "/gold-prices", labelKey: "nav.goldPrices", icon: Coins },
       { to: "/reconciliation", labelKey: "nav.reconciliation", icon: Scale },
+      { to: "/hedging", labelKey: "nav.hedging", icon: Handshake },
     ],
   },
   {

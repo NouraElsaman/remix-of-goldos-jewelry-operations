@@ -105,3 +105,17 @@ export type ReconciliationRow = {
   variance: number | null;
   status: ReconciliationStatus;
 };
+
+export type GoldCutKarat = 24 | 21 | 18;
+
+export type GoldCut = {
+  id: string;
+  traderName: string;
+  goldPrice: number;
+  weightGrams: number;
+  totalAmount: number;
+  karat: GoldCutKarat;
+  createdAt: string;
+  notes?: string;
+};
+
