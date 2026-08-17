@@ -26,6 +26,7 @@ import { LOCALES, localeMeta } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { queryKeys, services } from "@/services";
 import { getCurrentRole } from "@/lib/rbac";
+import { getInitials } from "@/lib/auth";
 import { useNavigate } from "@tanstack/react-router";
 import type { UserRole } from "@/types/domain";
 
@@ -236,8 +237,8 @@ export function Topbar({
               className="size-9 rounded-xl"
             >
               <Avatar className="size-8 border border-border">
-                <AvatarFallback className="bg-surface-muted text-xs font-medium">
-                  {(user?.name ?? "GO").slice(0, 2)}
+                <AvatarFallback className="bg-surface-muted text-xs font-semibold text-foreground">
+                  {getInitials(user?.name)}
                 </AvatarFallback>
               </Avatar>
             </Button>
