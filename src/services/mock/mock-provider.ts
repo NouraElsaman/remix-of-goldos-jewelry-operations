@@ -33,12 +33,10 @@ function paginate<T>(items: T[], params?: ListParams): Paginated<T> {
 /** In-memory provider used until the FastAPI backend exists. */
 export const mockServices: ServiceRegistry = {
   auth: {
-    signIn: async () => {
-      const u = getCurrentUser() || mockUsers[0]!;
-      return delay({ user: u, accessToken: "mock.jwt.token" });
-    },
+    signIn: async () =>
+      delay({ user: mockUsers[0]!, accessToken: "mock.jwt.token" }),
     signOut: async () => delay(undefined),
-    currentUser: async () => delay(getCurrentUser() || mockUsers[0]!),
+    currentUser: async () => delay(mockUsers[0]!),
   },
   dashboard: {
     summary: async () =>

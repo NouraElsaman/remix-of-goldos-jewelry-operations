@@ -19,44 +19,6 @@ const MOCK_EMAILS_TO_REMOVE = new Set([
 ]);
 
 /**
- * Reads the active logged in user session object from localStorage (or role fallback).
- */
-export function getCurrentUser(): AppUser | null {
-  if (typeof window === "undefined") return DEFAULT_USERS[0]!;
-
-  const saved = localStorage.getItem("goldos_current_user");
-  if (saved) {
-    try {
-      return JSON.parse(saved);
-    } catch (e) {
-      // ignore
-    }
-  }
-
-  const role = localStorage.getItem("goldos_user_role");
-  const users = getRegisteredUsers();
-  if (role) {
-    const match = users.find((u) => u.role === role);
-    if (match) return match;
-  }
-
-  return users[0] || DEFAULT_USERS[0]!;
-}
-
-/**
- * Calculates initials from name (Arabic or English).
- */
-export function getInitials(name?: string): string {
-  if (!name || !name.trim()) return "GO";
-  const clean = name.trim();
-  const parts = clean.split(/\s+/);
-  if (parts.length >= 2 && parts[0] && parts[1]) {
-    return (parts[0][0] + parts[1][0]).toUpperCase();
-  }
-  return clean.slice(0, 2).toUpperCase();
-}
-
-/**
  * Syncs and retrieves registered users list from Supabase + local cache.
  */
 export async function fetchRegisteredUsersAsync(): Promise<AppUser[]> {
@@ -139,53 +101,6 @@ export async function registerNewUser(newUser: AppUser): Promise<void> {
   } catch (err) {
     console.error("Failed to sync new user to Supabase:", err);
   }
-}
-
-/**
- * Updates current user profile (name, email, password) and syncs to Supabase.
- */
-export async function updateUserProfile(
-  updatedFields: Partial<AppUser> & { password?: string },
-): Promise<AppUser | null> {
-  const currentUser = getCurrentUser();
-  if (!currentUser) return null;
-
-  const updated: AppUser = {
-    ...currentUser,
-    ...updatedFields,
-    name: updatedFields.name ? updatedFields.name.trim() : currentUser.name,
-    email: updatedFields.email ? updatedFields.email.trim().toLowerCase() : currentUser.email,
-  };
-
-  if (updatedFields.password) {
-    updated.password = updatedFields.password;
-  }
-
-  // 1. Update goldos_current_user
-  if (typeof window !== "undefined") {
-    localStorage.setItem("goldos_current_user", JSON.stringify(updated));
-
-    // 2. Update list in goldos_users_list
-    const users = getRegisteredUsers();
-    const nextUsers = users.map((u) => (u.id === updated.id ? updated : u));
-    localStorage.setItem("goldos_users_list", JSON.stringify(nextUsers));
-  }
-
-  // 3. Sync to Supabase app_users table
-  try {
-    await supabase.from("app_users").upsert({
-      id: updated.id,
-      name: updated.name,
-      email: updated.email,
-      role: updated.role,
-      password: updated.password || currentUser.password || "12345",
-      active: updated.active ?? true,
-    });
-  } catch (err) {
-    console.error("Failed to sync updated user profile to Supabase:", err);
-  }
-
-  return updated;
 }
 
 /**
