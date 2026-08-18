@@ -1,5 +1,6 @@
 import type { ListParams, Paginated } from "../types";
 import type { ServiceRegistry } from "../contracts";
+import { getCurrentUser } from "@/lib/auth";
 import {
   mockGoldPrices,
   mockGoldPriceHistory,
@@ -107,7 +108,16 @@ export const mockServices: ServiceRegistry = {
     },
   },
   sales: {
-    listInvoices: async (params) => delay(paginate(mockInvoices, params)),
+    listInvoices: async (params) => {
+      let data = mockInvoices;
+      if (params?.startDate) {
+        data = data.filter(i => i.createdAt >= params.startDate!);
+      }
+      if (params?.endDate) {
+        data = data.filter(i => i.createdAt <= params.endDate!);
+      }
+      return delay(paginate(data, params));
+    },
     createInvoice: async (input) =>
       delay({
         id: Math.random().toString(36).substring(7),

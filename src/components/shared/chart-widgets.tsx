@@ -28,6 +28,18 @@ import { cn } from "@/lib/utils";
 
 export type ChartDataPoint = { label: string; value: number };
 
+function niceRoundUp(max: number): number {
+  if (max === 0) return 100;
+  const magnitude = Math.pow(10, Math.floor(Math.log10(max)));
+  const normalized = max / magnitude;
+  let multiplier;
+  if (normalized <= 1.5) multiplier = 2;
+  else if (normalized <= 2.5) multiplier = 3;
+  else if (normalized <= 4) multiplier = 5;
+  else multiplier = 10;
+  return multiplier * magnitude;
+}
+
 // ── Shared chart color palette (consuming CSS design tokens via oklch) ─────
 
 const CHART_COLORS = [
@@ -54,11 +66,11 @@ function ChartTooltip({
   if (!active || !payload?.length) return null;
   const value = payload[0]!.value;
   return (
-    <div className="rounded-xl border border-border/80 bg-surface/95 px-3.5 py-2.5 text-xs shadow-floating backdrop-blur-md">
+    <div className="rounded-xl border border-slate-200 bg-white/95 p-3 text-xs shadow-xl backdrop-blur-md">
       {label ? (
-        <p className="mb-0.5 font-medium text-muted-foreground/80">{label}</p>
+        <p className="mb-0.5 font-medium text-slate-500">{label}</p>
       ) : null}
-      <p data-numeric className="text-sm font-bold text-foreground">
+      <p data-numeric className="text-sm font-bold text-slate-900">
         {formatter ? formatter(value) : value.toLocaleString()}
       </p>
     </div>
@@ -85,29 +97,32 @@ export function BarChartWidget({
   className?: string | undefined;
 }) {
   return (
-    <div className={cn("w-full", className)} style={{ height }}>
+    <div className={cn("w-full", className)} style={{ height }} dir="ltr">
       <ResponsiveContainer width="100%" height="100%">
         <ReBarChart
           data={data.map((d) => ({ name: d.label, value: d.value }))}
           barSize={28}
-          margin={{ top: 4, right: 4, left: -16, bottom: 0 }}
+          margin={{ top: 4, right: 20, left: 0, bottom: 20 }}
         >
           <CartesianGrid
             vertical={false}
             stroke="var(--color-border)"
-            strokeDasharray="4 2"
+            strokeDasharray="3 3"
+            strokeOpacity={0.3}
           />
           <XAxis
             dataKey="name"
-            tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+            tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", dy: 5 }}
             axisLine={false}
             tickLine={false}
+            padding={{ left: 10, right: 10 }}
           />
           <YAxis
-            tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+            width={70}
+            tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", dx: -10 }}
             axisLine={false}
             tickLine={false}
-            {...(valueFormatter ? { tickFormatter: valueFormatter } : {})}
+            tickFormatter={(v) => (v >= 1000 ? (v / 1000).toFixed(0) + "K" : String(v))}
           />
           <Tooltip
             content={<ChartTooltip formatter={valueFormatter} />}
@@ -132,20 +147,22 @@ export function AreaChartWidget({
   height = 240,
   color = CHART_COLORS[0],
   valueFormatter,
+  axisFormatter,
   className,
 }: {
   data: ChartDataPoint[];
   height?: number | undefined;
   color?: string | undefined;
   valueFormatter?: ((v: number) => string) | undefined;
+  axisFormatter?: ((v: number) => string) | undefined;
   className?: string | undefined;
 }) {
   return (
-    <div className={cn("w-full", className)} style={{ height }}>
+    <div className={cn("w-full", className)} style={{ height }} dir="ltr">
       <ResponsiveContainer width="100%" height="100%">
         <ReAreaChart
           data={data.map((d) => ({ name: d.label, value: d.value }))}
-          margin={{ top: 4, right: 4, left: -16, bottom: 0 }}
+          margin={{ top: 4, right: 20, left: 0, bottom: 20 }}
         >
           <defs>
             <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
@@ -156,20 +173,23 @@ export function AreaChartWidget({
           <CartesianGrid
             vertical={false}
             stroke="var(--color-border)"
-            strokeDasharray="4 2"
+            strokeDasharray="3 3"
+            strokeOpacity={0.3}
           />
           <XAxis
             dataKey="name"
-            tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+            tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", dy: 5 }}
             axisLine={false}
             tickLine={false}
+            padding={{ left: 10, right: 10 }}
           />
           <YAxis
-            tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+            width={100}
+            tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", dx: -10 }}
             axisLine={false}
             tickLine={false}
-            domain={["dataMin - 100", "dataMax + 100"]}
-            {...(valueFormatter ? { tickFormatter: valueFormatter } : {})}
+            domain={[0, (max: number) => niceRoundUp(max)]}
+            tickFormatter={axisFormatter ?? ((v) => (v >= 1000 ? (v / 1000).toFixed(0) + "K" : String(v)))}
           />
           <Tooltip
             content={<ChartTooltip formatter={valueFormatter} />}
@@ -231,11 +251,13 @@ export function DonutChartWidget({
           </Pie>
           <Tooltip content={<ChartTooltip formatter={valueFormatter} />} />
           <Legend
+            verticalAlign="bottom"
+            height={40}
             iconType="circle"
             iconSize={8}
-            wrapperStyle={{ fontSize: 11 }}
+            wrapperStyle={{ fontSize: 11, paddingTop: "10px" }}
             formatter={(value) => (
-              <span style={{ color: "var(--color-muted-foreground)" }}>
+              <span style={{ color: "var(--color-muted-foreground)", marginLeft: "4px", marginRight: "12px" }}>
                 {value}
               </span>
             )}

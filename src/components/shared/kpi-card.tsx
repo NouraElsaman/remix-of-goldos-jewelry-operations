@@ -72,8 +72,8 @@ export function KpiCard({
     <motion.article
       {...cardHover}
       className={cn(
-        "group relative flex flex-col justify-between gap-3.5 rounded-2xl border border-border bg-surface p-5.5 shadow-soft transition-all duration-200 hover:border-border-strong hover:shadow-raised",
-        accent && "border-gold/35 bg-gold-soft/30 hover:border-gold/50",
+        "h-full min-h-[120px] group relative flex flex-col justify-between gap-3.5 rounded-2xl border border-border bg-surface p-5.5 shadow-sm transition-all duration-300 hover:border-gold/30 hover:shadow-md",
+        accent && "border-gold/40 bg-gradient-to-br from-surface to-gold-soft/40 hover:border-gold/60",
         className,
       )}
     >
@@ -87,8 +87,8 @@ export function KpiCard({
           {Icon ? (
             <span
               className={cn(
-                "flex size-9.5 items-center justify-center rounded-xl border border-border/80 bg-surface-muted/80 text-muted-foreground transition-colors group-hover:border-gold/30 group-hover:bg-gold-soft/80 group-hover:text-gold-deep",
-                accent && "border-gold/30 bg-surface text-gold-deep",
+                "flex size-10 items-center justify-center rounded-xl border border-border/50 bg-surface-muted/50 text-muted-foreground transition-all duration-300 group-hover:border-gold/40 group-hover:bg-gold-soft/50 group-hover:text-gold-deep backdrop-blur-sm",
+                accent && "border-gold/40 bg-gold/10 text-gold-deep shadow-inner",
               )}
             >
               <Icon className="size-4.5" aria-hidden />

@@ -39,6 +39,7 @@ export const Route = createFileRoute("/_authenticated/hedging/")({
   beforeLoad: () => {
     const role = getCurrentRole();
     if (!canAccessRoute(role, "/hedging")) {
+      toast.error("غير مصرح لك بالوصول لهذه الصفحة | Unauthorized access");
       throw redirect({ to: "/dashboard" });
     }
   },

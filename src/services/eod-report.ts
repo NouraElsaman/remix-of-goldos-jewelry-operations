@@ -28,6 +28,10 @@ export interface EODReportMetrics {
     status: string;
   }[];
   totalVariance: number;
+  cashOpeningBalance?: number;
+  cashExpectedBalance?: number;
+  cashActualBalance?: number | null;
+  cashVariance?: number | null;
 }
 
 /**
@@ -103,6 +107,26 @@ export async function compileEODReport(targetDateStr?: string): Promise<EODRepor
 
   const totalVariance = reconciliationRows.reduce((sum, r) => sum + (r.variance || 0), 0);
 
+  // 4. Fetch Cash Drawer from localStorage
+  let cashOpeningBalance = 0;
+  let cashActualBalance: number | null = null;
+  
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem(`goldos_cash_drawer_${dateStr}`);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (typeof parsed.opening === "number") cashOpeningBalance = parsed.opening;
+        if (typeof parsed.actual === "number") cashActualBalance = parsed.actual;
+      }
+    } catch (err) {
+      console.warn("Failed to parse cash drawer state from localStorage", err);
+    }
+  }
+
+  const cashExpectedBalance = cashOpeningBalance + totalSalesRevenue - totalScrapPayout;
+  const cashVariance = cashActualBalance !== null ? cashActualBalance - cashExpectedBalance : null;
+
   return {
     date: dateStr,
     shopName,
@@ -119,6 +143,10 @@ export async function compileEODReport(targetDateStr?: string): Promise<EODRepor
     scrapWeightsByKarat,
     reconciliationRows,
     totalVariance,
+    cashOpeningBalance,
+    cashExpectedBalance,
+    cashActualBalance,
+    cashVariance,
   };
 }
 
@@ -324,6 +352,47 @@ export function generateEODHtmlEmail(metrics: EODReportMetrics): string {
             </tr>
           </table>
 
+          <!-- SECTION 4: CASH DRAWER RECONCILIATION -->
+          <table dir="rtl" align="right" width="100%" cellpadding="12" cellspacing="0" style="border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 20px; background-color: #ffffff; direction: rtl !important; width: 100%;">
+            <tr>
+              <td dir="rtl" align="right" style="border-bottom: 1px solid #f1f5f9; font-size: 13px; font-weight: 700; color: #0f172a; padding: 10px 12px;">
+                💵 مطابقة نقدية الخزينة (ج.م)
+              </td>
+            </tr>
+            <tr>
+              <td dir="rtl" align="right" style="padding: 12px;">
+                <table dir="rtl" align="right" width="100%" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 12px; direction: rtl !important; font-family: monospace;">
+                  <tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td dir="rtl" align="right" style="color: #64748b; font-family: sans-serif;">القيمة الافتتاحية:</td>
+                    <td dir="rtl" align="left" style="font-weight: 800; color: #0f172a;">${(metrics.cashOpeningBalance || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td dir="rtl" align="right" style="color: #64748b; font-family: sans-serif;">إجمالي المبيعات (+):</td>
+                    <td dir="rtl" align="left" style="font-weight: 800; color: #059669;">${metrics.totalSalesRevenue.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td dir="rtl" align="right" style="color: #64748b; font-family: sans-serif;">إجمالي مشتريات الكسر (-):</td>
+                    <td dir="rtl" align="left" style="font-weight: 800; color: #dc2626;">${metrics.totalScrapPayout.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td>
+                  </tr>
+                  <tr style="border-bottom: 2px solid #e2e8f0;">
+                    <td dir="rtl" align="right" style="font-weight: 700; color: #0f172a; font-family: sans-serif;">المتوقع:</td>
+                    <td dir="rtl" align="left" style="font-weight: 800; color: #0f172a;">${(metrics.cashExpectedBalance || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid #f1f5f9; background-color: #f8fafc;">
+                    <td dir="rtl" align="right" style="font-weight: 700; color: #0f172a; font-family: sans-serif; padding-top: 8px;">الفعلي:</td>
+                    <td dir="rtl" align="left" style="font-weight: 800; color: #0f172a; padding-top: 8px;">${metrics.cashActualBalance !== null && metrics.cashActualBalance !== undefined ? metrics.cashActualBalance.toLocaleString("en-US", { minimumFractionDigits: 2 }) : "-"}</td>
+                  </tr>
+                  <tr>
+                    <td dir="rtl" align="right" style="font-weight: 700; color: #0f172a; font-family: sans-serif;">الفرق:</td>
+                    <td dir="rtl" align="left" style="font-weight: 800; color: ${metrics.cashVariance === 0 ? "#059669" : (metrics.cashVariance || 0) > 0 ? "#2563eb" : "#dc2626"};">
+                      ${metrics.cashVariance !== null && metrics.cashVariance !== undefined ? (metrics.cashVariance >= 0 ? `+${metrics.cashVariance.toLocaleString("en-US", { minimumFractionDigits: 2 })}` : metrics.cashVariance.toLocaleString("en-US", { minimumFractionDigits: 2 })) : "-"}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
         </td>
       </tr>
 
@@ -433,6 +502,12 @@ export function generateWhatsAppPayload(metrics: EODReportMetrics): string {
       (r) =>
         `• عيار ${r.karat}K: متوقع ${r.expectedWeight.toFixed(3)} جم | فعلي ${r.countedWeight !== null ? r.countedWeight.toFixed(3) : "غير محدد"} جم | فرق: ${r.variance !== null ? (r.variance >= 0 ? `+${r.variance.toFixed(3)}` : r.variance.toFixed(3)) : "0"} جم`,
     ),
+    ``,
+    `💵 *مطابقة نقدية الخزينة:*`,
+    `• القيمة الافتتاحية: ${(metrics.cashOpeningBalance || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م`,
+    `• المتوقع: ${(metrics.cashExpectedBalance || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })} ج.م`,
+    `• الفعلي: ${metrics.cashActualBalance !== null && metrics.cashActualBalance !== undefined ? metrics.cashActualBalance.toLocaleString("en-US", { minimumFractionDigits: 2 }) : "غير محدد"} ج.م`,
+    `• الفرق: ${metrics.cashVariance !== null && metrics.cashVariance !== undefined ? (metrics.cashVariance >= 0 ? `+${metrics.cashVariance.toLocaleString("en-US", { minimumFractionDigits: 2 })}` : metrics.cashVariance.toLocaleString("en-US", { minimumFractionDigits: 2 })) : "0"} ج.م`,
     ``,
     `✨ *الحالة:* تم إغلاق اليوم ومطابقة الخزينة بنجاح!`,
   ];

@@ -86,6 +86,7 @@ export type Invoice = {
   weight?: number | undefined;
   handwork_value?: number | undefined;
   itemType?: string | undefined;
+  itemName?: string | undefined;
   itemId?: string | undefined;
   itemSku?: string | undefined;
   itemCompany?: string | undefined;

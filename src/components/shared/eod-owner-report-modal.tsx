@@ -226,6 +226,50 @@ export function EODOwnerReportModal({ metrics, onClose }: EODOwnerReportModalPro
             </div>
           </div>
 
+          {/* Cash Drawer Reconciliation */}
+          <div className="rounded-2xl border border-border/80 p-4 space-y-3">
+            <h3 className="text-xs font-bold text-foreground flex items-center gap-1.5 border-b border-border/60 pb-2">
+              <DollarSign className="size-4 text-emerald-600" />
+              {locale === "ar" ? "مطابقة نقدية الخزينة (ج.م)" : "Cash Drawer Reconciliation (EGP)"}
+            </h3>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs text-start">
+                <tbody className="divide-y divide-border/40 font-mono">
+                  <tr>
+                    <td className="py-2 text-muted-foreground font-sans">{locale === "ar" ? "القيمة الافتتاحية" : "Opening Balance"}</td>
+                    <td className="py-2 font-semibold text-end">{formatMoney(metrics.cashOpeningBalance || 0, locale)}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 text-muted-foreground font-sans">{locale === "ar" ? "إجمالي المبيعات (+)" : "Total Sales (+)"}</td>
+                    <td className="py-2 font-bold text-emerald-600 text-end">{formatMoney(metrics.totalSalesRevenue, locale)}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 text-muted-foreground font-sans">{locale === "ar" ? "إجمالي مشتريات الكسر (-)" : "Total Scrap Payout (-)"}</td>
+                    <td className="py-2 font-bold text-rose-600 text-end">{formatMoney(metrics.totalScrapPayout, locale)}</td>
+                  </tr>
+                  <tr className="bg-surface-muted/30">
+                    <td className="py-2 font-bold text-foreground font-sans">{locale === "ar" ? "المتوقع" : "Expected"}</td>
+                    <td className="py-2 font-extrabold text-end">{formatMoney(metrics.cashExpectedBalance || 0, locale)}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 font-bold text-foreground font-sans">{locale === "ar" ? "الفعلي" : "Counted"}</td>
+                    <td className="py-2 font-extrabold text-end">{metrics.cashActualBalance !== null && metrics.cashActualBalance !== undefined ? formatMoney(metrics.cashActualBalance, locale) : "-"}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="pt-2 border-t border-dashed border-border/60 flex items-center justify-between text-xs">
+              <span className="font-semibold text-muted-foreground">
+                {locale === "ar" ? "الفرق:" : "Variance:"}
+              </span>
+              <span className={`font-mono font-bold ${metrics.cashVariance === 0 ? "text-emerald-600" : (metrics.cashVariance || 0) > 0 ? "text-blue-600" : "text-rose-600"}`}>
+                {metrics.cashVariance !== null && metrics.cashVariance !== undefined ? (metrics.cashVariance >= 0 ? `+${formatMoney(metrics.cashVariance, locale)}` : formatMoney(metrics.cashVariance, locale)) : "-"}
+              </span>
+            </div>
+          </div>
+
           {/* EOD Footer Notice */}
           <div className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 p-2.5 text-center text-xs font-semibold">
             <CheckCircle2 className="size-4 shrink-0" />

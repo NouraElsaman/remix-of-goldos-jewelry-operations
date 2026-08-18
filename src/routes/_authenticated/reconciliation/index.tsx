@@ -3,7 +3,7 @@ import { canAccessRoute } from "@/lib/rbac";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Lock, Loader2, Scale, FileText } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { toast } from "sonner";
 
 import {
@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { formatWeight } from "@/lib/format";
+import { formatWeight, formatMoney } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import { PageTransition } from "@/lib/motion";
 import { queryKeys, services } from "@/services";
@@ -37,12 +37,12 @@ export const Route = createFileRoute("/_authenticated/reconciliation/")({
   },
   head: () => ({
     meta: [
-      { title: "مطابقة الأوزان — جوهرة تك" },
+      { title: "مطابقة الأوزان والعهدة — جوهرة تك" },
       {
         name: "description",
         content: "مطابقة الأوزان وإغلاق اليوم الفعلي لمحلات الذهب.",
       },
-      { property: "og:title", content: "مطابقة الأوزان — جوهرة تك" },
+      { property: "og:title", content: "مطابقة الأوزان والعهدة — جوهرة تك" },
       {
         property: "og:description",
         content:
@@ -62,6 +62,11 @@ function ReconciliationPage() {
     queryFn: () => services.reconciliation.currentDay(),
   });
 
+  const { data: dashboardSummary } = useQuery({
+    queryKey: queryKeys.dashboard(),
+    queryFn: () => services.dashboard.summary(),
+  });
+
   const [isClosingModalOpen, setIsClosingModalOpen] = useState(false);
   const [eodMetrics, setEodMetrics] = useState<EODReportMetrics | null>(null);
   const [isCompilingReport, setIsCompilingReport] = useState(false);
@@ -70,6 +75,24 @@ function ReconciliationPage() {
   const [counted18, setCounted18] = useState("");
   const [counted21, setCounted21] = useState("");
   const [counted24, setCounted24] = useState("");
+  const [actualCash, setActualCash] = useState("");
+  const [openingCash, setOpeningCash] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const dateStr = new Date().toISOString().slice(0, 10);
+      try {
+        const stored = localStorage.getItem(`goldos_cash_drawer_${dateStr}`);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.opening !== undefined) setOpeningCash(String(parsed.opening));
+          if (parsed.actual !== undefined) setActualCash(String(parsed.actual));
+        }
+      } catch (e) {
+        console.warn("Failed to load cash drawer state", e);
+      }
+    }
+  }, []);
 
   const submitMutation = useMutation({
     mutationFn: async (inputs: { karat: number; counted: number }[]) => {
@@ -144,6 +167,12 @@ function ReconciliationPage() {
       return;
     }
 
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const existingStr = localStorage.getItem(`goldos_cash_drawer_${dateStr}`);
+    const existing = existingStr ? JSON.parse(existingStr) : {};
+    existing.opening = parseFloat(openingCash) || 0;
+    localStorage.setItem(`goldos_cash_drawer_${dateStr}`, JSON.stringify(existing));
+
     updateOpeningMutation.mutate([
       { karat: 18, weight: o18 },
       { karat: 21, weight: o21 },
@@ -179,6 +208,12 @@ function ReconciliationPage() {
       );
       return;
     }
+
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const existingStr = localStorage.getItem(`goldos_cash_drawer_${dateStr}`);
+    const existing = existingStr ? JSON.parse(existingStr) : {};
+    existing.actual = parseFloat(actualCash) || 0;
+    localStorage.setItem(`goldos_cash_drawer_${dateStr}`, JSON.stringify(existing));
 
     submitMutation.mutate([
       { karat: 18, counted: c18 },
@@ -332,7 +367,7 @@ function ReconciliationPage() {
                 className="h-10 gap-2 rounded-xl font-semibold border-border hover:bg-muted"
               >
                 <Scale className="size-4" />
-                {locale === "ar" ? "تعديل الأوزان الافتتاحية" : "Edit Opening Weights"}
+                {locale === "ar" ? "تعديل الأرصدة الافتتاحية" : "Edit Opening Balances"}
               </Button>
             )}
             <Button
@@ -357,6 +392,81 @@ function ReconciliationPage() {
           emptyDescription={t("common.placeholderNote")}
         />
       </TableContainer>
+
+      {/* ────────────────── CASH DRAWER RECONCILIATION TABLE ────────────────── */}
+      <div className="mt-8">
+        <h2 className="text-xl font-bold text-foreground mb-4">
+          {locale === "ar" ? "مطابقة العهدة النقدية" : "Cash Drawer Reconciliation"}
+        </h2>
+        <div className="bg-surface border border-border shadow-sm rounded-2xl overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-start">
+              <thead className="bg-muted/50 border-b border-border">
+                <tr>
+                  <th className="py-3 px-4 font-semibold text-muted-foreground text-start">{locale === "ar" ? "البيان" : "Description"}</th>
+                  <th className="py-3 px-4 font-semibold text-muted-foreground text-start">{locale === "ar" ? "القيمة الافتتاحية (ج.م)" : "Opening Cash"}</th>
+                  <th className="py-3 px-4 font-semibold text-muted-foreground text-start">{locale === "ar" ? "إجمالي المبيعات (+)" : "Sales Income"}</th>
+                  <th className="py-3 px-4 font-semibold text-muted-foreground text-start">{locale === "ar" ? "إجمالي مشتريات الكسر (-)" : "Scrap Purchases"}</th>
+                  <th className="py-3 px-4 font-semibold text-muted-foreground text-start">{locale === "ar" ? "المبلغ المتوقع (ج.م)" : "Expected Cash"}</th>
+                  <th className="py-3 px-4 font-semibold text-muted-foreground text-start">{locale === "ar" ? "المبلغ الفعلي (ج.م)" : "Actual Cash"}</th>
+                  <th className="py-3 px-4 font-semibold text-muted-foreground text-start">{locale === "ar" ? "الفرق (ج.م)" : "Variance"}</th>
+                  <th className="py-3 px-4 font-semibold text-muted-foreground text-start">{locale === "ar" ? "الحالة" : "Status"}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border font-mono">
+                <tr className="hover:bg-muted/30 transition-colors">
+                  <td className="py-4 px-4 font-sans font-semibold text-foreground text-start">
+                    {locale === "ar" ? "حركة النقدية" : "Cash Flow"}
+                  </td>
+                  <td className="py-4 px-4 font-semibold text-start">{formatMoney(parseFloat(openingCash) || 0, locale)}</td>
+                  <td className="py-4 px-4 font-bold text-emerald-600 text-start">{formatMoney(dashboardSummary?.revenueToday || 0, locale)}</td>
+                  <td className="py-4 px-4 font-bold text-rose-600 text-start">{formatMoney(dashboardSummary?.purchasesToday || 0, locale)}</td>
+                  <td className="py-4 px-4 font-extrabold text-start">{formatMoney((parseFloat(openingCash) || 0) + (dashboardSummary?.revenueToday || 0) - (dashboardSummary?.purchasesToday || 0), locale)}</td>
+                  <td className="py-4 px-4 font-extrabold text-start">{(!isNaN(parseFloat(actualCash)) && actualCash !== "") ? formatMoney(parseFloat(actualCash), locale) : "—"}</td>
+                  <td className="py-4 px-4 text-start">
+                    {(!isNaN(parseFloat(actualCash)) && actualCash !== "") ? (
+                      (() => {
+                        const variance = parseFloat(actualCash) - ((parseFloat(openingCash) || 0) + (dashboardSummary?.revenueToday || 0) - (dashboardSummary?.purchasesToday || 0));
+                        return (
+                          <span
+                            className={
+                              variance === 0
+                                ? "text-emerald-600 font-bold"
+                                : variance > 0
+                                  ? "text-blue-600 font-bold"
+                                  : "text-rose-600 font-bold"
+                            }
+                          >
+                            {variance > 0 ? "+" : ""}
+                            {formatMoney(variance, locale)}
+                          </span>
+                        );
+                      })()
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td className="py-4 px-4 text-start">
+                    {(() => {
+                      const isValid = !isNaN(parseFloat(actualCash)) && actualCash !== "";
+                      const variance = isValid ? parseFloat(actualCash) - ((parseFloat(openingCash) || 0) + (dashboardSummary?.revenueToday || 0) - (dashboardSummary?.purchasesToday || 0)) : null;
+                      return (
+                        <StatusBadge tone={variance === 0 ? "success" : variance === null ? "neutral" : "destructive"}>
+                          {variance === 0 
+                            ? (locale === "ar" ? "متطابق" : "Matched") 
+                            : variance === null 
+                              ? (locale === "ar" ? "معلق" : "Pending")
+                              : (locale === "ar" ? "يوجد فرق" : "Variance")}
+                        </StatusBadge>
+                      );
+                    })()}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
       {/* ────────────────── CLOSE DAY MODAL ────────────────── */}
       {isClosingModalOpen && (
@@ -420,7 +530,20 @@ function ReconciliationPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-4">
+              <div className="space-y-1.5 pt-2 border-t border-border">
+                <Label htmlFor="c-cash">{locale === "ar" ? "النقدية الفعلية بالخزينة (ج.م)" : "Actual Cash in Safe (EGP)"}</Label>
+                <Input
+                  id="c-cash"
+                  type="number"
+                  step="0.01"
+                  required
+                  value={actualCash}
+                  onChange={(e) => setActualCash(e.target.value)}
+                  className="font-mono text-emerald-600 font-bold"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-4 border-t border-border mt-2">
                 <Button
                   type="button"
                   variant="outline"
@@ -445,13 +568,13 @@ function ReconciliationPage() {
         </div>
       )}
 
-      {/* ────────────────── EDIT OPENING WEIGHTS MODAL ────────────────── */}
+      {/* ────────────────── EDIT OPENING BALANCES MODAL ────────────────── */}
       {isOpeningModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-surface border border-border shadow-raised rounded-3xl w-full max-w-md p-6">
-            <div className="flex justify-between items-center mb-4">
+          <div className="bg-surface border border-border shadow-raised rounded-3xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-2">
               <h2 className="text-lg font-bold text-foreground">
-                {locale === "ar" ? "تعديل الأوزان الافتتاحية للخزينة" : "Edit Opening Safe Weights"}
+                {locale === "ar" ? "تعديل الأرصدة الافتتاحية (الأوزان والنقدية)" : "Edit Opening Safe Balances"}
               </h2>
               <button
                 onClick={() => setIsOpeningModalOpen(false)}
@@ -460,45 +583,82 @@ function ReconciliationPage() {
                 {locale === "ar" ? "إلغاء" : "Cancel"}
               </button>
             </div>
+            
+            <p className="text-xs text-muted-foreground mb-5 leading-relaxed">
+              {locale === "ar"
+                ? "أدخل أوزان الذهب الافتتاحية والمبلغ النقدي المتاح بالخزينة لبداية الشيفت."
+                : "Enter the opening gold weights and available cash amount to start the shift."}
+            </p>
 
-            <form onSubmit={handleUpdateOpeningSubmit} className="space-y-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="o-21">{locale === "ar" ? "الوزن الافتتاحي عيار 21 (جرام)" : "21K Opening Weight (g)"}</Label>
-                <Input
-                  id="o-21"
-                  type="number"
-                  step="0.001"
-                  required
-                  value={opening21}
-                  onChange={(e) => setOpening21(e.target.value)}
-                />
+            <form onSubmit={handleUpdateOpeningSubmit} className="space-y-5">
+              {/* Section A: Gold Weights */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-gold-deep border-b border-border/60 pb-1.5">
+                  {locale === "ar" ? "أوزان الذهب الافتتاحية (بالجرام)" : "Opening Gold Weights (g)"}
+                </h3>
+                <div className="grid gap-3">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="o-21" className="text-xs font-semibold">{locale === "ar" ? "عيار 21" : "21K"}</Label>
+                    <Input
+                      id="o-21"
+                      type="number"
+                      step="0.001"
+                      required
+                      value={opening21}
+                      onChange={(e) => setOpening21(e.target.value)}
+                      className="rounded-xl font-mono text-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="o-18" className="text-xs font-semibold">{locale === "ar" ? "عيار 18" : "18K"}</Label>
+                    <Input
+                      id="o-18"
+                      type="number"
+                      step="0.001"
+                      required
+                      value={opening18}
+                      onChange={(e) => setOpening18(e.target.value)}
+                      className="rounded-xl font-mono text-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="o-24" className="text-xs font-semibold">{locale === "ar" ? "عيار 24" : "24K"}</Label>
+                    <Input
+                      id="o-24"
+                      type="number"
+                      step="0.001"
+                      required
+                      value={opening24}
+                      onChange={(e) => setOpening24(e.target.value)}
+                      className="rounded-xl font-mono text-sm"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="o-18">{locale === "ar" ? "الوزن الافتتاحي عيار 18 (جرام)" : "18K Opening Weight (g)"}</Label>
-                <Input
-                  id="o-18"
-                  type="number"
-                  step="0.001"
-                  required
-                  value={opening18}
-                  onChange={(e) => setOpening18(e.target.value)}
-                />
+              {/* Section B: Cash Balance */}
+              <div className="space-y-3 pt-2">
+                <h3 className="text-sm font-semibold text-emerald-600 border-b border-border/60 pb-1.5">
+                  {locale === "ar" ? "العهدة النقدية الافتتاحية (بالجنية)" : "Opening Cash Drawer (EGP)"}
+                </h3>
+                <div className="space-y-1.5">
+                  <Label htmlFor="o-cash" className="text-xs font-semibold">{locale === "ar" ? "القيمة الافتتاحية للنقدية بالخزينة (ج.م)" : "Opening Cash Balance (EGP)"}</Label>
+                  <Input
+                    id="o-cash"
+                    type="number"
+                    step="0.01"
+                    required
+                    value={openingCash}
+                    onChange={(e) => setOpeningCash(e.target.value)}
+                    className="rounded-xl font-mono text-emerald-600 font-bold text-base"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="o-24">{locale === "ar" ? "الوزن الافتتاحي عيار 24 (جرام)" : "24K Opening Weight (g)"}</Label>
-                <Input
-                  id="o-24"
-                  type="number"
-                  step="0.001"
-                  required
-                  value={opening24}
-                  onChange={(e) => setOpening24(e.target.value)}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 pt-4">
+              {/* Form Actions */}
+              <div className="grid grid-cols-2 gap-3 pt-4 border-t border-border">
                 <Button
                   type="button"
                   variant="outline"
@@ -514,8 +674,8 @@ function ReconciliationPage() {
                   className="rounded-xl h-11 font-bold"
                 >
                   {updateOpeningMutation.isPending
-                    ? (locale === "ar" ? "جاري التحديث..." : "Saving...")
-                    : (locale === "ar" ? "حفظ الأوزان" : "Save Weights")}
+                    ? (locale === "ar" ? "جاري الحفظ..." : "Saving...")
+                    : (locale === "ar" ? "حفظ الأرصدة الافتتاحية" : "Save Opening Balances")}
                 </Button>
               </div>
             </form>

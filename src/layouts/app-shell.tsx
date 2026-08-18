@@ -22,9 +22,9 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background">
+      <div className="flex min-h-screen w-full bg-[#F8F9FA]">
         <AppSidebar />
-        <SidebarInset className="min-w-0 bg-background">
+        <SidebarInset className="min-w-0 bg-[#F8F9FA]">
           <Topbar onOpenCommandPalette={() => setPaletteOpen(true)} />
           <main className="mx-auto w-full max-w-[var(--content-max)] flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
             {children}

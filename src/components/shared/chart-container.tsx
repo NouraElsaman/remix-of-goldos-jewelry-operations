@@ -21,7 +21,7 @@ export function ChartContainer({
   return (
     <section
       className={cn(
-        "rounded-2xl border border-border bg-surface p-6 shadow-soft transition-shadow hover:shadow-raised/50",
+        "h-full flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-shadow hover:shadow-md overflow-hidden",
         className,
       )}
     >
@@ -38,7 +38,7 @@ export function ChartContainer({
           <div className="flex items-center gap-2">{actions}</div>
         ) : null}
       </div>
-      <div className="mt-4 w-full" style={{ height }}>
+      <div className="mt-4 w-full min-w-0" style={{ height }}>
         {children}
       </div>
     </section>

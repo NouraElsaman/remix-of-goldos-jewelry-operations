@@ -14,6 +14,8 @@ export type ListParams = {
   search?: string;
   sort?: string;
   order?: "asc" | "desc";
+  startDate?: string;
+  endDate?: string;
   filters?: Record<string, string | number | boolean | undefined>;
 };
 

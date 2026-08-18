@@ -968,11 +968,19 @@ export const supabaseServices: ServiceRegistry = {
 
       let query = supabase
         .from("invoices")
-        .select("*, inventory(sku, company)", { count: "exact" })
+        .select("*, inventory(sku, company, name)", { count: "exact" })
         .order("created_at", { ascending: false });
 
       if (params?.search) {
         query = query.or(`invoice_number.ilike.%${params.search}%,customer_name.ilike.%${params.search}%`);
+      }
+
+      if (params?.startDate) {
+        query = query.gte("created_at", params.startDate);
+      }
+      
+      if (params?.endDate) {
+        query = query.lte("created_at", params.endDate);
       }
 
       const { data, count, error } = await query.range(from, to);
@@ -1000,6 +1008,7 @@ export const supabaseServices: ServiceRegistry = {
         itemId: row.item_id || undefined,
         itemSku: row.inventory?.sku || undefined,
         itemCompany: row.inventory?.company || undefined,
+        itemName: row.inventory?.name || undefined,
       }));
 
       return {

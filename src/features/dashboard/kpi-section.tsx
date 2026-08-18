@@ -166,7 +166,7 @@ export function KpiSection({
   }, [cards, role]);
 
   return (
-    <StaggerGroup className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <StaggerGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 auto-rows-fr">
       {visibleCards.map((card) => (
         <StaggerItem key={card.id}>
           <KpiCard
