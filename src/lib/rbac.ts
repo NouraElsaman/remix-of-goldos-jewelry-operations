@@ -95,6 +95,7 @@ export function canAccessRoute(
   role: UserRole | null,
   route: RouteAccess,
 ): boolean {
+  if (typeof window === "undefined") return true;
   if (!role) return false;
   return PermissionMatrix[role][route].canView;
 }
