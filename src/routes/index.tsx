@@ -202,25 +202,15 @@ function LandingPage() {
         <div className="relative mx-auto grid max-w-[84rem] items-center gap-12 px-6 pb-24 pt-20 lg:grid-cols-[45fr_55fr] lg:gap-14 lg:px-12 lg:pb-28 lg:pt-20">
           {/* Content column */}
           <div className="flex flex-col items-start text-start">
-            <motion.div {...enter(0, 18)}>
-              <Badge
-                variant="outline"
-                className="gap-2 border-gold/30 bg-surface/70 px-4 py-1.5 text-[11px] font-semibold text-gold-deep backdrop-blur"
-              >
-                <Sparkles className="size-3.5" aria-hidden />
-                {isAr ? "مصممة لسوق الذهب المصري" : "Built for the Egyptian gold trade"}
-              </Badge>
-            </motion.div>
-
             <motion.h1
               {...enter(0.15, 26)}
-              className="mt-8 text-[2.5rem] font-extrabold leading-[1.3] tracking-tight text-foreground sm:text-6xl lg:text-[4rem] lg:leading-[1.22]"
+              className="text-[2.5rem] font-extrabold leading-[1.3] tracking-tight text-foreground sm:text-6xl lg:text-[4rem] lg:leading-[1.22]"
             >
               {isAr ? (
                 <>
-                  منصة تشغيل متكاملة
+                  نظام متكامل لإدارة
                   <br />
-                  <span className="text-gradient-gold">لمحلات الذهب</span>
+                  <span className="text-gradient-gold">محلات الذهب</span>
                 </>
               ) : (
                 <>
@@ -235,9 +225,15 @@ function LandingPage() {
               {...enter(0.28)}
               className="mt-8 max-w-xl text-base leading-[2.2] text-muted-foreground sm:text-lg"
             >
-              {isAr
-                ? "المخزون، أسعار الذهب، الكاشير والتقارير — في نظام واحد هادئ ودقيق."
-                : "Inventory, gold rates, cashier and reporting — in one calm, precise system."}
+              {isAr ? (
+                <>
+                  كل ما تحتاجه لإدارة محلك
+                  <br />
+                  إدارة المبيعات وأسعار الذهب والتقارير من نظام واحد.
+                </>
+              ) : (
+                "Inventory, gold rates, cashier and reporting — in one calm, precise system."
+              )}
             </motion.p>
 
             <motion.div {...enter(0.42, 20)} className="mt-12 flex flex-wrap items-center gap-5">
@@ -260,17 +256,6 @@ function LandingPage() {
               </a>
             </motion.div>
 
-            <motion.ul
-              {...enter(0.42, 16)}
-              className="mt-12 flex flex-wrap gap-x-8 gap-y-4 text-sm text-muted-foreground"
-            >
-              {trustPoints.map((point) => (
-                <li key={point.en} className="flex items-center gap-2.5">
-                  <point.icon className="size-4 text-gold-deep" strokeWidth={1.7} aria-hidden />
-                  <span>{isAr ? point.ar : point.en}</span>
-                </li>
-              ))}
-            </motion.ul>
           </div>
 
           {/* Visual column — refined glass card presenting the wordmark.
