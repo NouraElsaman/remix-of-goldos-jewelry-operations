@@ -211,6 +211,9 @@
   [data-numeric] {
     font-variant-numeric: tabular-nums lining-nums;
   }
+  [data-numeric] {
+    overflow-wrap: anywhere;
+  }
 
   h1,
   h2,

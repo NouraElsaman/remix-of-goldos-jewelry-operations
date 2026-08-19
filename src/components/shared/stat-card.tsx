@@ -32,7 +32,7 @@ export function StatCard({
         <p className="truncate text-xs text-muted-foreground">{label}</p>
         <p
           data-numeric
-          className="truncate text-sm font-semibold text-foreground"
+          className="text-sm font-semibold text-foreground"
         >
           {value}
         </p>

@@ -86,7 +86,7 @@ export function EODOwnerReportModal({ metrics, onClose }: EODOwnerReportModalPro
               <span className="text-[11px] font-semibold text-emerald-700">
                 {locale === "ar" ? "صافي التدفق النقدي" : "Net Cash Flow"}
               </span>
-              <p className="text-base font-extrabold font-mono text-emerald-600 mt-1" dir="ltr">
+              <p data-numeric className="text-base font-extrabold font-mono text-emerald-600 mt-1" dir="ltr">
                 {formatMoney(metrics.netCashFlow, locale)}
               </p>
             </div>
@@ -95,7 +95,7 @@ export function EODOwnerReportModal({ metrics, onClose }: EODOwnerReportModalPro
               <span className="text-[11px] font-semibold text-muted-foreground">
                 {locale === "ar" ? `المبيعات (${metrics.salesCount})` : `Sales (${metrics.salesCount})`}
               </span>
-              <p className="text-base font-extrabold font-mono text-foreground mt-1" dir="ltr">
+              <p data-numeric className="text-base font-extrabold font-mono text-foreground mt-1" dir="ltr">
                 {formatMoney(metrics.totalSalesRevenue, locale)}
               </p>
             </div>
@@ -104,7 +104,7 @@ export function EODOwnerReportModal({ metrics, onClose }: EODOwnerReportModalPro
               <span className="text-[11px] font-semibold text-muted-foreground">
                 {locale === "ar" ? `مشتريات الكسر (${metrics.scrapCount})` : `Scrap Buy (${metrics.scrapCount})`}
               </span>
-              <p className="text-base font-extrabold font-mono text-foreground mt-1" dir="ltr">
+              <p data-numeric className="text-base font-extrabold font-mono text-foreground mt-1" dir="ltr">
                 {formatMoney(metrics.totalScrapPayout, locale)}
               </p>
             </div>
@@ -113,7 +113,7 @@ export function EODOwnerReportModal({ metrics, onClose }: EODOwnerReportModalPro
               <span className="text-[11px] font-semibold text-amber-700">
                 {locale === "ar" ? "أرباح المصنعية" : "Labor Earnings"}
               </span>
-              <p className="text-base font-extrabold font-mono text-amber-600 mt-1" dir="ltr">
+              <p data-numeric className="text-base font-extrabold font-mono text-amber-600 mt-1" dir="ltr">
                 {formatMoney(metrics.totalHandworkEarnings, locale)}
               </p>
             </div>
